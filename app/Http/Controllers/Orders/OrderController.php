@@ -14,7 +14,8 @@ class OrderController extends BaseController
      */
     public function index()
     {
-        //
+        $paginator = Order::paginate(10);
+        return view('orders.admin.index', compact('paginator'));
     }
 
     /**
@@ -46,7 +47,7 @@ class OrderController extends BaseController
      */
     public function show($id)
     {
-        echo Order::where('client_link', '=', env('APP_URL').'/order/'.$id)->get() ;
+
     }
 
     /**

@@ -27,5 +27,9 @@ $admin_options = [
     'prefix' => 'admin',
 ];
 Route::group($admin_options, function() {
-    Route::resource('order', 'OrderController')->names('order');
+    Route::resource('order', 'OrderController')->names('orders.admin.order');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
