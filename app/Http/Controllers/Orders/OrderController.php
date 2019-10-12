@@ -45,9 +45,12 @@ class OrderController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($text_link)
     {
+        $order = Order::where('link_secret', '=', $text_link)->get();
+        dd($order);
 
+//        dd(Model::w($id)->get());
     }
 
     /**
@@ -81,6 +84,6 @@ class OrderController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        dd('1');
     }
 }

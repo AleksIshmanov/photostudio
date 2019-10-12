@@ -34,7 +34,8 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav m-auto">
-                        <a href="{{ route("orders.admin.order.create") }}" class="btn btn-primary">Добавить заказ</a>
+                        <li><a href="{{ route("orders.admin.order.create") }}" class="btn btn-success mx-2"><i class="fa fa-plus"></i></a></li>
+                        <li><a href="{{ route("orders.admin.order.index") }}" class="btn btn-primary"><i class="fa fa-book"></i></a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

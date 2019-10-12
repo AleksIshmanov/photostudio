@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 
 Route::group(['namespace' => 'Orders'], function() {
-    Route::get('order', 'OrderController@show')->name('show_order');
+    Route::get('order/{link_id}', 'OrderController@show')->name('orders.order');
 });
 
 

@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be87efc3-33f7-44d5-9ec6-e191fcaf1480" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/orders/admin/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Orders/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Orders/OrderController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/factories/OrderFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/OrderFactory.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/migrations/02019_10_11_152533_create_orders_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/02019_10_11_152533_create_orders_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/orders/admin/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/orders/admin/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,7 +53,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1570819836559</updated>
-      <workItem from="1570819843296" duration="14084000" />
+      <workItem from="1570819843296" duration="18038000" />
     </task>
     <servers />
   </component>

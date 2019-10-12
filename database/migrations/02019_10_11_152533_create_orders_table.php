@@ -16,10 +16,13 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('name');
+
             $table->integer('portraits_count')->unsigned(); //Портретов инд. в альбом
             $table->integer('photo_common')->unsigned(); //Всего фотографий
             $table->integer('photo_individual'); //Общих фото кокретному владельцу
-            $table->text('client_link')->unique();
+
+//            $table->text('client_link')->unique();
+            $table->text('link_secret')->unique();
             $table->text('confirm_key')->unique();
             $table->text('comment')->nullable();
             $table->timestamps();
