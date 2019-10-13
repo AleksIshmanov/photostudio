@@ -1,23 +1,37 @@
 @extends("layouts.app")
 
 @section('content')
+
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-12">
 
             <div class="card">
+{{--                <div class="card-title">--}}
+{{--                    <div class="row justify-content-center text-center">--}}
+{{--                        <div class="col-12">--}}
+{{--                            <a href="{{ route("orders.admin.order.create") }}" role="button" class="btn btn-success py-2">--}}
+{{--                                <i class="fa fa-plus d-lg-inline d-sm-inline d-md-block d-none"></i> Добавить--}}
+{{--                            </a>--}}
+{{--                            <a href="{{ route("orders.admin.order.index") }}"  role="button" class="btn btn-primary py-2">--}}
+{{--                                <i class="fa fa-book d-lg-inline d-sm-inline d-md-block d-none"></i> Просмотреть--}}
+{{--                            </a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+
                 <div class="card-body table-responsive">
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Название</th>
-                            <th>Всего фото</th>
-                            <th>Инд. портретов</th>
-                            <th>Общ. фото владельцу</th>
-                            <th>Ссылка</th>
-                            <th>Изменить</th>
-                            <th>Удалить</th>
+                            <th style="text-align: center;">#</th>
+                            <th style="text-align: center;">Название</th>
+                            <th style="text-align: center;">Всего фото</th>
+                            <th style="text-align: center;">Инд. портретов</th>
+                            <th style="text-align: center;">Общ. фото владельцу</th>
+                            <th style="text-align: center;">Ссылка</th>
+                            <th style="text-align: center;">Изменить</th>
+                            <th style="text-align: center;">Удалить</th>
                         </tr>
                         </thead>
 
@@ -49,11 +63,7 @@
     </div>
 
     <div class="row justify-content-center">
-
-        <ul class="pagination mt-2 justify-content-end">
-                {{$paginator->links('vendor.pagination.bootstrap-4')}}
-        </ul>
-
+            {{$paginator->links('vendor.pagination.bootstrap-4')}}
     </div>
 </div>
 

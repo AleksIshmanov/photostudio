@@ -24,10 +24,11 @@ Route::group(['namespace' => 'Orders'], function() {
 $admin_options = [
     'namespace' => 'Orders',
     'middleware'=>'auth',
-    'prefix' => 'admin',
+    'prefix' => 'photo_admin',
 ];
 Route::group($admin_options, function() {
     Route::resource('order', 'OrderController')->names('orders.admin.order');
+    Route::resource('user', 'Admin\OrderUserController')->names('orders.admin.user');
 });
 
 Auth::routes();

@@ -1,7 +1,7 @@
 <?php
+//namespace App\Models;
 
 use Illuminate\Database\Seeder;
-use App\Models\Order;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         factory(Order::class, 100)->create();
+         factory(App\Models\Order::class, 100)->create();
+         factory(App\Models\OrderUser::class, 500)->create();
     }
 }

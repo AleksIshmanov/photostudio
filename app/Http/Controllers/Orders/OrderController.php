@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Orders;
 
 use App\Models\Order;
+use App\Models\OrderUser;
 use Illuminate\Http\Request;
 
 class OrderController extends BaseController
@@ -14,8 +15,8 @@ class OrderController extends BaseController
      */
     public function index()
     {
-        $paginator = Order::paginate(10);
-        return view('orders.admin.index', compact('paginator'));
+        $paginator = Order::paginate(20);
+        return view('orders.admin.order.index', compact('paginator'));
     }
 
     /**
@@ -25,7 +26,7 @@ class OrderController extends BaseController
      */
     public function create()
     {
-        //
+        return view('orders.admin.order.create');
     }
 
     /**
@@ -59,9 +60,10 @@ class OrderController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($order_id)
     {
-        //
+        $users = OrderUser::where('id_order', '=', $order_id)->paginate(20);// where('id_order', '='. $order_id); //->get(); //->paginate(10);
+        return view('orders.admin.order.edit', compact('users'));
     }
 
     /**
