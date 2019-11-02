@@ -21,6 +21,7 @@ class CreateOrderUsersTable extends Migration
             $table->integer('portrait_main');
             $table->json('portraits');
             $table->json('common_photos');
+            $table->text('comment')->nullable();
 
             $table->timestamps();
 

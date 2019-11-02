@@ -1,0 +1,540 @@
+html,
+body {
+    width: 100%;
+    background-color: #fff;
+}
+
+h1 {
+    font-family: Circe;
+    font-size: 3em;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #001d32;
+
+}
+
+h3 {
+    font-family: Circe;
+    font-size: 36px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #001d32;
+}
+
+.Mask {
+    height: 220px;
+    border-radius: 25px;
+    background-color: #eaeaea;
+}
+
+.This-is-a-big-one-an {
+    font-family: LibreFranklin;
+    font-size: 18px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.67;
+    letter-spacing: normal;
+    text-align: center;
+    color: #676767;
+}
+
+.Background {
+    z-index: 2;
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    border: solid 2px #eaeaea;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.Number {
+    z-index: 2;
+    font-family: Circe;
+    font-size: 36px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #000000;
+}
+
+.Middle-line {
+    z-index: 0;
+    margin-top: -5.9%;
+    height: 5px;
+    width: 100%;
+    background-color: #000;
+}
+
+.Instruct-h {
+    font-family: Circe;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
+    text-align: center;
+    color: #151517;
+}
+
+.Probabo-inquit-sic-a {
+    font-family: Circe;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.75;
+    letter-spacing: normal;
+    text-align: center;
+    color: #676767;
+}
+
+.Link-bg {
+    width: 100%;
+    height: 60px;
+    border-radius: 15px;
+    border: solid 2px #e8e8e8;
+    background-color: #ffffff;
+}
+
+.Yellow-btn {
+    width: 100%;
+    height: 60px;
+    border-radius: 15px;
+    background-color: #ffa900;
+}
+
+.Blue-btn {
+    border-radius: 6px;
+    background-color: #008ad3;
+}
+
+.Mask-round-only {
+    border-radius: 25px;
+    border-color: #ffa900;
+    border-width: 2px;
+}
+
+.Table-text {
+    font-family: Circe;
+    font-size: 16px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #001d32;
+}
+
+.Yellow-btn-table {
+    width: 100%;
+    height: 35px;
+    border-radius: 15px;
+    background-color: #ffa900;
+}
+
+.Blue-btn-table {
+    width: 100%;
+    height: 35px;
+    border-radius: 15px;
+    background-color: #008ad3;
+}
+
+.Votes-rctg {
+    height: 206px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px 0 rgba(103, 103, 103, 0.05);
+    border: solid 2px #e8e8e8;
+    background-color: #ffffff;
+}
+
+.Orange-rctg {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background-color: #ffa113;
+}
+
+.Purple {
+    background-color: #ba4dc0 !important;
+}
+
+.Blue {
+    background-color: #008ad3 !important;
+}
+
+
+/*---------модальные боковые кнопки-------------*/
+
+.Back-Lg-btn {
+    margin-left: 17vw;
+    position: absolute;
+    top: 50%;
+    align-self: center;
+    left: 0;
+
+    width: 70px;
+    height: 70px;
+    border: solid 2px #ffffff;
+    margin-top: -35px;
+    border-radius: 50%;
+    background-color: rgba(256, 256, 256, 0);
+
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+
+}
+
+.Back-Lg-btn:hover {
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+}
+
+.Next-Lg-btn {
+    margin-right: 17vw;
+    position: absolute;
+    top: 50%;
+    align-self: center;
+    right: 0;
+
+    width: 70px;
+    height: 70px;
+    border: solid 2px #ffffff;
+    margin-top: -35px;
+    border-radius: 50%;
+    background-color: rgba(256, 256, 256, 0);
+
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+
+}
+
+.Next-Lg-btn:hover {
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+}
+
+/*------------------------*/
+
+.Percents {
+    font-family: Circe;
+    font-size: 24px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #ffffff;
+}
+
+.Votes-text {
+    font-family: Circe;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
+    text-align: center;
+    color: #151517;
+}
+
+.How-Long-Will-It-Tak {
+    font-family: Circe;
+    font-size: 24px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    color: #151517;
+}
+
+.Instrucions-item {
+    border-radius: 25px;
+    border: solid 2px #e8e8e8;
+    background-color: #ffffff;
+}
+
+
+/*--------button hover effect----------*/
+
+.coolis {
+    position: relative;
+    transition: 0.5s ease-in-out;
+}
+
+.coolis > span {
+    position: relative;
+    z-index: 100;
+}
+
+/*
+*:before,
+*:after {
+  z-index: -1;
+}
+*/
+
+
+.coolis:before,
+.coolis:after {
+    position: absolute;
+    top: 50%;
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-color: rgb(0, 200, 81);
+    border-radius: 50%;
+    opacity: 0.7;
+    z-index: 1;
+}
+
+.coolis:before {
+    left: -20px;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.coolis:after {
+    right: -20px;
+    -webkit-transform: translate(50%, -50%);
+    transform: translate(50%, -50%);
+}
+
+.coolis:hover:before {
+    -webkit-animation: clsois-left 0.8s both;
+    animation: clsois-left 0.8s both;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+}
+
+.coolis:hover:after {
+    -webkit-animation: clsois-right 0.8s both;
+    animation: clsois-right 0.8s both;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+}
+
+@keyframes clsois-left {
+    0% {
+        left: -20px;
+    }
+
+    50% {
+        left: 50%;
+        width: 20px;
+        height: 20px;
+    }
+
+    100% {
+        left: 50%;
+        width: 100%;
+        height: 375px;
+    }
+}
+
+@keyframes clsois-right {
+    0% {
+        right: -20px;
+    }
+
+    50% {
+        right: 50%;
+        width: 20px;
+        height: 20px;
+    }
+
+    100% {
+        right: 50%;
+        width: 100%;
+        height: 375px;
+    }
+}
+
+/*=================================================*/
+
+.modal-dialog .modal-content {
+    border-radius: 25px !important;
+}
+
+.text-area {
+    width: 100%;
+    height: 50%;
+    border-radius: 15px;
+    box-shadow: 0 20px 50px 0 rgba(103, 103, 103, 0.05);
+    border: solid 2px #e8e8e8;
+    background-color: #ffffff;
+}
+
+.modal-text {
+    font-family: Circe;
+    font-size: calc(2em - 2vh);
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: #151517;
+}
+
+.Oval {
+    width: 50px;
+    height: 50px;
+    border: solid 2px #ffffff;
+}
+
+/*============images inside the modal===================================*/
+
+.nopad {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/*image gallery*/
+.image-checkbox {
+    cursor: pointer;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 4px solid transparent;
+    margin-bottom: 0;
+    outline: 0;
+}
+
+.image-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.image-checkbox-checked {
+    border-color: #4783B0;
+}
+
+.image-checkbox .fa {
+    position: absolute;
+    color: #4A79A3;
+    background-color: #fff;
+    padding: 10px;
+    top: 0;
+    right: 0;
+}
+
+.image-checkbox-checked .fa {
+    display: block !important;
+}
+
+/*===============================================*/
+
+
+
+
+
+/* Малые девайсы («ландшафтные телефоны», >= 576px)*/
+@media (min-width: 576px) {
+    .Custom-modal {
+        width: 90vw;
+        height: 55vh;
+    }
+
+
+    .modal-dialog {
+        position: relative;
+        left: 50%;
+        top: 10%;
+        margin-left: -45vw;
+        max-width: 500px;
+        max-width: 90vw !important;
+    }
+
+    .name-input {
+        height: 20%;
+    }
+
+}
+
+/* Средние девайсы («таблетки», >= 768px)*/
+@media (min-width: 768px) {
+    .name-input {
+        height: 20%;
+    }
+
+    .tab-content {
+        height: 45vh;
+        padding-bottom: 15px;
+        overflow-y: auto;
+    }
+
+    #modal-next,
+    #modal-back {
+        height: 100px;
+        font-size: 2em;
+    }
+
+}
+
+/* Большие девайсы (десктопы, >= 992px)*/
+@media (min-width: 992px) {
+    .Custom-modal {
+        width: 50vw;
+        height: 80vh;
+        border-radius: 25px;
+        background-color: #ffffff;
+    }
+
+    .modal-dialog .modal-content {
+        border-radius: 25px !important;
+    }
+
+    .modal-dialog {
+        position: relative;
+        left: 50%;
+        top: 10vh;
+        margin-left: -25vw;
+        /*        margin-top: -350px;*/
+        /*        max-width: 70vw;*/
+        max-width: 90vw !important;
+    }
+
+    #modal-next,
+    #modal-back {
+        height: 60px;
+    }
+
+    .tab-content {
+        height: 60vh;
+        padding-bottom: 10px;
+        overflow-y: auto;
+    }
+
+}
+
+/* Экстрабольшие девайсы (большие десктопы, >= 1200px)*/
+@media (min-width: 1200px) {
+    .modal-dialog {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -25vw;
+        margin-top: -40vh;
+        /* половина от Custom-modal height*/
+    }
+
+}

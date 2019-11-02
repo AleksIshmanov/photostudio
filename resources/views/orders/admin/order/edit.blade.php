@@ -2,6 +2,42 @@
 
 @section('content')
 <div class="container-fluid">
+    <div class="row justify-content-center py-3">
+        <div class="col-sm-12 col-lg-6 col-12 col-md-6">
+
+            <h2 class="text-center">
+                Выбор пользователей
+            </h2>
+
+            <div class="card">
+                <div class="card-body table-responsive table">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center" >Вариант</th>
+                            <th class="text-center" >Кол-во голосов</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        @php $count = 0 @endphp
+                        @while($count < count($data[1]) )
+                        <tr>
+                                <td class="text-center">{{ array_keys($data[1])[$count] }}</td>
+                                <td class="text-center">{{ array_values($data[1])[$count] }}</td>
+                        </tr>
+
+                        @php $count+=1 @endphp
+                        @endwhile
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row justify-content-center">
         <div class="col-12">
 
@@ -22,14 +58,18 @@
 
                         <tbody>
                         @php $i=0@endphp
-                        @foreach($users as $user)
+                        @foreach($data[0] as $user)
                             <tr>
                                 @php
-                                    /** @var App\Models\OrderUser $user */
+                                    /**
+                                    * get the array with [0=>?$user; 1=>numbers]
+                                    * @var App\Models\OrderUser $user
+                                    * @var numbers
+                                    */
                                     $i++;
                                 @endphp
                                 <td align="center">{{$i}}</td>
-                                <td align="center">{{$user->name}}></td>
+                                <td align="center">{{$user->name}}</td>
                                 <td align="center">{{$user->portrait_main }}</td>
                                 <td align="center">{{ implode( ' ',json_decode($user->portraits, true)['nums']) }}</td>
                                 <td align="center">{{ implode( ' ',json_decode($user->common_photos, true)['nums']) }}</td>
@@ -53,7 +93,7 @@
     <div class="row justify-content-center">
 
         <ul class="pagination mt-2 justify-content-end">
-                {{$users->links('vendor.pagination.bootstrap-4')}}
+                {{$data[0]->links('vendor.pagination.bootstrap-4')}}
         </ul>
 
     </div>

@@ -50,7 +50,7 @@
                                 </td>
 
                                 <td align="center">
-                                    <a href="{{route('orders.admin.order.destroy', $item->id)}}" class="btn btn-outline-danger w-100 h-100"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                    <a method="DELETE" href="{{route('orders.admin.order.destroy', $item->id)}}" class="btn btn-outline-danger w-100 h-100"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                 </td>
                             </tr>
                         @endforeach

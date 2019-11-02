@@ -12,8 +12,8 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
         'portraits_count', 'photo_common', 'photo_individual',
-        'client_link', 'confirm_key', 'comment'
+        'photos_link', 'confirm_key', 'comment'
     ];
 }
