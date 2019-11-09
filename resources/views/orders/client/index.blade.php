@@ -35,6 +35,21 @@
 
 <div class="container">
     <div class="row">
+        @if ($errors->any())
+        <div class="alert alert-danger col-12">
+            <h3>При заполнении формы были допущены ошибки: </h3>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li class="Probabo-inquit-sic-a">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
         <div class="col-12 Mask justify-content-center text-center d-flex flex-center">
             <h1>{{ $order->name  }}</h1>
         </div>
@@ -44,13 +59,14 @@
         <div class="col-12 text-center">
             <h3 class="">Комментарий от менеджера</h3>
             <p class="This-is-a-big-one-a">{{$order->comment}}</p>
+            <hr>
         </div>
     </div>
 
 </div>
 
 <div class="container pb-5">
-    <div class="row py-5">
+    <div class="row pb-5">
         <div class="col-12 text-center">
             <h3>Инструкция</h3>
         </div>
@@ -87,34 +103,42 @@
     </div>
 
     <div class="row">
-        <div class="col-4">
+        <div class="col-lg-4 col-12">
             <p class="Instruct-h">
+                <span class="d-lg-none ">Этап 1: </span>
                 Фотосессия
             </p>
 
             <p class="Probabo-inquit-sic-a">
                 Просмотрите фотографии с фотосессии и выберите наиболее понравившееся.
             </p>
+
+            <hr class="d-lg-none ">
         </div>
 
-        <div class="col-4">
+        <div class="col-lg-4 col-12">
             <p class="Instruct-h">
+                <span class="d-lg-none ">Этап 2: </span>
                 Выберите фотографии
             </p>
 
             <p class="Probabo-inquit-sic-a">
                 Создайте пользователя и выберите фотографии, которые будут использоваться в альбоме.
             </p>
+
+            <hr class="d-lg-none ">
         </div>
 
-        <div class="col-4">
-            <p class="Instruct-h">
-                Подтверждение заказа
+        <div class="col-lg-4 col-12">
+            <p class="Instruct-h text-center">
+                <span class="d-lg-none ">Этап 3: </span>Подтверждение заказа
             </p>
 
             <p class="Probabo-inquit-sic-a">
                 У одного родителя имеется ключ подтверждения. После голосования родитель ключом подтверждает заказ.
             </p>
+
+            <hr class="d-lg-none ">
         </div>
     </div>
 </div>
@@ -153,7 +177,11 @@
 
             </div>
 
-            <button type="button" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="border-radius: 20px;" data-toggle="modal" data-target="#exampleModal"><span>Сделать свой выбор</span></button>
+            <button type="button" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="border-radius: 20px;" data-toggle="modal" data-target="#exampleModal">
+                <span>
+                    Сделать свой выбор
+                </span>
+            </button>
         </div>
     </div>
 
@@ -163,20 +191,37 @@
             <th scope="col" class="text-center">#</th>
             <th scope="col" class="text-center">Имя</th>
             <th scope="col" class="text-center">Просмотреть</th>
-            <th scope="col" class="text-center">Изменить</th>
+            <th scope="col" class="text-center">Удалить</th>
         </tr>
         </thead>
 
         <tbody>
 
-        @php $count = 0;@endphp
+        @php $count = 1; @endphp
         @foreach($users as $user)
+            @php /** @var App\Models\Order $item */@endphp
+
             <tr>
                 <th scope="row">{{$count}}</th>
                 <td class="Table-text text-center">{{$user->name}}</td>
-                <td><button type="button" class="Blue-btn-table text-white text-"><i class="fa fa-eye  px-2" aria-hidden="true"></i> Просмотреть</button></td>
-                <td><button type="button" class="Yellow-btn-table text-white"><i class="fa fa-pen px-2" aria-hidden="true"></i> Изменить</button></td>
+                <td>
+                    <button type="button" class="Blue-btn-table text-white text-">
+                        <i class="fa fa-eye  px-2" aria-hidden="true"></i>
+                        <span class="d-none d-lg-inline">Просмотреть</span>
+                    </button>
+                </td>
+                <td>
+                    <form method="POST" action="{{ route('orders.admin.user.destroy', $user->id) }}">
+                        @csrf
+                        @method("DELETE")
+                        <button type="submit" class="Yellow-btn-table btn-danger text-white"
+                                onclick="confirm('Вы уверены, что хотите удалить пользователя "{{$user->name}}" ?')">
+                            <i class="fa fa-trash px-2" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </td>
             </tr>
+            @php $count++; @endphp
         @endforeach
         </tbody>
 
@@ -309,259 +354,308 @@
             </div>
         </div>
     </div>
+</div>
 
 
+<div class="modal fade" onblur="setName();setSurname();" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="container-fluid">
+        <div class="">
 
-        <div class="container-fluid">
+
+            <button type="button" class="text-white align-self-center Back-Lg-btn d-none d-sm-none d-md-none d-lg-block modal-back">
+                <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+            </button>
+
             <div class="">
 
+                <div class="modal-dialog" role="document">
+                    <div class="">
+                        <div class="modal-content Custom-modal">
 
-                <button type="button" class="text-white align-self-center Back-Lg-btn d-none d-sm-none d-md-none d-lg-block" id="modal-back-md">
-                    <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-                </button>
+                            @php $textLink = basename($_SERVER['REQUEST_URI']) @endphp
+                            <form method="POST" action="{{ route('orders.client.store') }}" autocomplete="off">
+                                @csrf
 
-                <div class="">
+                                <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">
 
-                    <div class="modal-dialog" role="document">
-                        <div class="">
-                            <div class="modal-content Custom-modal">
+                                <!-- modal header!-->
+                                <div class="modal-header py-1 justify-content-center container-fluid">
+                                    <div class="col-11 text-center justify-content-center">
 
-                                <form method="POST" action="{{ route('orders.client.store') }}" autocomplete="off">
-                                    @csrf
+{{--                                        <h3 class="text-center py-0" id="exampleModalLabel">Регистрация</h3>--}}
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
 
-                                    <input type="hidden" name="textLink" class="d-none" value="{{  basename($_SERVER['REQUEST_URI']) }}">
-
-                                    <!-- modal header!-->
-                                    <div class="modal-header justify-content-center container-fluid">
-                                        <div class="col-10 text-center justify-content-center">
-                                            <h3 class="text-center" id="exampleModalLabel">Регистрация</h3>
-                                        </div>
-
-                                        <div class="col-2 text-center justify-content-center flex-center">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <i class="fa fa-window-close" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- modal body!-->
-                                    <div class="modal-body">
-                                        <ul class="nav nav-tabs d-none" id="myTab" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"></a>
+                                            <li class="nav-item w-100 alert alert-info">
+                                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                                                    <h4 class="text-center font-weight-bold">
+                                                        Введите имя и фамилию
+                                                    </h4>
+                                                </a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"></a>
+                                            <li class="nav-item w-100 alert alert-info" style="display: none">
+                                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                                                    <h4 class="text-center font-weight-bold">
+                                                        Выберите главное портретное фото
+                                                    </h4>
+                                                </a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"></a>
+                                            <li class="nav-item w-100 alert alert-info" style="display: none">
+                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
+                                                    <h4 class="text-center font-weight-bold" style="font-size: 20px;">
+                                                        Выберите {{ $order->portraits_count }} дополнительных портретных фото
+                                                    </h4>
+                                                </a>
                                             </li>
 
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#next" role="tab" aria-controls="contact" aria-selected="false"></a>
+                                            <li class="nav-item w-100 alert alert-info" style="display: none">
+                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#next" role="tab" aria-controls="contact" aria-selected="false">
+                                                    <h4 class="text-center font-weight-bold">
+                                                        Выберите {{$order->photo_common}} фотографий в общий альбом
+                                                    </h4>
+                                                </a>
                                             </li>
 
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#designs" role="tab" aria-controls="contact" aria-selected="false"></a>
+                                            <li class="nav-item w-100 alert alert-info" style="display: none">
+                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#designs" role="tab" aria-controls="contact" aria-selected="false">
+                                                    <h4 class="text-center font-weight-bold">
+                                                        Выберите понравившейся дизайн
+                                                    </h4>
+                                                </a>
                                             </li>
 
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#upload" role="tab" aria-controls="contact" aria-selected="false"></a>
+                                            <li class="nav-item w-100 alert alert-info" style="display: none">
+                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#upload" role="tab" aria-controls="contact" aria-selected="false">
+                                                    <h4 class="text-center font-weight-bold">
+                                                        Загрузить фотографии?
+                                                    </h4>
+                                                </a>
                                             </li>
 
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#quastion" role="tab" aria-controls="contact" aria-selected="false"></a>
+                                            <li class="nav-item w-100 alert alert-info" style="display: none">
+                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#quastion" role="tab" aria-controls="contact" aria-selected="false">
+                                                    <h4 class="text-center font-weight-bold">
+                                                        Ответьте на вопросы анкеты
+                                                    </h4>
+                                                </a>
                                             </li>
 
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#final" role="tab" aria-controls="contact" aria-selected="false"></a>
+                                            <li class="nav-item w-100 alert alert-info" style="display: none">
+                                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#final" role="tab" aria-controls="contact" aria-selected="false">
+                                                    <h4 class="text-center font-weight-bold">
+                                                        Сохранить выбор
+                                                    </h4>
+                                                </a>
                                             </li>
-
-
                                         </ul>
 
 
-                                        <div class="tab-content" id="myTabContent">
-                                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
-                                                <div>
-                                                    <h3 class="py-5 text-center"> Введите ФИО</h3>
-
-
-                                                        <div class="form-group name-input">
-                                                            <input type="text" name="userName" placeholder="Имя" class="form-control" id="recipient-name">
-                                                        </div>
-
-                                                        <div class="form-group name-input">
-                                                            <input placeholder="Фамилия" name="userSurname" class="form-control" id="message-text">
-                                                        </div>
-                                                </div>
+                                        {{--     отображается если выбрано достаточное количество фотографий в разделе--}}
+                                        <div class="alert d-none">
+                                            <div class="alert-success" id="">
+                                                <h3 class="text-center"> Можете переходить к следующему выбору</h3>
                                             </div>
-
-                                            @php $name="mainPhoto"; @endphp
-                                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                                <h3 class="text-center">Выберите главное портретное фото</h3>
-
-                                                <div class="container-fluid">
-                                                    <div class="row">
-
-                                                        @for($i=0; $i<10;$i++)
-
-                                                            <div class="col-6 nopad">
-                                                                <label class="image-checkbox">
-                                                                    <img src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                                                    <input type="checkbox" name="{{$name}}[{{$i}}]" value="" />
-                                                                    <i class="fa fa-check d-none"></i>
-                                                                </label>
-                                                            </div>
-
-                                                        @endfor
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @php $name="altMainPhotos"; @endphp
-                                            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-
-                                                <h3 class="text-center">Выберите 4 дополнительных портретных фото</h3>
-                                                <div class="container-fluid">
-                                                    <div class="row">
-
-                                                        @for($i=0; $i<10;$i++)
-
-                                                            <div class="col-6 nopad">
-                                                                <label class="image-checkbox">
-                                                                    <img src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                                                    <input type="checkbox" name="{{$name}}[{{$i}}]" value="" />
-                                                                    <i class="fa fa-check d-none"></i>
-                                                                </label>
-                                                            </div>
-
-                                                        @endfor
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            @php $name="commonPhotos"; @endphp
-                                            <div class="tab-pane fade" id="next" role="tabpanel" aria-labelledby="profile-tab">
-                                                <h3 class="text-center">Выберите N фотографий в общий альбом</h3>
-                                                <div class="container-fluid">
-                                                    <div class="row">
-
-                                                        @for($i=0; $i<10;$i++)
-
-                                                            <div class="col-6 nopad">
-                                                                <label class="image-checkbox">
-                                                                    <img src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                                                    <input type="checkbox" name="{{$name}}[{{$i}}]" value="" />
-                                                                    <i class="fa fa-check d-none"></i>
-                                                                </label>
-                                                            </div>
-
-                                                        @endfor
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @php $name="designChoice"; @endphp
-                                            <div class="tab-pane fade" id="designs" role="tabpanel" aria-labelledby="profile-tab">
-                                                <h3 class="text-center">Выберите понравившийся дизайн</h3>
-                                                <div class="container-fluid">
-                                                    <div class="row">
-
-                                                        @for($i=0; $i<10;$i++)
-
-                                                            <div class="col-6 nopad">
-                                                                <label class="image-checkbox">
-                                                                    <img src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                                                    <input type="checkbox" name="{{$name}}[{{$i}}]" value="" />
-                                                                    <i class="fa fa-check d-none"></i>
-                                                                </label>
-                                                            </div>
-
-                                                        @endfor
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="tab-pane fade flex-center" id="upload" role="tabpanel" aria-labelledby="profile-tab">
-                                                <div>
-                                                    <h3 class="text-center">Загрузить личные фотографии?</h3>
-                                                    <div class="custom-file px-5">
-                                                        <input type="file" name="userFiles[]" accept="image/jpeg,image/png" multiple class="custom-file-input" id="customFileLang" lang="ru">
-                                                        <label for="customFileLang" class="custom-file-label">Загрузить фотографии</label>
-                                                    </div>
-                                                    <p class="Probabo-inquit-sic-a py-5 text-unde"><u>Если файлы загружать не нужно - пропустите данный этап</u></p>
-                                                </div>
-                                            </div>
-
-                                            <div class="tab-pane fade flex-center" id="quastion" role="tabpanel" aria-labelledby="profile-tab">
-                                                <div>
-                                                    <h3 class="text-center">Ответы на анкету/Задать вопросы</h3>
-                                                    <div class="text-area">
-                                                        <p class="modal-text px-3 py-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ornare urna eget rutrum luctus. Donec scelerisque porta sapien, vitae sagittis velit condimentum vitae. In rhoncus maximus augue vel bibendum. Aliquam tempus nec arcu eget blandit. Nulla facilisi. Nulla facilisi. Maecenas vitae congue magna, condimentum ultrices leo. Integer vel felis convallis mi malesuada consectetur sed at purus.</p>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="comment">Ответ:</label>
-                                                        <textarea name="userQuestionsAnswer" class="form-control" rows="5" id="comment"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="tab-pane fade flex-center" id="final" role="tabpanel" aria-labelledby="profile-tab">
-                                                <div class="flex-center">
-                                                    <button type="submit" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="width: 50%;"><span>Подтвердить свой выбор</span></button>
-                                                </div>
-                                            </div>
-
                                         </div>
                                     </div>
 
-                                    <!-- modal footer-->
-                                    <div class="modal-footer w-100 d-lg-none py-5">
-                                        <div class="col-4">
-                                            <button type="button" class="btn Yellow-btn text-white" id="modal-back">
-                                                <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-                                            </button>
+                                    <div class="col-1 text-center d-flex flex-center align-self-center">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <i class="fa fa-window-close" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- modal body!-->
+                                <div class="modal-body">
+
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="form-group name-input">
+                                                <input type="text" onchange="tmpName=this.value" name="userName" placeholder="Имя" class="form-control" id="recipient-name">
+                                            </div>
+
+                                            <div class="form-group name-input">
+                                                <input placeholder="Фамилия" onchange="tmpSurname=this.value" name="userSurname" class="form-control" id="recipient-surname">
+                                            </div>
+
+                                            <div class="alert alert-danger">
+                                                <h4 class="text-center font-weight-bold">
+                                                    Внимание!<br>
+                                                    Вводите имя точно так, как оно будет записано в альбом.
+                                                    Буквы Е/Ё имеют разницу, не допускайте ошибок в написании имени и фамилии.
+                                                </h4>
+
+                                                <p class="text-center">
+                                                    <u>Перепроверьте корректность имени и фамилии перед продолжением</u>
+                                                </p>
+                                            </div>
                                         </div>
 
-                                        <div class="col-4">
+                                        @php $name="mainPhoto"; @endphp
+                                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    @for($i=0; $i<10;$i++)
+                                                        <div class="col-6 nopad">
+                                                            <label class="image-checkbox">
+                                                                <img src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+                                                                <input type="checkbox" name="{{$name}}[{{$i}}]" value=""
+                                                                        onchange="this.checked ? countImgInput(1, 1);"
+                                                                />
+                                                                <i class="fa fa-check d-none"></i>
+                                                            </label>
+                                                        </div>
+                                                    @endfor
+                                                </div>
+                                            </div>
+
+                                            <!--
+                                            <div class="container-fluid">
+                                                <div class="row d-flex flex-center">
+                                                    <div class="alert alert-success w-100" role="alert">
+                                                        Главное изображение выбрано, можете перейти к следующему этапу
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            -->
                                         </div>
 
-                                        <div class="col-4">
-                                            <button type="button" class="btn Yellow-btn text-white" id="modal-next">
-                                                <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                                            </button>
+                                        @php $name="altMainPhotos"; @endphp
+                                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+                                            <div class="container-fluid">
+                                                <div class="row">
+
+                                                    @for($i=0; $i<10;$i++)
+
+                                                        <div class="col-6 nopad">
+                                                            <label class="image-checkbox">
+                                                                <img src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+                                                                <input type="checkbox" name="{{$name}}[{{$i}}]" value="" />
+                                                                <i class="fa fa-check d-none"></i>
+                                                            </label>
+                                                        </div>
+
+                                                    @endfor
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        @php $name="commonPhotos"; @endphp
+                                        <div class="tab-pane fade" id="next" role="tabpanel" aria-labelledby="profile-tab">
+
+                                            <div class="container-fluid">
+                                                <div class="row">
+
+                                                    @for($i=0; $i<10;$i++)
+
+                                                        <div class="col-6 nopad">
+                                                            <label class="image-checkbox">
+                                                                <img src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+                                                                <input type="checkbox" name="{{$name}}[{{$i}}]" value="" />
+                                                                <i class="fa fa-check d-none"></i>
+                                                            </label>
+                                                        </div>
+
+                                                    @endfor
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @php $name="designChoice"; @endphp
+                                        <div class="tab-pane fade" id="designs" role="tabpanel" aria-labelledby="profile-tab">
+                                            <div class="container-fluid">
+                                                <div class="row">
+
+                                                    @for($i=0; $i<10;$i++)
+
+                                                        <div class="col-6 nopad">
+                                                            <label class="image-checkbox">
+                                                                <img src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+                                                                <input type="checkbox" name="{{$name}}[{{$i}}]" value="" />
+                                                                <i class="fa fa-check d-none"></i>
+                                                            </label>
+                                                        </div>
+
+                                                    @endfor
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade flex-center" id="upload" role="tabpanel" aria-labelledby="profile-tab">
+
+                                            <div>
+                                                <div class="custom-file px-5">
+                                                    <input type="file" name="userFiles[]" accept="image/jpeg,image/png" multiple class="custom-file-input" id="customFileLang" lang="ru">
+                                                    <label for="customFileLang" class="custom-file-label">Загрузить фотографии</label>
+                                                </div>
+                                                <p class="Probabo-inquit-sic-a py-5 text-unde"><u>Если файлы загружать не нужно - пропустите данный этап</u></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade flex-center" id="quastion" role="tabpanel" aria-labelledby="profile-tab">
+                                            <div>
+                                                <div class="text-area">
+                                                    <p class="modal-text px-3 py-2">{{ 'php comment output' }}</p>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="comment">Ответ:</label>
+                                                    <textarea name="userQuestionsAnswer" class="form-control" rows="5" id="comment"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade flex-center" id="final" role="tabpanel" aria-labelledby="profile-tab">
+                                            <div class="flex-center">
+                                                <button type="submit" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="width: 50%;"><span>Подтвердить свой выбор</span></button>
+                                            </div>
                                         </div>
 
                                     </div>
+                                </div>
 
-                                </form>
-                            </div>
+                                <!-- modal footer-->
+                                <div class="modal-footer w-100 d-lg-none py-5">
+                                    <div class="col-4">
+                                        <button type="button" class="btn Yellow-btn text-white modal-back">
+                                            <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="col-4">
+                                    </div>
+
+                                    <div class="col-4">
+                                        <button type="button" class="btn Yellow-btn text-white modal-next">
+                                            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            </form>
                         </div>
-
                     </div>
+
                 </div>
-
-
-                <button type="button" class="text-white align-self-center Next-Lg-btn d-sm-none d-none d-md-none d-lg-block" id="modal-next-md">
-                    <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                </button>
-
             </div>
+
+
+            <button type="button" class="text-white align-self-center Next-Lg-btn d-sm-none d-none d-md-none d-lg-block modal-next">
+                <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+            </button>
 
         </div>
 
     </div>
 
 </div>
+
 
     <!-- JQuery -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -580,24 +674,22 @@
             var modal = $(this)
             //            modal.find('.modal-title').text('New message to ' + recipient)
             modal.find('.modal-body input').val(recipient)
-        })
-
-
-        $('#modal-next').click(function () {
-            $('.nav-tabs .active').parent().next('li').find('a').trigger('click');
         });
 
-        $('#modal-back').click(function () {
+        $('.modal-next').click(function () {
+            $('.nav-tabs').find('.active').parent().next('li').find('a').trigger('click');
+            hideNotActive();
+        });
+
+        $('.modal-back').click(function () {
             $('.nav-tabs .active').parent().prev('li').find('a').trigger('click');
+            hideNotActive();
         });
 
-        $('#modal-next-md').click(function () {
-            $('.nav-tabs .active').parent().next('li').find('a').trigger('click');
-        });
-
-        $('#modal-back-md').click(function () {
-            $('.nav-tabs .active').parent().prev('li').find('a').trigger('click');
-        });
+        function hideNotActive() {
+            $('.nav-link').parent().hide();
+            $(' .nav-link.active').parent().show();
+        }
 
 
         // image gallery
@@ -619,7 +711,7 @@
             e.preventDefault();
         });
 
-        //multyply input
+        //multiply input
         $('imput#files').change(function(){
             var files = this.files; //это массив файлов
             var form = new FormData();
@@ -627,6 +719,33 @@
                 form.append("file["+i+"]", files[i]);
             }
         })
+
+
+        // если пользователь закрыл модальное окно - input не должны забывать ФИО
+        tmpName="";
+        tmpSurname="";
+        function setName(){
+            document.getElementById('recipient-name').value = tmpName;
+        }
+
+        function setSurname(){
+            document.getElementById('recipient-surname').value = tmpSurname;
+        }
+
+
+        var countMainPhoto = 0;
+        var countAltMainPhoto = 0;
+        var countCommonPhoto = 0;
+        function countImgInput(countVar, maxCount, alertId){
+            if(countVar===maxCount){
+                $("#"+alertId).show();
+            }
+
+        }
+
+        function modalEndInput(){
+
+        }
 
     </script>
 

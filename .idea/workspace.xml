@@ -2,100 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be87efc3-33f7-44d5-9ec6-e191fcaf1480" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Orders/Admin/OrderUserController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/OrderUserAnswer.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/composer.phar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/factories/OrderUserFactory.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Bold.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Bold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Bold.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-ExtraBold.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-ExtraBold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-ExtraBold.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-ExtraLight.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-ExtraLight.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-ExtraLight.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Light.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Light.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Light.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Regular.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Regular.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Regular.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Thin.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Thin.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Circe-Thin.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklin.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklin.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklin.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinblack.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinblack.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinblack.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinblackitalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinblackitalic.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinblackitalic.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinbold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinbold.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinbold.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinbolditalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinbolditalic.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinbolditalic.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextrabold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextrabold.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextrabold.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextrabolditalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextrabolditalic.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextrabolditalic.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextralight.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextralight.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextralight.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextralightitalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextralightitalic.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinextralightitalic.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinitalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinitalic.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinitalic.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinlight.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinlight.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinlight.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinlightitalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinlightitalic.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinlightitalic.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinmedium.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinmedium.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinmedium.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinmediumitalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinmediumitalic.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinmediumitalic.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinsemibold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinsemibold.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinsemibold.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinsemibolditalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinsemibolditalic.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinsemibolditalic.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinthin.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinthin.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinthin.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinthinitalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinthinitalic.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/Librefranklinthinitalic.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/fonts/fonts.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/script.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/layouts/client.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/orders/client/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/lang/ru/validation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Orders/Admin/OrderUserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Orders/Admin/OrderUserController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Orders/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Orders/OrderController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Form.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/factories/OrderFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/OrderFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/02019_10_11_152533_create_orders_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/02019_10_11_152533_create_orders_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_10_11_223227_create_order_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_10_11_223227_create_order_users_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/orders/admin/order/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/orders/admin/order/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/OrderUser.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/OrderUser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/orders/admin/order/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/orders/admin/order/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/orders/admin/order/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/orders/admin/order/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/orders/client/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/orders/client/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -109,6 +27,20 @@
     <execution>
       <executable />
     </execution>
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -201,9 +133,11 @@
   <component name="ProjectId" id="1S4PKTnrgkq89m2RigHsGWDHAhp" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mariadb" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../php/php.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/lang/ru" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
   </component>
   <component name="RecentsManager">
@@ -211,6 +145,7 @@
       <recent name="D:\xampp\htdocs\laravel\photo.local\www\resources\views\orders\admin\order" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\xampp\htdocs\laravel\photo.local\www\resources\lang\ru" />
       <recent name="D:\xampp\htdocs\laravel\photo.local\www\resources\views\orders\admin\order" />
       <recent name="D:\xampp\htdocs\laravel\photo.local\www\resources\views\orders\admin" />
     </key>
@@ -253,7 +188,11 @@
       <workItem from="1572638985284" duration="674000" />
       <workItem from="1572642519321" duration="2132000" />
       <workItem from="1572645678862" duration="7618000" />
-      <workItem from="1572692417587" duration="920000" />
+      <workItem from="1572692417587" duration="3681000" />
+      <workItem from="1572770543819" duration="4905000" />
+      <workItem from="1572776582917" duration="18127000" />
+      <workItem from="1573264451096" duration="2243000" />
+      <workItem from="1573303557290" duration="16456000" />
     </task>
     <servers />
   </component>

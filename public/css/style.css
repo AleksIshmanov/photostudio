@@ -28,7 +28,7 @@ h3 {
 }
 
 .Mask {
-    height: 220px;
+    min-height: 220px;
     border-radius: 25px;
     background-color: #eaeaea;
 }
@@ -173,6 +173,10 @@ h3 {
     background-color: #008ad3 !important;
 }
 
+.nav-link.active {
+    background-color: rgba(0,86,179, 0)!important;
+    border-color: rgba(0,0,0,0)!important;
+}
 
 /*---------модальные боковые кнопки-------------*/
 

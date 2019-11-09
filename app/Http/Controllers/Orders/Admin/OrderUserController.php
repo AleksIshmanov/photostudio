@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Orders\Admin;
 
+use App\Http\Requests\storeOrderuserRequest;
 use App\Models\Order;
 use App\Models\OrderUser;
-use App\Models\OrderUserAnswer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -36,10 +36,11 @@ class OrderUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storeOrderuserRequest $request)
     {
 
         $orderUser = new OrderUser();
+
 
         $orderUser->name = $request->input('userName') .' '. $request->input('userSurname');
         $orderUser->id_order = $this->getOrderId($request->input('textLink'));
@@ -50,9 +51,12 @@ class OrderUserController extends Controller
 
         $orderUser->comment = $request->input('userQuestionsAnswer');
 
-        $orderUser->save();
-
-//        redirect(route('orders.client.show'));
+        if ($orderUser->save()){
+            return redirect()->back()->with(['success'=>true]);
+        }
+//        else {
+//            return back()->withErrors(['msg'=>'Ошибка сохранения'])->withInput();
+//        }
 
     }
 
@@ -100,7 +104,8 @@ class OrderUserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        OrderUser::destroy($id);
+        return redirect()->back();
     }
 
     /**
@@ -118,7 +123,11 @@ class OrderUserController extends Controller
      * @return false|string
      */
     protected function makeCustomJson($choices){
-        $nums['nums'] = array_keys($choices);
+        $nums = array();
+        if(is_array($choices) ){
+            $nums['nums'] = array_keys($choices);
+        }
+
         return json_encode($nums);
     }
 }

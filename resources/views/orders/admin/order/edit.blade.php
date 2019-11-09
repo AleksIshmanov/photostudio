@@ -22,10 +22,10 @@
                         <tbody>
 
                         @php $count = 0 @endphp
-                        @while($count < count($data[1]) )
+                        @while($count < count($choice) )
                         <tr>
-                                <td class="text-center">{{ array_keys($data[1])[$count] }}</td>
-                                <td class="text-center">{{ array_values($data[1])[$count] }}</td>
+                                <td class="text-center">{{ array_keys($choice)[$count] }}</td>
+                                <td class="text-center">{{ array_values($choice)[$count] }}</td>
                         </tr>
 
                         @php $count+=1 @endphp
@@ -58,7 +58,7 @@
 
                         <tbody>
                         @php $i=0@endphp
-                        @foreach($data[0] as $user)
+                        @foreach($users as $user)
                             <tr>
                                 @php
                                     /**
@@ -67,18 +67,40 @@
                                     * @var numbers
                                     */
                                     $i++;
+                                    $portraits = json_decode($user->portraits, true);
+                                    $commonPhotos = json_decode($user->common_photos, true);
                                 @endphp
+
                                 <td align="center">{{$i}}</td>
                                 <td align="center">{{$user->name}}</td>
                                 <td align="center">{{$user->portrait_main }}</td>
-                                <td align="center">{{ implode( ' ',json_decode($user->portraits, true)['nums']) }}</td>
-                                <td align="center">{{ implode( ' ',json_decode($user->common_photos, true)['nums']) }}</td>
+                                <td align="center">
+                                    @if(isset($portraits['nums']))
+                                        {{ implode( ' ', $portraits['nums']) }}
+                                    @else
+                                        No choice
+                                    @endif
+                                </td>
+                                <td align="center">
+                                    @if(isset($commonPhotos['nums']))
+                                        {{ implode( ' ', $commonPhotos['nums']) }}
+                                    @else
+                                        No choice
+                                    @endif
+                                </td>
                                 <td align="center">
                                     <a href="{{route('orders.admin.user.edit', $user->id)}}" class="btn btn-primary w-100 h-100"><i class="fa fa-edit" aria-hidden="true"></i></a>
                                 </td>
 
                                 <td align="center">
-                                    <a href="{{route('orders.admin.user.destroy', $user->id)}}" class="btn btn-outline-danger w-100 h-100"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                    <form action="{{route('orders.admin.user.destroy', $user->id)}}" method="POST">
+                                        @csrf
+                                        @method("DELETE")
+                                        <button type="submit" class="btn btn-outline-danger w-100 h-100">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -93,7 +115,7 @@
     <div class="row justify-content-center">
 
         <ul class="pagination mt-2 justify-content-end">
-                {{$data[0]->links('vendor.pagination.bootstrap-4')}}
+                {{$users->links('vendor.pagination.bootstrap-4')}}
         </ul>
 
     </div>

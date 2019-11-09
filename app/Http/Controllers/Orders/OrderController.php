@@ -16,9 +16,10 @@ class OrderController extends BaseController
      */
     public function index()
     {
-        return view('orders.admin.order.index')->with([
-            'paginator' => Order::orderBy('updated_at', 'desc')->paginate(20),
-        ]);
+        return view('orders.admin.order.index')
+            ->with(['paginator' => Order::orderBy('updated_at', 'desc')
+                ->paginate(20),
+            ]);
     }
 
     /**
@@ -41,18 +42,14 @@ class OrderController extends BaseController
     {
         $order = new Order;
 
-        //get the input params from view
+        //get inputs params from view
         $order->name = $request->input('taskName');
-
-
         $order->portraits_count = $request->input('individualPhotosCount');
         $order->photo_common = $request->input('photosAll');
         $order->photo_individual = $request->input('commonPhotosToCustomer');
-
         $order->photos_link = $request->input('photoAlbumLink');
         $order->designs_count = $request->input('designsCount');
         $order->comment = $request->input('comment');
-
         $order->confirm_key = substr(md5(time()), 0, 3).mt_rand(1000, 9999) ;
         $order->link_secret =  substr(md5(time()), 0, 5).mt_rand(100, 999);
 
@@ -63,7 +60,12 @@ class OrderController extends BaseController
             $form->save();
         }
 
-        $order->save();
+        if ($order->save()){
+            return redirect()->route('orders.admin.order.index');
+        }
+        else {
+            return back()->withErrors()->withInput();
+        }
 
     }
 
@@ -90,10 +92,10 @@ class OrderController extends BaseController
     public function edit($order_id)
     {
         $users = OrderUser::where('id_order', '=', $order_id)->paginate(20);
-        $choice = $this->count_votes($order_id);
-        $data = [$users, $choice];
+        $choice = $this->countVotes($order_id);
+//        $data = [$users, $choice];
 
-        return view('orders.admin.order.edit', compact('data' ));
+        return view('orders.admin.order.edit', compact('users', 'choice' ));
     }
 
     /**
@@ -117,28 +119,33 @@ class OrderController extends BaseController
     public function destroy($id)
     {
         Order::destroy($id);
+        return redirect()->back();
     }
 
 
-    /*
+    /**
      * Get all choices and count them
      *
      * @param int $order_id
      * @return array descended sort
      */
-    public function count_votes($order_id){
+    public function countVotes($orderId ){
         $choice = [];
 
         //декодирование информации
-        $common_photos =  OrderUser::where('id_order', '=', $order_id)->get(['common_photos']);
+        $common_photos =  OrderUser::where('id_order', '=', $orderId)->get(['common_photos']);
         foreach ($common_photos as $person_choice){
             $person_choice =json_decode($person_choice['common_photos'], true);
-            foreach ($person_choice['nums'] as $num){
-                $choice[$num] = isset($choice[$num]) ? $choice[$num]+1 : 1;
+            if (isset($person_choice['nums'])){
+                foreach ($person_choice['nums'] as $num){
+                    $choice[$num] = isset($choice[$num]) ? $choice[$num]+1 : 1;
+                }
             }
         }
 
         arsort($choice);
         return $choice;
     }
+
+
 }
