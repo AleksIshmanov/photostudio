@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="be87efc3-33f7-44d5-9ec6-e191fcaf1480" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/lang/ru/validation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Orders/Admin/OrderUserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Orders/Admin/OrderUserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Orders/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Orders/OrderController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/OrderUser.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/OrderUser.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/orders/admin/order/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/orders/admin/order/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/orders/admin/order/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/orders/admin/order/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/orders/client/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/orders/client/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -141,13 +130,13 @@
     <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\xampp\htdocs\laravel\photo.local\www\resources\views\orders\admin\order" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\xampp\htdocs\laravel\photo.local\www\resources\lang\ru" />
       <recent name="D:\xampp\htdocs\laravel\photo.local\www\resources\views\orders\admin\order" />
       <recent name="D:\xampp\htdocs\laravel\photo.local\www\resources\views\orders\admin" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\xampp\htdocs\laravel\photo.local\www\resources\views\orders\admin\order" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -192,7 +181,7 @@
       <workItem from="1572770543819" duration="4905000" />
       <workItem from="1572776582917" duration="18127000" />
       <workItem from="1573264451096" duration="2243000" />
-      <workItem from="1573303557290" duration="16456000" />
+      <workItem from="1573303557290" duration="34645000" />
     </task>
     <servers />
   </component>
