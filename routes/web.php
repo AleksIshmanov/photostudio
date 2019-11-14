@@ -18,7 +18,12 @@ Route::get('/', function () {
 
 Route::group(['namespace' => 'Orders'], function() {
     Route::get('order/{link_id}', 'OrderController@show')->name('orders.client.show');
+    Route::get('order/{link_id}/choose', 'OrderController@choose')->name('orders.client.choose');
     Route::post('order', 'Admin\OrderUserController@store')->name('orders.client.store');
+
+    //photos
+    Route::get('photo/portraits/{order_text_link}/{count}', 'PhotoController@getGroupsPhotos')->name('orders.photos.portrait');
+    Route::get('photo/groups/{order_text_link}/{count}', 'PhotoController@getPortraitsPhotos')->name('orders.photos.group');
 });
 
 
@@ -30,6 +35,11 @@ Route::group($admin_options, function() {
     Route::resource('order', 'OrderController')->names('orders.admin.order')->middleware('auth');
     Route::resource('user', 'Admin\OrderUserController')->names('orders.admin.user');
 });
+
+$photo_options = [
+    'namespace' => 'Orders',
+    'prefix' => ''
+];
 
 Auth::routes();
 

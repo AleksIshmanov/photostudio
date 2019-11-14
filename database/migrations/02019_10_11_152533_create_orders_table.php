@@ -22,7 +22,7 @@ class CreateOrdersTable extends Migration
             $table->integer('photo_individual'); //Общих фото кокретному владельцу
             $table->integer('designs_count');
 
-            $table->text('photos_link');
+            $table->text('photos_dir_name');
 
 //            $table->text('client_link')->unique();
             $table->text('link_secret')->unique();
