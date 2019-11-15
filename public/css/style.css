@@ -173,10 +173,10 @@ h3 {
     background-color: #008ad3 !important;
 }
 
-.nav-link.active {
-    background-color: rgba(0,86,179, 0)!important;
-    border-color: rgba(0,0,0,0)!important;
-}
+/*.nav-link.active {*/
+/*    background-color: rgba(0,86,179, 0)!important;*/
+/*    border-color: rgba(0,0,0,0)!important;*/
+/*}*/
 
 /*---------модальные боковые кнопки-------------*/
 
@@ -480,11 +480,11 @@ h3 {
         height: 20%;
     }
 
-    .tab-content {
-        height: 45vh;
-        padding-bottom: 15px;
-        overflow-y: auto;
-    }
+    /*.tab-content {*/
+    /*    height: 45vh;*/
+    /*    padding-bottom: 15px;*/
+    /*    overflow-y: auto;*/
+    /*}*/
 
     #modal-next,
     #modal-back {
@@ -522,11 +522,11 @@ h3 {
         height: 60px;
     }
 
-    .tab-content {
-        height: 60vh;
-        padding-bottom: 10px;
-        overflow-y: auto;
-    }
+    /*.tab-content {*/
+    /*    height: 60vh;*/
+    /*    padding-bottom: 10px;*/
+    /*    overflow-y: auto;*/
+    /*}*/
 
 }
 

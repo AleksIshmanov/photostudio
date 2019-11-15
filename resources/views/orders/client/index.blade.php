@@ -316,7 +316,7 @@
                     </div>
                 </div>
             </div>
-
+А
             <div class="card py-3">
                 <div class="card-header" id="heading-2">
                     <h5 class="mb-0">
@@ -798,8 +798,6 @@
         function confirmDelete(){
             return confirm("Вы уверены, что хотите удалить пользователя");
         }
-
-
 
     </script>
 

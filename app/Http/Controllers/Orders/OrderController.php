@@ -150,9 +150,12 @@ class OrderController extends BaseController
 
     public function choose($textLink){
         $photo = new PhotoController();
-//        $portraitsPhoto = $photo->getPortraitsPhotos($textLink, 20);
+        $portraitsPhoto = $photo->getPortraitsPhotos($textLink, 20);
 //        $groupsPhoto = $photo->getGroupsPhotos($textLink, 20);
         $order = Order::where('link_secret', '=', $textLink)->first();
+
+        $portraitsPhoto = json_decode($portraitsPhoto->getContent(), true)['data'];
+//        $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
 
         return view('orders.client.choose', compact('portraitsPhoto', 'groupsPhoto', 'order'));
     }
