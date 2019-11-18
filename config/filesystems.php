@@ -64,13 +64,16 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        //https://cloud.yandex.ru/docs/storage/instruments/s3cmd
+        //https://github.com/leonardjke/laravel-yandex-cloud
         'yadisk' => [
             'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
+            'key' => env('YA_ACCESS_KEY_ID'),
+            'secret' => env('YA_SECRET_ACCESS_KEY'),
+            'endpoint' => 'http://storage.yandexcloud.net/',
+            'region' => 'ru-central1',
+            'bucket' => env('YA_BUCKET'),
+            'url' => env('YA_URL'),
         ],
 
     ],

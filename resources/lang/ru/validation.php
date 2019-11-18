@@ -184,5 +184,14 @@ return [
         'time'                  => 'Время',
         'available'             => 'Доступно',
         'size'                  => 'Размер',
+
+        //Отдельные настройки для route(orders.admin.order.create)
+        'dirName' => '"Название папки"',
+        'designsCount' => '"Количество дизайнов"',
+        'taskName' => '"Название заказа"',
+        'commonPhotosToCustomer' => '"Количество общий фото инд. владельцу"',
+        'photosAll' => '"Всего фотографий"',
+        'individualPhotosCount' => '"Количество портретов инд. в альбом"',
+        'photoAlbumLink' => '"Ссылка на фотосессию"',
     ],
 ];

@@ -186,11 +186,10 @@
 
             </div>
 
-            <button type="button" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="border-radius: 20px;" data-toggle="modal" data-target="#exampleModal">
-                <span>
-                    Сделать свой выбор
-                </span>
-            </button>
+            @php $textLink = basename($_SERVER['REQUEST_URI']) @endphp
+            <a role="button" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="border-radius: 20px;" href="{{ route('orders.client.choose', $textLink) }}" target="_blank">
+                <span>Сделать свой выбор</span>
+            </a>
         </div>
     </div>
 
@@ -366,291 +365,291 @@
 </div>
 
 
-<div class="modal fade" onblur="setName();setSurname();" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{{--<div class="modal fade" onblur="setName();setSurname();" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
 
-    <div class="container-fluid">
+{{--    <div class="container-fluid">--}}
 
-        <button type="button" class="text-white align-self-center Back-Lg-btn d-none d-sm-none d-md-none d-lg-block modal-back">
-            <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-        </button>
+{{--        <button type="button" class="text-white align-self-center Back-Lg-btn d-none d-sm-none d-md-none d-lg-block modal-back">--}}
+{{--            <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>--}}
+{{--        </button>--}}
 
-        <div class="modal-dialog" role="document">
-            <div class="modal-content Custom-modal">
+{{--        <div class="modal-dialog" role="document">--}}
+{{--            <div class="modal-content Custom-modal">--}}
 
-                <div id="choiceDone" class="container-fluid flex-center" style="display: none;">
-                    <div class="row d-flex">
-                        <div class="col-12 text-center">
-                            <i class="fa fa-check-circle" style="font-size: 5em; color: #82c91e;" aria-hidden="true"></i>
-                        </div>
-                        <div class="col-12 text-center">
-                            <p class="Probabo-inquit-sic-a">Изображения выбраны, перейдите к следующему этапу</p>
-                        </div>
-                    </div>
-                </div>
+{{--                <div id="choiceDone" class="container-fluid flex-center" style="display: none;">--}}
+{{--                    <div class="row d-flex">--}}
+{{--                        <div class="col-12 text-center">--}}
+{{--                            <i class="fa fa-check-circle" style="font-size: 5em; color: #82c91e;" aria-hidden="true"></i>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-12 text-center">--}}
+{{--                            <p class="Probabo-inquit-sic-a">Изображения выбраны, перейдите к следующему этапу</p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
-                @php $textLink = basename($_SERVER['REQUEST_URI']) @endphp
-                <form id="inputFormContent" method="POST" action="{{ route('orders.client.store') }}" autocomplete="off">
-                            @csrf
+{{--                @php $textLink = basename($_SERVER['REQUEST_URI']) @endphp--}}
+{{--                <form id="inputFormContent" method="POST" action="{{ route('orders.client.store') }}" autocomplete="off">--}}
+{{--                            @csrf--}}
 
-                            <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">
+{{--                            <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">--}}
 
-                            <!-- modal header!-->
-                            <div class="modal-header py-1 justify-content-center container-fluid">
-                                <div class="col-11 text-center justify-content-center">
+{{--                            <!-- modal header!-->--}}
+{{--                            <div class="modal-header py-1 justify-content-center container-fluid">--}}
+{{--                                <div class="col-11 text-center justify-content-center">--}}
 
-                                    <div class="alert alert-success w-100 d-none">
-                                        <h4 class="text-center font-weight-bold">
-                                            Фотографии выбраны - можете продолжить
-                                        </h4>
-                                    </div>
+{{--                                    <div class="alert alert-success w-100 d-none">--}}
+{{--                                        <h4 class="text-center font-weight-bold">--}}
+{{--                                            Фотографии выбраны - можете продолжить--}}
+{{--                                        </h4>--}}
+{{--                                    </div>--}}
 
-                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+{{--                                    <ul class="nav nav-tabs" id="myTab" role="tablist">--}}
 
-                                        <li class="nav-item w-100 alert alert-info">
-                                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
-                                                <h4 class="text-center font-weight-bold">
-                                                    Введите имя и фамилию
-                                                </h4>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item w-100 alert alert-info" style="display: none">
-                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
-                                                <h4 class="text-center font-weight-bold">
-                                                    Выберите главное портретное фото
-                                                </h4>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item w-100 alert alert-info" style="display: none">
-                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">
-                                                <h4 class="text-center font-weight-bold" style="font-size: 20px;">
-                                                    Выберите {{ $order->portraits_count }} дополнительных портретных фото
-                                                </h4>
-                                            </a>
-                                        </li>
+{{--                                        <li class="nav-item w-100 alert alert-info">--}}
+{{--                                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">--}}
+{{--                                                <h4 class="text-center font-weight-bold">--}}
+{{--                                                    Введите имя и фамилию--}}
+{{--                                                </h4>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                        <li class="nav-item w-100 alert alert-info" style="display: none">--}}
+{{--                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">--}}
+{{--                                                <h4 class="text-center font-weight-bold">--}}
+{{--                                                    Выберите главное портретное фото--}}
+{{--                                                </h4>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                        <li class="nav-item w-100 alert alert-info" style="display: none">--}}
+{{--                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">--}}
+{{--                                                <h4 class="text-center font-weight-bold" style="font-size: 20px;">--}}
+{{--                                                    Выберите {{ $order->portraits_count }} дополнительных портретных фото--}}
+{{--                                                </h4>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
 
-                                        <li class="nav-item w-100 alert alert-info" style="display: none">
-                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#next" role="tab" aria-controls="contact" aria-selected="false">
-                                                <h4 class="text-center font-weight-bold">
-                                                    Выберите {{$order->photo_common}} фотографий в общий альбом
-                                                </h4>
-                                            </a>
-                                        </li>
+{{--                                        <li class="nav-item w-100 alert alert-info" style="display: none">--}}
+{{--                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#next" role="tab" aria-controls="contact" aria-selected="false">--}}
+{{--                                                <h4 class="text-center font-weight-bold">--}}
+{{--                                                    Выберите {{$order->photo_common}} фотографий в общий альбом--}}
+{{--                                                </h4>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
 
-                                        <li class="nav-item w-100 alert alert-info" style="display: none">
-                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#designs" role="tab" aria-controls="contact" aria-selected="false">
-                                                <h4 class="text-center font-weight-bold">
-                                                    Выберите понравившейся дизайн
-                                                </h4>
-                                            </a>
-                                        </li>
+{{--                                        <li class="nav-item w-100 alert alert-info" style="display: none">--}}
+{{--                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#designs" role="tab" aria-controls="contact" aria-selected="false">--}}
+{{--                                                <h4 class="text-center font-weight-bold">--}}
+{{--                                                    Выберите понравившейся дизайн--}}
+{{--                                                </h4>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
 
-                                        <li class="nav-item w-100 alert alert-info" style="display: none">
-                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#upload" role="tab" aria-controls="contact" aria-selected="false">
-                                                <h4 class="text-center font-weight-bold">
-                                                    Загрузить фотографии?
-                                                </h4>
-                                            </a>
-                                        </li>
+{{--                                        <li class="nav-item w-100 alert alert-info" style="display: none">--}}
+{{--                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#upload" role="tab" aria-controls="contact" aria-selected="false">--}}
+{{--                                                <h4 class="text-center font-weight-bold">--}}
+{{--                                                    Загрузить фотографии?--}}
+{{--                                                </h4>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
 
-                                        <li class="nav-item w-100 alert alert-info" style="display: none">
-                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#quastion" role="tab" aria-controls="contact" aria-selected="false">
-                                                <h4 class="text-center font-weight-bold">
-                                                    Ответьте на вопросы анкеты
-                                                </h4>
-                                            </a>
-                                        </li>
+{{--                                        <li class="nav-item w-100 alert alert-info" style="display: none">--}}
+{{--                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#quastion" role="tab" aria-controls="contact" aria-selected="false">--}}
+{{--                                                <h4 class="text-center font-weight-bold">--}}
+{{--                                                    Ответьте на вопросы анкеты--}}
+{{--                                                </h4>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
 
-                                        <li class="nav-item w-100 alert alert-info" style="display: none">
-                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#final" role="tab" aria-controls="contact" aria-selected="false">
-                                                <h4 class="text-center font-weight-bold">
-                                                    Сохранить выбор
-                                                </h4>
-                                            </a>
-                                        </li>
-                                    </ul>
+{{--                                        <li class="nav-item w-100 alert alert-info" style="display: none">--}}
+{{--                                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#final" role="tab" aria-controls="contact" aria-selected="false">--}}
+{{--                                                <h4 class="text-center font-weight-bold">--}}
+{{--                                                    Сохранить выбор--}}
+{{--                                                </h4>--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    </ul>--}}
 
-                                    {{--     отображается если выбрано достаточное количество фотографий в разделе--}}
-                                    <div class="alert d-none">
-                                        <div class="alert-success" id="">
-                                            <h3 class="text-center"> Можете переходить к следующему выбору</h3>
-                                        </div>
-                                    </div>
-                                </div>
+{{--                                    --}}{{--     отображается если выбрано достаточное количество фотографий в разделе--}}
+{{--                                    <div class="alert d-none">--}}
+{{--                                        <div class="alert-success" id="">--}}
+{{--                                            <h3 class="text-center"> Можете переходить к следующему выбору</h3>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="col-1 text-center d-flex flex-center align-self-center">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <i class="fa fa-window-close" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- modal body!-->
-                            <div class="modal-body">
-                                <div class="tab-content" id="myTabContent">
+{{--                                <div class="col-1 text-center d-flex flex-center align-self-center">--}}
+{{--                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
+{{--                                        <i class="fa fa-window-close" aria-hidden="true"></i>--}}
+{{--                                    </button>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <!-- modal body!-->--}}
+{{--                            <div class="modal-body">--}}
+{{--                                <div class="tab-content" id="myTabContent">--}}
 
-                                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                            <div class="form-group name-input">
-                                                <input type="text" onchange="tmpName=this.value" name="userName" placeholder="Имя" class="form-control" id="recipient-name">
-                                            </div>
+{{--                                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">--}}
+{{--                                            <div class="form-group name-input">--}}
+{{--                                                <input type="text" onchange="tmpName=this.value" name="userName" placeholder="Имя" class="form-control" id="recipient-name">--}}
+{{--                                            </div>--}}
 
-                                            <div class="form-group name-input">
-                                                <input placeholder="Фамилия" onchange="tmpSurname=this.value" name="userSurname" class="form-control" id="recipient-surname">
-                                            </div>
+{{--                                            <div class="form-group name-input">--}}
+{{--                                                <input placeholder="Фамилия" onchange="tmpSurname=this.value" name="userSurname" class="form-control" id="recipient-surname">--}}
+{{--                                            </div>--}}
 
-                                            <div class="alert alert-danger">
-                                                <h4 class="text-center font-weight-bold">
-                                                    Внимание!<br>
-                                                    Вводите имя точно так, как оно будет записано в альбом.
-                                                    Буквы Е/Ё имеют разницу, не допускайте ошибок в написании имени и фамилии.
-                                                </h4>
+{{--                                            <div class="alert alert-danger">--}}
+{{--                                                <h4 class="text-center font-weight-bold">--}}
+{{--                                                    Внимание!<br>--}}
+{{--                                                    Вводите имя точно так, как оно будет записано в альбом.--}}
+{{--                                                    Буквы Е/Ё имеют разницу, не допускайте ошибок в написании имени и фамилии.--}}
+{{--                                                </h4>--}}
 
-                                                <p class="text-center">
-                                                    <u>Перепроверьте корректность имени и фамилии перед продолжением</u>
-                                                </p>
-                                            </div>
-                                        </div>
+{{--                                                <p class="text-center">--}}
+{{--                                                    <u>Перепроверьте корректность имени и фамилии перед продолжением</u>--}}
+{{--                                                </p>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
-                                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+{{--                                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">--}}
 
-                                            <div class="container-fluid">
-                                                <div class="row">
-                                                    @for($i=0; $i<10;$i++)
-                                                        <div class="col-6 nopad">
-                                                            <label class="image-checkbox">
-                                                                <img data-name="{{ $names[0] }}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                                                <input type="checkbox" name="{{$names[0] }}[{{$i}}]">
-                                                                <i class="fa fa-check d-none"></i>
-                                                            </label>
-                                                        </div>
-                                                    @endfor
-                                                </div>
-                                            </div>
-                                        </div>
+{{--                                            <div class="container-fluid">--}}
+{{--                                                <div class="row">--}}
+{{--                                                    @for($i=0; $i<10;$i++)--}}
+{{--                                                        <div class="col-6 nopad">--}}
+{{--                                                            <label class="image-checkbox">--}}
+{{--                                                                <img data-name="{{ $names[0] }}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">--}}
+{{--                                                                <input type="checkbox" name="{{$names[0] }}[{{$i}}]">--}}
+{{--                                                                <i class="fa fa-check d-none"></i>--}}
+{{--                                                            </label>--}}
+{{--                                                        </div>--}}
+{{--                                                    @endfor--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
-                                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+{{--                                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">--}}
 
-                                            <div class="container-fluid">
-                                                <div class="row">
+{{--                                            <div class="container-fluid">--}}
+{{--                                                <div class="row">--}}
 
-                                                    @for($i=0; $i<10;$i++)
+{{--                                                    @for($i=0; $i<10;$i++)--}}
 
-                                                        <div class="col-6 nopad">
-                                                            <label class="image-checkbox">
-                                                                <img data-name="{{$names[1]}}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                                                <input type="checkbox" name="{{$names[1]}}[{{$i}}]" value="" />
-                                                                <i class="fa fa-check d-none"></i>
-                                                            </label>
-                                                        </div>
+{{--                                                        <div class="col-6 nopad">--}}
+{{--                                                            <label class="image-checkbox">--}}
+{{--                                                                <img data-name="{{$names[1]}}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">--}}
+{{--                                                                <input type="checkbox" name="{{$names[1]}}[{{$i}}]" value="" />--}}
+{{--                                                                <i class="fa fa-check d-none"></i>--}}
+{{--                                                            </label>--}}
+{{--                                                        </div>--}}
 
-                                                    @endfor
+{{--                                                    @endfor--}}
 
-                                                </div>
-                                            </div>
+{{--                                                </div>--}}
+{{--                                            </div>--}}
 
-                                        </div>
+{{--                                        </div>--}}
 
-                                        <div class="tab-pane fade" id="next" role="tabpanel" aria-labelledby="profile-tab">
+{{--                                        <div class="tab-pane fade" id="next" role="tabpanel" aria-labelledby="profile-tab">--}}
 
-                                            <div class="container-fluid">
-                                                <div class="row">
+{{--                                            <div class="container-fluid">--}}
+{{--                                                <div class="row">--}}
 
-                                                    @for($i=0; $i<10;$i++)
-                                                        <div class="col-6 nopad">
-                                                            <label class="image-checkbox">
-                                                                <img data-name="{{$names[2]}}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                                                <input type="checkbox" name="{{$names[2]}}[{{$i}}]" value="" />
-                                                                <i class="fa fa-check d-none"></i>
-                                                            </label>
-                                                        </div>
+{{--                                                    @for($i=0; $i<10;$i++)--}}
+{{--                                                        <div class="col-6 nopad">--}}
+{{--                                                            <label class="image-checkbox">--}}
+{{--                                                                <img data-name="{{$names[2]}}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">--}}
+{{--                                                                <input type="checkbox" name="{{$names[2]}}[{{$i}}]" value="" />--}}
+{{--                                                                <i class="fa fa-check d-none"></i>--}}
+{{--                                                            </label>--}}
+{{--                                                        </div>--}}
 
-                                                    @endfor
+{{--                                                    @endfor--}}
 
-                                                </div>
-                                            </div>
-                                        </div>
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
-                                        <div class="tab-pane fade" id="designs" role="tabpanel" aria-labelledby="profile-tab">
-                                            <div class="container-fluid">
-                                                <div class="row">
+{{--                                        <div class="tab-pane fade" id="designs" role="tabpanel" aria-labelledby="profile-tab">--}}
+{{--                                            <div class="container-fluid">--}}
+{{--                                                <div class="row">--}}
 
-                                                    @for($i=0; $i<10;$i++)
+{{--                                                    @for($i=0; $i<10;$i++)--}}
 
-                                                        <div class="col-6 nopad">
-                                                            <label class="image-checkbox">
-                                                                <img data-name="{{$names[3]}}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                                                <input type="checkbox" name="{{$names[3]}}[{{$i}}]" value="" />
-                                                                <i class="fa fa-check d-none"></i>
-                                                            </label>
-                                                        </div>
+{{--                                                        <div class="col-6 nopad">--}}
+{{--                                                            <label class="image-checkbox">--}}
+{{--                                                                <img data-name="{{$names[3]}}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">--}}
+{{--                                                                <input type="checkbox" name="{{$names[3]}}[{{$i}}]" value="" />--}}
+{{--                                                                <i class="fa fa-check d-none"></i>--}}
+{{--                                                            </label>--}}
+{{--                                                        </div>--}}
 
-                                                    @endfor
+{{--                                                    @endfor--}}
 
-                                                </div>
-                                            </div>
-                                        </div>
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
-                                        <div class="tab-pane fade flex-center" id="upload" role="tabpanel" aria-labelledby="profile-tab">
+{{--                                        <div class="tab-pane fade flex-center" id="upload" role="tabpanel" aria-labelledby="profile-tab">--}}
 
-                                            <div>
-                                                <div class="custom-file px-5">
-                                                    <input type="file" name="userFiles[]" accept="image/jpeg,image/png" multiple class="custom-file-input" id="files" lang="ru">
-                                                    <label for="customFileLang" class="custom-file-label">Загрузить фотографии</label>
-                                                </div>
-                                                <p class="Probabo-inquit-sic-a py-5"><u>Если файлы загружать не нужно - пропустите данный этап</u></p>
-                                            </div>
-                                        </div>
+{{--                                            <div>--}}
+{{--                                                <div class="custom-file px-5">--}}
+{{--                                                    <input type="file" name="userFiles[]" accept="image/jpeg,image/png" multiple class="custom-file-input" id="files" lang="ru">--}}
+{{--                                                    <label for="customFileLang" class="custom-file-label">Загрузить фотографии</label>--}}
+{{--                                                </div>--}}
+{{--                                                <p class="Probabo-inquit-sic-a py-5"><u>Если файлы загружать не нужно - пропустите данный этап</u></p>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
-                                        <div class="tab-pane fade flex-center" id="quastion" role="tabpanel" aria-labelledby="profile-tab">
-                                            <div>
-                                                <div class="text-area">
-                                                    <p class="modal-text px-3 py-2">{{ 'php comment output' }}</p>
-                                                </div>
+{{--                                        <div class="tab-pane fade flex-center" id="quastion" role="tabpanel" aria-labelledby="profile-tab">--}}
+{{--                                            <div>--}}
+{{--                                                <div class="text-area">--}}
+{{--                                                    <p class="modal-text px-3 py-2">{{ 'php comment output' }}</p>--}}
+{{--                                                </div>--}}
 
-                                                <div class="form-group">
-                                                    <label for="comment">Ответ:</label>
-                                                    <textarea name="userQuestionsAnswer" class="form-control" rows="5" id="comment"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
+{{--                                                <div class="form-group">--}}
+{{--                                                    <label for="comment">Ответ:</label>--}}
+{{--                                                    <textarea name="userQuestionsAnswer" class="form-control" rows="5" id="comment"></textarea>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
 
-                                        <div class="tab-pane fade flex-center" id="final" role="tabpanel" aria-labelledby="profile-tab">
-                                        <div class="flex-center">
-                                            <button type="submit" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="width: 50%;"><span>Подтвердить свой выбор</span></button>
-                                        </div>
-                                    </div>
-                                    </div>
-                            </div>
-                        </form>
+{{--                                        <div class="tab-pane fade flex-center" id="final" role="tabpanel" aria-labelledby="profile-tab">--}}
+{{--                                        <div class="flex-center">--}}
+{{--                                            <button type="submit" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="width: 50%;"><span>Подтвердить свой выбор</span></button>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    </div>--}}
+{{--                            </div>--}}
+{{--                        </form>--}}
 
-                    <!-- modal footer-->
-                    <div class="modal-footer w-100 d-lg-none py-5">
-                        <div class="col-4">
-                            <button type="button" class="btn Yellow-btn text-white modal-back">
-                                <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-                            </button>
-                        </div>
+{{--                    <!-- modal footer-->--}}
+{{--                    <div class="modal-footer w-100 d-lg-none py-5">--}}
+{{--                        <div class="col-4">--}}
+{{--                            <button type="button" class="btn Yellow-btn text-white modal-back">--}}
+{{--                                <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>--}}
+{{--                            </button>--}}
+{{--                        </div>--}}
 
-                        <div class="col-4">
-                        </div>
+{{--                        <div class="col-4">--}}
+{{--                        </div>--}}
 
-                        <div class="col-4">
-                            <button type="button" class="btn Yellow-btn text-white modal-next">
-                                <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                            </button>
-                        </div>
+{{--                        <div class="col-4">--}}
+{{--                            <button type="button" class="btn Yellow-btn text-white modal-next">--}}
+{{--                                <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>--}}
+{{--                            </button>--}}
+{{--                        </div>--}}
 
-                    </div>
+{{--                    </div>--}}
 
-            </div>
-        </div>
+{{--            </div>--}}
+{{--        </div>--}}
 
 
-        <button type="button" class="text-white align-self-center Next-Lg-btn d-sm-none d-none d-md-none d-lg-block modal-next">
-            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-        </button>
+{{--        <button type="button" class="text-white align-self-center Next-Lg-btn d-sm-none d-none d-md-none d-lg-block modal-next">--}}
+{{--            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>--}}
+{{--        </button>--}}
 
-    </div>
+{{--    </div>--}}
 
-</div>
+{{--</div>--}}
 
 
 

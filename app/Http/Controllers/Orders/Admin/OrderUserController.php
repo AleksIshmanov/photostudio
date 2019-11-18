@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Orders\Admin;
 
 use App\Http\Requests\storeOrderuserRequest;
+use App\Jobs\TransferYandexToS3;
 use App\Models\Order;
 use App\Models\OrderUser;
 use Illuminate\Http\Request;
@@ -54,9 +55,9 @@ class OrderUserController extends Controller
         if ($orderUser->save()){
             return redirect()->back()->with(['success'=>true]);
         }
-//        else {
-//            return back()->withErrors(['msg'=>'Ошибка сохранения'])->withInput();
-//        }
+        else {
+            return back()->withErrors(['msg'=>'Ошибка сохранения'])->withInput();
+        }
 
     }
 

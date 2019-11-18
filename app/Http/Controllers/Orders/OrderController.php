@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Orders;
 
+use App\Http\Requests\storeNewOrderRequest;
+use App\Jobs\TransferYandexToS3;
 use App\Models\OrderUserAnswer;
 use App\Models\Order;
 use App\Models\OrderUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends BaseController
 {
@@ -38,7 +41,7 @@ class OrderController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storeNewOrderRequest $request)
     {
         $order = new Order;
 
@@ -53,6 +56,8 @@ class OrderController extends BaseController
         $order->confirm_key = substr(md5(time()), 0, 3).mt_rand(1000, 9999) ;
         $order->link_secret =  substr(md5(time()), 0, 5).mt_rand(100, 999);
 
+        $order->photos_dir_name = $request->input('dirName');
+
         $questionnaire = $request->input('questionnaire');
         if ( null != $questionnaire){
             $form = new OrderUserAnswer;
@@ -60,13 +65,43 @@ class OrderController extends BaseController
             $form->save();
         }
 
-        if ($order->save()){
-            return redirect()->route('orders.admin.order.index');
-        }
-        else {
-            return back()->withErrors()->withInput();
-        }
+        try{
+            TransferYandexToS3::dispatch( $request->input('dirName') )->delay(now()->addMinutes(5));
+            if ($order->save()){
+                return redirect()->route('orders.admin.order.index');
+            }
+            else {
+                return redirect()->back()->withErrors()->withInput();
+            }
 
+        }
+        catch (\Arhitector\Yandex\Client\Exception\UnauthorizedException $e){
+            Log::error("Яндекс диск: ".$e->getMessage());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(
+                    [ 'Ошибка доступа к диску: '. $e->getMessage()]
+                );
+        }
+        catch ( \Arhitector\Yandex\Client\Exception\NotFoundException $e) {
+            Log::error("Яндекс диск: ".$e->getMessage());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(
+                    [$e->getMessage()]
+                );
+        }
+        catch (\Exception $e ) {
+            Log::error('Storage exception: ' . $e->getMessage());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(
+                    [$e->getMessage()]
+                );
+        }
     }
 
     /**
@@ -148,6 +183,10 @@ class OrderController extends BaseController
     }
 
 
+    /**
+     * @param $textLink
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function choose($textLink){
         $photo = new PhotoController();
         $portraitsPhoto = $photo->getPortraitsPhotos($textLink, 20);
