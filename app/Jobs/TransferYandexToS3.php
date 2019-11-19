@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 
-
+ini_set('memory_limit', '500M');
 class TransferYandexToS3 implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -44,7 +44,7 @@ class TransferYandexToS3 implements ShouldQueue
                 break;
         }
 
-        dd($test);
+        //dd($test);
         //Выполнится только если проверки все проверки корректны
         $this->photosDirectoryPath = $dirName;
     }
@@ -67,7 +67,6 @@ class TransferYandexToS3 implements ShouldQueue
 //            dd($test->has(), $dirName,  $diskClient->getResource($dirName) );
         }
         catch (\Arhitector\Yandex\Client\Exception\NotFoundException $e) {
-            dd(2);
             return 0;
         }
         catch (\Arhitector\Yandex\Client\Exception\UnauthorizedException $e){
@@ -108,13 +107,15 @@ class TransferYandexToS3 implements ShouldQueue
         foreach ($dir->items as $photo){
 
             if($photo->isFile()){
-                $localFilePath = $this->optimizeImage($photo->name, $photo);
+                $optimizedPhotoPath = $this->optimizeImage($photo->name, $photo);
                 $path = str_replace('disk:/', '', $photo->path);
 
-                if($storageS3Client->put($path, $localFilePath)){
-                    Storage::disk('local')->delete($localFilePath);
+                if($storageS3Client->put($path, file_get_contents($optimizedPhotoPath))){
                     Log::info('Загрузка из Yandex в S3 хранилище выполнена, файл: '. $path);
                     $count+=1;
+
+                    //удаляем обработанное фото
+                    Storage::disk('local')->delete($optimizedPhotoPath);
                 }
                 else {
                     Log::warning('Ошибки при загрузке файлов в хранилище, файл:'. $path);
@@ -129,9 +130,9 @@ class TransferYandexToS3 implements ShouldQueue
     }
 
     public function optimizeImage($imgName, $photo){
-        $basic = (string) 'public/transfer';
-        $pathBefore = $basic.'/before';
-        $pathAfter = $basic.'/after';
+        $basic = (string) 'public/transfer/';
+        $pathBefore = $basic.'before/';
+        $pathAfter = $basic.'after/';
 
         if(!Storage::exists($basic) || !Storage::exists($pathBefore) || !Storage::exists($pathAfter) ){
             Storage::makeDirectory($basic);
@@ -140,8 +141,8 @@ class TransferYandexToS3 implements ShouldQueue
         }
 
         // при загрузке через ЯНдекс Диск нужен абсолютный путь
-        $absPathBefore = storage_path().'/app/'. $pathBefore. '/';
-        $absPathAfter = storage_path().'/app/'. $pathAfter. '/';
+        $absPathBefore = storage_path().'/app/'. $pathBefore;
+        $absPathAfter = storage_path().'/app/'. $pathAfter;
 
         $photo->download($absPathBefore.$imgName, true);
         $img = Image::make($absPathBefore.$imgName);
@@ -158,9 +159,8 @@ class TransferYandexToS3 implements ShouldQueue
         $this->compress_image($absPathBefore, $imgName);
         $img->save($absPathAfter.$imgName);
 
-        //удаляем лишнее с сервера
+        //удаляем старое фото (новое удалим после отправки на S3 серве)
         Storage::disk('local')->delete($pathBefore.$imgName);
-        Storage::disk('local')->delete($pathAfter.$imgName);
 
         return (string) $absPathAfter.$imgName;
     }

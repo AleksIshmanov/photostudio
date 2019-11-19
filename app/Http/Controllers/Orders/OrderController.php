@@ -9,6 +9,8 @@ use App\Models\Order;
 use App\Models\OrderUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class OrderController extends BaseController
 {
@@ -67,6 +69,7 @@ class OrderController extends BaseController
 
         try{
             TransferYandexToS3::dispatch( $request->input('dirName') )->delay(now()->addMinutes(5));
+
             if ($order->save()){
                 return redirect()->route('orders.admin.order.index');
             }
@@ -103,6 +106,7 @@ class OrderController extends BaseController
                 );
         }
     }
+
 
     /**
      * Display the order for client
@@ -190,7 +194,7 @@ class OrderController extends BaseController
     public function choose($textLink){
         $photo = new PhotoController();
         $portraitsPhoto = $photo->getPortraitsPhotos($textLink, 20);
-//        $groupsPhoto = $photo->getGroupsPhotos($textLink, 20);
+        $groupsPhoto = $photo->getGroupsPhotos($textLink, 20);
         $order = Order::where('link_secret', '=', $textLink)->first();
 
         $portraitsPhoto = json_decode($portraitsPhoto->getContent(), true)['data'];

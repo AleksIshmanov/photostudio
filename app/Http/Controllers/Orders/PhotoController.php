@@ -5,23 +5,28 @@ use App\Models\Order;
 use App\Services\YandexDiskTransferService;
 use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Facades\Storage;
 use Yandex\Disk\DiskClient;
 
 
 class PhotoController extends BaseController
 {
     public function getPortraitsPhotos($orderTextLink, $count){
-        $disk = new \Arhitector\Yandex\Disk( env('YANDEX_OAUTH') );
+        $storageClient = Storage::disk('yadisk');
+        $orderDirName = (string) $this->getOrderDirName($orderTextLink).'/ПОРТРЕТЫ';
 
-        $orderDirName = (string) $this->getOrderDirName($orderTextLink);
-        $portraitPhotos = $disk->getResource($orderDirName.'/ПОРТРЕТЫ');
-        $linksArray = $this->getFileLinks($portraitPhotos, $orderTextLink, $count);
+        $linksArray = $this->getFileLinks($storageClient, $orderDirName, $count);
 
         return  $this->sendResponse($linksArray);
     }
 
     public function getGroupsPhotos($orderTextLink, $count){
+        $storageClient = Storage::disk('yadisk');
+        $orderDirName = (string) $this->getOrderDirName($orderTextLink).'/ОБЩИЕ';
 
+        $linksArray = $this->getFileLinks($storageClient, $orderDirName, $count);
+
+        return  $this->sendResponse($linksArray);
     }
 
     /**
@@ -32,43 +37,16 @@ class PhotoController extends BaseController
         return Order::where('link_secret', '=', $textLink)->first()->photos_dir_name;
     }
 
-    /**
-     * @param $photos
-     * @param $orderTextLink
-     * @param $count
-     * @return array
-     */
-    public function getFileLinks($photos, $orderTextLink, $count){
-        $dirName =  $this->getOrderDirName($orderTextLink);
-        $portaitsLinks = array();
 
-        if($this->isExists($photos, $orderTextLink)){
-            foreach ($photos->items as $photo){
-                if($photo->isFile() and $count>0){
-                    $photo->setPublish(true);
+    public function getFileLinks($storageClient, $orderDirName, $count){
+        $links = array();
+        $files = $storageClient->allFiles($orderDirName);
 
-                    $link = $photo->public_url;
-                    $curl = curl_init($link); //расшаренная ссылка на картинку
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                    $result = curl_exec($curl);
-                    preg_match('#<meta property="og:image" content="(.*?)">#si', $result, $matches);
-                    $link = str_replace('amp;', '', $matches[1]);
-                    $link = str_replace('&crop=1', '', $link);
-                    $link = str_replace('&logo=1', '', $link);
-
-                    array_push($portaitsLinks, $link);
-                    $count--;
-                }
-                else{
-                    Log::info('Обнаружена папка внутри '. $dirName.'/Портреты' .', заказ '.$orderTextLink);
-                }
-            }
-        }
-        else{
-            Log::critical("Папка ". $dirName . " не обнаружена ".$orderTextLink);
+        foreach ($files as $photo){
+            array_push($links, $storageClient->url($photo));
         }
 
-        return $portaitsLinks;
+        return $links;
     }
 
     /**
