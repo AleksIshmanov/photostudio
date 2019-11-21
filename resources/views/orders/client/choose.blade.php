@@ -97,15 +97,17 @@
         <div class="tab-pane fade" id="pills-portraits" role="tabpanel" aria-labelledby="pills-portraits-tab">
             <div class="container-fluid">
                 <div class="row">
-                    @for($i=0; $i<10;$i++)
-                        <div class="col-6 col-lg-3 nopad">
-                            <label class="image-checkbox">
-                                <img data-name="{{ $names[0] }}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                <input type="checkbox" name="{{$names[0] }}[{{$i}}]">
+                    @php $i=0 @endphp
+                    @foreach ($portraitsPhoto as $link)
+                        <div class="col-6 col-lg-2 nopad text-center">
+                            <label class="image-checkbox ">
+                                <img data-name="{{$names[2]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+                                <input type="checkbox" name="{{$names[2]}}[{{$i}}]" value="" />
                                 <i class="fa fa-check d-none"></i>
                             </label>
                         </div>
-                    @endfor
+                        @php $i++ @endphp
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -115,16 +117,16 @@
             <div class="container-fluid">
                 <div class="row">
 
-{{--                    @php var_dump($portraitsPhoto)@endphp--}}
-                    @foreach ($portraitsPhoto as $link)
-                        <div class="col-6 col-lg-3 nopad">
-                            <label class="image-checkbox">
+                    @php $i=0 @endphp
+                    @foreach ($groupsPhoto as $link)
+                        <div class="col-6 col-lg-2 nopad text-center">
+                            <label class="image-checkbox ">
                                 <img data-name="{{$names[2]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
                                 <input type="checkbox" name="{{$names[2]}}[{{$i}}]" value="" />
                                 <i class="fa fa-check d-none"></i>
                             </label>
                         </div>
-
+                        @php $i++ @endphp
                     @endforeach
 
                 </div>
@@ -135,17 +137,9 @@
             <div class="container-fluid">
                 <div class="row">
 
-                    @for($i=0; $i<10;$i++)
-
-                        <div  class="col-6 col-lg-3 nopad">
-                            <label class="image-checkbox">
-                                <img data-name="{{$names[3]}}" src="{{ asset('storage/img/img.jpg') }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                <input type="checkbox" name="{{$names[3]}}[{{$i}}]" value="" />
-                                <i class="fa fa-check d-none"></i>
-                            </label>
-                        </div>
-
-                    @endfor
+                    <div>
+                        <h3>Дизайны</h3>
+                    </div>
 
                 </div>
             </div>

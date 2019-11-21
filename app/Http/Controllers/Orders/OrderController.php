@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Orders;
 
 use App\Http\Requests\storeNewOrderRequest;
-use App\Jobs\TransferYandexToS3;
+use App\Jobs\TransferFullDirectoryToS3;
 use App\Models\OrderUserAnswer;
 use App\Models\Order;
 use App\Models\OrderUser;
@@ -58,8 +58,6 @@ class OrderController extends BaseController
         $order->confirm_key = substr(md5(time()), 0, 3).mt_rand(1000, 9999) ;
         $order->link_secret =  substr(md5(time()), 0, 5).mt_rand(100, 999);
 
-        $order->photos_dir_name = $request->input('dirName');
-
         $questionnaire = $request->input('questionnaire');
         if ( null != $questionnaire){
             $form = new OrderUserAnswer;
@@ -67,8 +65,11 @@ class OrderController extends BaseController
             $form->save();
         }
 
+        $dirName = env('YANDEX_START_DIR') . '/'. $request->input('dirName');
+        $order->photos_dir_name = $dirName;
+
         try{
-            TransferYandexToS3::dispatch( $request->input('dirName') )->delay(now()->addMinutes(5));
+            TransferFullDirectoryToS3::dispatch(  $dirName )->onQueue('1_priority');
 
             if ($order->save()){
                 return redirect()->route('orders.admin.order.index');
@@ -102,9 +103,10 @@ class OrderController extends BaseController
                 ->back()
                 ->withInput()
                 ->withErrors(
-                    [$e->getMessage()]
+                    [$e->getMessage(), $e->getTraceAsString()]
                 );
         }
+
     }
 
 
@@ -198,7 +200,7 @@ class OrderController extends BaseController
         $order = Order::where('link_secret', '=', $textLink)->first();
 
         $portraitsPhoto = json_decode($portraitsPhoto->getContent(), true)['data'];
-//        $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
+        $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
 
         return view('orders.client.choose', compact('portraitsPhoto', 'groupsPhoto', 'order'));
     }

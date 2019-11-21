@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Orders\Admin;
 
 use App\Http\Requests\storeOrderuserRequest;
-use App\Jobs\TransferYandexToS3;
+use App\Jobs\TransferFullDirectoryToS3;
 use App\Models\Order;
 use App\Models\OrderUser;
 use Illuminate\Http\Request;
