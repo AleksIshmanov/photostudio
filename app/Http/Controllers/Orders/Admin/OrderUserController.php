@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Orders\Admin;
 
-use App\Http\Requests\storeOrderuserRequest;
-use App\Jobs\TransferFullDirectoryToS3;
+use App\Http\Requests\storeNewOrderRequest;
 use App\Models\Order;
 use App\Models\OrderUser;
 use Illuminate\Http\Request;
@@ -37,11 +36,10 @@ class OrderUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(storeOrderuserRequest $request)
+    public function store(storeNewOrderRequest $request)
     {
 
         $orderUser = new OrderUser();
-
 
         $orderUser->name = $request->input('userName') .' '. $request->input('userSurname');
         $orderUser->id_order = $this->getOrderId($request->input('textLink'));

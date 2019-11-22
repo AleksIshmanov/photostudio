@@ -30,7 +30,6 @@ class storeOrderuserRequest extends FormRequest
             'altMainPhotos' => 'required|array',
             'commonPhotos' => 'required|array',
 //            'userQuestionsAnswer' => 'min:10|max:100',
-            'dirPath' => 'required'
         ];
     }
 }

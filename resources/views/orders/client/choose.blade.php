@@ -55,10 +55,21 @@
             Анкета
         </a>
     </li>
+
+    <li class="nav-item">
+        <a class=" nav-link font-weight-bold" id="final-tab" data-toggle="tab" href="#final" role="tab" aria-controls="final" aria-selected="true">
+            Отправить
+        </a>
+    </li>
+
 </ul>
 
 <div class=" py-5">
-    <div class="tab-content">
+    @php $textLink = basename($_SERVER['REQUEST_URI']) @endphp
+    <form class="tab-content" id="inputFormContent" method="POST" action="{{ route('orders.client.store') }}" autocomplete="off">
+        @csrf
+        <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">
+
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
             <div class="row justify-content-center">
                 <div class="form-group name-input col-12 col-lg-7 ">
@@ -145,7 +156,6 @@
             </div>
         </div>
 
-
         <div class="tab-pane fade flex-center" id="anket" role="tabpanel" aria-labelledby="profile-tab">
             <div class="row justify-content-center">
                 <div class="col-md-7 col-12">
@@ -162,7 +172,31 @@
             </div>
         </div>
 
-    </div>
+        <div class="tab-pane fade flex-center" id="final" role="tabpanel" aria-labelledby="profile-tab">
+
+            @if ($errors->any())
+
+                <div class="container" id="errorLog">
+                    <div class="row">
+                            <div class="alert alert-danger col-12">
+                                <h3 class="text-center">При заполнении формы были допущены ошибки: </h3>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li class="Probabo-inquit-sic-a">{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                    </div>
+                </div>
+            @endif
+
+
+            <div class="text-center">
+                <button type="submit" class="btn Yellow-btn coolis text-white w-50 overflow-hidden" style="width: 50%;"><span>Подтвердить свой выбор</span></button>
+            </div>
+        </div>
+
+    </form>
 </div>
 
 
@@ -173,9 +207,13 @@
 
 
 <script>
-    //---------------- image gallery functions----------
+    $(document).ready(function() {
+        openErrorTab();
+    });
 
+        //---------------- image gallery functions----------
     // init the state from the input
+
     $(".image-checkbox").each(function () {
         if ($(this).find('input[type="checkbox"]').first().attr("checked")) {
             $(this).addClass('image-checkbox-checked');
@@ -202,7 +240,7 @@
     //создаем объект, чтобы JS передавал значения переменных по ссылкам
     var names = {
         {{$names[0]}}Count : {{$countsForNames[0]}},
-        {{$names[1]}}Count  : {{$countsForNames[1]}},
+        {{$names[1]}}Count : {{$countsForNames[1]}},
         {{$names[2]}}Count : {{$countsForNames[2]}},
         {{$names[3]}}Count : {{$countsForNames[3]}}
     };
@@ -247,6 +285,14 @@
     function hideChoiceComplete(){
         $("#choiceDone").hide();
         $("#inputFormContent").show();
+    }
+
+    //-----------Error log functions----------------------
+    function openErrorTab() {
+        if( $('#errorLog').length ) {
+            $('.nav-tabs a[href="#final"]').tab('show');
+            console.log(1);
+        }
     }
 </script>
 

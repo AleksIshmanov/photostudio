@@ -193,5 +193,13 @@ return [
         'photosAll' => '"Всего фотографий"',
         'individualPhotosCount' => '"Количество портретов инд. в альбом"',
         'photoAlbumLink' => '"Ссылка на фотосессию"',
+
+        //Отдельные настройки для route(orders.client.choose)
+        'userSurname' => '"Имя"',
+        'userName' => '"Фамилия"',
+        'mainPhoto' => '"главная фотография"',
+        'altMainPhotos' => '"индивидуальные фотографии"',
+        'commonPhotos' => '"общие фотографии"',
+        'userQuestionsAnswer' => '',
     ],
 ];
