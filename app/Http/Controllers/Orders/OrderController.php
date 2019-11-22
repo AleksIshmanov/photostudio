@@ -26,9 +26,11 @@ class OrderController extends BaseController
      */
     public function index()
     {
-        $totalJobsOnTransfer = DB::table('jobs')->count();
+        $jobsTable = DB::table('jobs');
+        $totalJobsOnTransfer = $jobsTable->count();
+        $totalAttempts = $jobsTable->where('attempts', '>', '3')->count();
 
-        return view('orders.admin.order.index', compact('totalJobsOnTransfer'))
+        return view('orders.admin.order.index', compact('totalJobsOnTransfer', 'totalAttempts'))
             ->with(['paginator' => Order::orderBy('updated_at', 'desc')
                 ->paginate(20),
             ]);

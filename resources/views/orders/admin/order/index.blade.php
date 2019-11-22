@@ -3,6 +3,53 @@
 @section('content')
 
 <div class="container-fluid">
+
+    <div class="row justify-content-center py-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-bode table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <th class="text-center w-25" scope="col">Название</th>
+                        <th class="text-center w-5" scope="col">Прогресс</th>
+                        <th class="text-center w-25" scope="col">Состояние</th>
+                        </thead>
+
+                        <tr>
+                            <td class="text-center">Фотографий в обработке</td>
+                            <td class="text-center">
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>{{$totalJobsOnTransfer }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                @if($totalJobsOnTransfer!=0)
+                                    <i class="fa fa-spinner fa-spin" style="color: #3490dc; font-size: 1.5em;"></i>
+                                @else
+                                    <i class="fa fa-check-square" style="color: #38c172; font-size: 1.5em;"></i>
+                                @endif
+
+                                    &nbsp; &nbsp;
+
+                                    {{--                  Если файлы с предупреждениями              --}}
+                                @if($totalAttempts)
+                                    [
+                                        <i class="fa fa-exclamation-triangle" style="color: #f39c12; font-size: 1.5em;" aria-hidden="true"></i>
+                                        {{ $totalAttempts }}
+                                    ]
+                                @endif
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row justify-content-center">
         <div class="col-12">
 

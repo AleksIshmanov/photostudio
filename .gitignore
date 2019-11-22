@@ -30,3 +30,8 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+# PHPSTORM
+*.iml
+.idea
+out
