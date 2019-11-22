@@ -7,10 +7,15 @@ use App\Jobs\TransferFullDirectoryToS3;
 use App\Models\OrderUserAnswer;
 use App\Models\Order;
 use App\Models\OrderUser;
+use Cassandra\Table;
+use http\Exception\InvalidArgumentException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use phpDocumentor\Reflection\Types\Null_;
+use Yandex\DataSync\Responses\DatabaseDeltasResponse;
 
 class OrderController extends BaseController
 {
@@ -21,7 +26,9 @@ class OrderController extends BaseController
      */
     public function index()
     {
-        return view('orders.admin.order.index')
+        $totalJobsOnTransfer = DB::table('jobs')->count();
+
+        return view('orders.admin.order.index', compact('totalJobsOnTransfer'))
             ->with(['paginator' => Order::orderBy('updated_at', 'desc')
                 ->paginate(20),
             ]);
@@ -38,93 +45,6 @@ class OrderController extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(storeNewOrderRequest $request)
-    {
-        $order = new Order;
-
-        //get inputs params from view
-        $order->name = $request->input('taskName');
-        $order->portraits_count = $request->input('individualPhotosCount');
-        $order->photo_common = $request->input('photosAll');
-        $order->photo_individual = $request->input('commonPhotosToCustomer');
-        $order->photos_link = $request->input('photoAlbumLink');
-        $order->designs_count = $request->input('designsCount');
-        $order->comment = $request->input('comment');
-        $order->confirm_key = substr(md5(time()), 0, 3).mt_rand(1000, 9999) ;
-        $order->link_secret =  substr(md5(time()), 0, 5).mt_rand(100, 999);
-
-        $questionnaire = $request->input('questionnaire');
-        if ( null != $questionnaire){
-            $form = new OrderUserAnswer;
-            $form->questions = $questionnaire;
-            $form->save();
-        }
-
-        $dirName = env('YANDEX_START_DIR') . '/'. $request->input('dirName');
-        $order->photos_dir_name = $dirName;
-
-        try{
-            TransferFullDirectoryToS3::dispatch(  $dirName )->onQueue('1_priority');
-
-            if ($order->save()){
-                return redirect()->route('orders.admin.order.index');
-            }
-            else {
-                return redirect()->back()->withErrors()->withInput();
-            }
-
-        }
-        catch (\Arhitector\Yandex\Client\Exception\UnauthorizedException $e){
-            Log::error("Яндекс диск: ".$e->getMessage());
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors(
-                    [ 'Ошибка доступа к диску: '. $e->getMessage()]
-                );
-        }
-        catch ( \Arhitector\Yandex\Client\Exception\NotFoundException $e) {
-            Log::error("Яндекс диск: ".$e->getMessage());
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors(
-                    [$e->getMessage()]
-                );
-        }
-        catch (\Exception $e ) {
-            Log::error('Storage exception: ' . $e->getMessage());
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors(
-                    [$e->getMessage(), $e->getTraceAsString()]
-                );
-        }
-
-    }
-
-
-    /**
-     * Display the order for client
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($text_link)
-    {
-        $order = Order::where('link_secret', '=', $text_link)->get()[0];
-        $users = OrderUser::where('id_order', '=', $order->id)->get();
-
-        return view('orders.client.index', compact('order', 'users'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -138,6 +58,30 @@ class OrderController extends BaseController
 
         return view('orders.admin.order.edit', compact('users', 'choice' ));
     }
+
+        /**
+         * Get all choices and count them
+         *
+         * @param int $order_id
+         * @return array descended sort
+         */
+        private function countVotes($orderId ){
+            $choice = [];
+
+            //декодирование информации
+            $common_photos =  OrderUser::where('id_order', '=', $orderId)->get(['common_photos']);
+            foreach ($common_photos as $person_choice){
+                $person_choice =json_decode($person_choice['common_photos'], true);
+                if (isset($person_choice['nums'])){
+                    foreach ($person_choice['nums'] as $num){
+                        $choice[$num] = isset($choice[$num]) ? $choice[$num]+1 : 1;
+                    }
+                }
+            }
+
+            arsort($choice);
+            return $choice;
+        }
 
     /**
      * Update the specified resource in storage.
@@ -163,29 +107,18 @@ class OrderController extends BaseController
         return redirect()->back();
     }
 
-
     /**
-     * Get all choices and count them
+     * Display the order for client
      *
-     * @param int $order_id
-     * @return array descended sort
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function countVotes($orderId ){
-        $choice = [];
+    public function show($text_link)
+    {
+        $order = Order::where('link_secret', '=', $text_link)->get()[0];
+        $users = OrderUser::where('id_order', '=', $order->id)->get();
 
-        //декодирование информации
-        $common_photos =  OrderUser::where('id_order', '=', $orderId)->get(['common_photos']);
-        foreach ($common_photos as $person_choice){
-            $person_choice =json_decode($person_choice['common_photos'], true);
-            if (isset($person_choice['nums'])){
-                foreach ($person_choice['nums'] as $num){
-                    $choice[$num] = isset($choice[$num]) ? $choice[$num]+1 : 1;
-                }
-            }
-        }
-
-        arsort($choice);
-        return $choice;
+        return view('orders.client.index', compact('order', 'users'));
     }
 
 
@@ -204,5 +137,150 @@ class OrderController extends BaseController
 
         return view('orders.client.choose', compact('portraitsPhoto', 'groupsPhoto', 'order'));
     }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(storeNewOrderRequest $request)
+    {
+        $order = new Order;
+
+        //variable that uses twice and much
+        $orderName = $request->input('taskName');
+        $dirName = env('YANDEX_START_DIR') . '/'. $request->input('dirName');
+
+        //get inputs params from view
+        $order->name = $orderName;
+        $order->portraits_count = $request->input('individualPhotosCount');
+        $order->photo_common = $request->input('photosAll');
+        $order->photo_individual = $request->input('commonPhotosToCustomer');
+        $order->photos_link = $request->input('photoAlbumLink');
+        $order->designs_count = $request->input('designsCount');
+        $order->comment = $request->input('comment');
+        $order->confirm_key = substr(md5(time()), 0, 3).mt_rand(1000, 9999) ;
+        $order->link_secret =  substr(md5(time()), 0, 5).mt_rand(100, 999);
+
+        $questionnaire = $request->input('questionnaire');
+        if ( null != $questionnaire){
+            $form = new OrderUserAnswer;
+            $form->questions = $questionnaire;
+            $form->save();
+        }
+        $order->photos_dir_name = $dirName;
+
+        return  $this->_saveAndTransfer( $dirName, $orderName, $order);
+    }
+
+        /**
+         * Validate function for Transfer process and request
+         *
+         * @param string $dirName
+         * @param string $orderName
+         * @param Order $order
+         * @return \Illuminate\Http\Response
+         */
+        private function _saveAndTransfer(string $dirName, string $orderName, Order $order){
+            if ($order->save()){
+                return $this->_tryToDispatchTransferProcess( $dirName, $orderName);
+            }
+            else {
+                return redirect()->back()->withErrors()->withInput();
+            }
+        }
+
+        /**
+         * @param string $dirName
+         * @param string $orderName
+         * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Http\Response
+         */
+        private function _tryToDispatchTransferProcess(string $dirName, string $orderName) {
+            try {
+                $diskClient= new \Arhitector\Yandex\Disk( env('YANDEX_OAUTH') );
+                $diskClient->getResource($dirName)->toObject(); //ошибки выпадают только при физическом преобразовании объекта (метод ->toArray())
+                Storage::disk('yadisk')->put('testConnection.txt', '0');
+                $this->_isCorrectFormat($diskClient, $dirName);
+
+                //Если вся валидация пройдена - добавляем заказ в очередь на обработку
+                TransferFullDirectoryToS3::dispatch(  $dirName, $orderName );
+            }
+            catch (\Arhitector\Yandex\Client\Exception\UnauthorizedException $e){
+                return $this->_validationError(
+                    "'Яндекс диск не доступен. Обратитесь к системному администратору, проверить токены приложения.",
+                    "Яндекс диск: ".$e->getMessage(),
+                    $e
+                );
+            }
+            catch ( \Arhitector\Yandex\Client\Exception\NotFoundException $e) {
+                return $this->_validationError(
+                    "Папка не найдена. Помните: пробелы, заглавные буквы и другие знаки влияют на название.",
+                    "Яндекс диск: ".$e->getMessage(),
+                    $e
+                );
+            }
+            catch (\InvalidArgumentException $e) {
+                return $this->_validationError(
+                    "Папка '$dirName' найдена, 
+                    но все фотографии должны быть распределены по двум подпапкам \'ОБЩИЕ\' и \'ПОРТРЕТЫ\'.
+                     Исправьте и повторите попытку",
+                    null,
+                    $e
+                );
+            }
+            catch (\Exception $e ) {
+                return $this->_validationError(
+                    "Ошибка при иницициализации диска. Проверьте корректность токенов приложения.",
+                    'Storage exception '. __METHOD__. $e->getMessage(),
+                    $e
+                );
+            }
+
+            //Если все отработало нормально - возвращаем на страницу всех заказов
+            return redirect()->route('orders.admin.order.index');
+        }
+
+        /**
+         * Проверяем внутреннюю иерархию папки на корректность
+         *
+         * @param $diskClient
+         * @param $dirName
+         *
+         * @throws \InvalidArgumentException
+         */
+        private function _isCorrectFormat($diskClient, $dirName) {
+            //проверка на корректность форматирования папки
+            try {
+                $diskClient->getResource($dirName.'/ПОРТРЕТЫ')->toObject();
+                $diskClient->getResource($dirName.'/ОБЩИЕ')->toObject();
+            }
+            catch (\Arhitector\Yandex\Client\Exception\NotFoundException $e) {
+                throw new \InvalidArgumentException();
+            }
+        }
+
+        /**
+         * @param string $userMessage
+         * @param string|null $logMessage
+         * @param  \Exception $error Любая ошибка расширяющая \Exception
+         * @return \Illuminate\Http\Response
+         */
+        private function _validationError(string $userMessage, string $logMessage, $error){
+
+            if($logMessage!=null)
+                Log::error($logMessage . $error->getMessage());
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($userMessage);
+        }
+
+
+
+
+
 
 }

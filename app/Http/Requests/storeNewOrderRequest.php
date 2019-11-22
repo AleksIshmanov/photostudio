@@ -25,11 +25,11 @@ class storeNewOrderRequest extends FormRequest
     {
         return [
             'taskName' => 'required|min:5',
-            'individualPhotosCount' => 'required|numeric',
-            'photosAll' => 'required|numeric',
-            'commonPhotosToCustomer' => 'required|numeric',
+            'individualPhotosCount' => 'required|numeric|min:0',
+            'photosAll' => 'required|numeric|min:0',
+            'commonPhotosToCustomer' => 'required|numeric|min:0',
             'photoAlbumLink' => 'required|url',
-            'designsCount' => 'required|numeric',
+            'designsCount' => 'required|numeric|min:0',
             'dirName' => 'required',
         ];
     }
