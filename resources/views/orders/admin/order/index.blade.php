@@ -64,6 +64,7 @@
                             <th scope="col" class="text-center">Инд. портретов</th>
                             <th scope="col" class="text-center">Общ. фото владельцу</th>
                             <th scope="col" class="text-center">Ссылка</th>
+                            <th class="text-center" scope="col">Перейти</th>
                             <th scope="col" class="text-center">Изменить</th>
                             <th scope="col" class="text-center">Удалить</th>
                         </tr>
@@ -71,6 +72,7 @@
 
                         <tbody>
                         @foreach($paginator as $item)
+                            @php $orderUrl = env("APP_URL").'/order/'.$item->link_secret @endphp
                             <tr>
                                 @php /** @var App\Models\Order $item */@endphp
                                 <td align="center">{{$item->id}}</td>
@@ -78,8 +80,12 @@
                                 <td align="center">{{$item->photo_common}}</td>
                                 <td align="center">{{$item->portraits_count}}</td>
                                 <td align="center">{{$item->photo_individual}}</td>
+                                <td align="center">{{ $orderUrl }}</td>
+
                                 <td align="center">
-                                    {{ env("APP_URL").'/order/'.$item->link_secret}}
+                                    <a href="{{ $orderUrl }}" class="btn bg-success w-100 h-100">
+                                        <i class="fa fa-external-link-square" style="color: #fff;" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                                 <td align="center">
                                     <a href="{{route('orders.admin.order.edit', $item->id)}}" class="btn btn-primary w-100 h-100">
