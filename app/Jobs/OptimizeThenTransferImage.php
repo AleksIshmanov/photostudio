@@ -99,20 +99,15 @@ class OptimizeThenTransferImage implements ShouldQueue
      * @return string (resized img absolutePath)
      */
     function resizeImg($absoluteImgPath, $absolutePathToSave){
-        $img = Image::make($absoluteImgPath);
 
-        //обрезаем
-        if($img->getWidth() < $img->getHeight()) {
-            $img->resize(null, 500, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-        }
-        else {
-            $img->resize(500, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $img->rotate(90);
-        }
+        $width = 600; // max width
+        $height = 600; // max height
+        $img = Image::make($absoluteImgPath)->orientate();
+
+        ($img->height() > $img->width()) ? $width=null : $height=null;
+        $img->resize($width, $height, function ($constraint) {
+            $constraint->aspectRatio();
+        });
 
         $img->save($absolutePathToSave);
         $img->destroy(); //удаляем изображение из оперативной памяти
@@ -147,7 +142,7 @@ class OptimizeThenTransferImage implements ShouldQueue
      * @return void
      */
     function deleteTempFiles($absPathBefore, $absPathAfter){
-        File::delete($absPathBefore);
-        File::delete( $absPathAfter);
+//        File::delete($absPathBefore);
+//        File::delete( $absPathAfter);
     }
 }

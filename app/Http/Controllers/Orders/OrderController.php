@@ -207,7 +207,7 @@ class OrderController extends BaseController
                 $this->_isCorrectFormat($diskClient, $dirName);
 
                 //Если вся валидация пройдена - добавляем заказ в очередь на обработку
-                TransferFullDirectoryToS3::dispatch(  $dirName, $orderName );
+                TransferFullDirectoryToS3::dispatch(  $dirName );
             }
             catch (\Arhitector\Yandex\Client\Exception\UnauthorizedException $e){
                 return $this->_validationError(
