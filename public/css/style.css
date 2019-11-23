@@ -446,10 +446,33 @@ h3 {
 }
 
 /*===============================================*/
+.gradient-main:before {
+    content: "Главная ";
+    display: block;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: transparent;
+    background-image: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
+    opacity: 0.3;
+}
 
-
-
-
+.gradient-alt:before {
+    content: "";
+    display: block;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: transparent;
+    background-image: linear-gradient(to top, #4481eb 0%, #04befe 100%);
+    opacity: 0.5;
+}
 
 /* Малые девайсы («ландшафтные телефоны», >= 576px)*/
 @media (min-width: 576px) {

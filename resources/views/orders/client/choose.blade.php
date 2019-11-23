@@ -64,7 +64,7 @@
 
 </ul>
 
-<div class=" py-5">
+<div class="py-3">
     @php $textLink = basename($_SERVER['REQUEST_URI']) @endphp
     <form class="tab-content" id="inputFormContent" method="POST" action="{{ route('orders.client.store') }}" autocomplete="off">
         @csrf
@@ -107,12 +107,23 @@
 
         <div class="tab-pane fade" id="pills-portraits" role="tabpanel" aria-labelledby="pills-portraits-tab">
             <div class="container-fluid">
+
+                <div class="row justify-content-center ">
+                    <div class="col-lg-8 col-12 h-100 py-3" style="background-color: #17a2b8; ">
+                        <h5 class="text-center text-white" id="chooseHelperText">
+                            Первая выбранная фотография будет использована в качестве главной для портрета. Последующие в качестве дополнений.
+                            <br><br>
+                            <u>Выберите {{ $countsForNames[2] }} портретных фотографий</u>
+                        </h5>
+                    </div>
+                </div>
+
                 <div class="row">
                     @php $i=0 @endphp
                     @foreach ($portraitsPhoto as $link)
                         <div class="col-6 col-lg-2 nopad text-center">
-                            <label class="image-checkbox ">
-                                <img data-name="{{$names[2]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+                            <label class="image-checkbox">
+                                <img data-name="{{$names[1]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
                                 <input type="checkbox" name="{{$names[2]}}[{{$i}}]" value="" />
                                 <i class="fa fa-check d-none"></i>
                             </label>
@@ -124,10 +135,17 @@
         </div>
 
         <div class="tab-pane fade" id="groups" role="tabpanel" aria-labelledby="profile-tab">
-
             <div class="container-fluid">
-                <div class="row">
 
+                <div class="row justify-content-center ">
+                    <div class="col-lg-8 col-12 h-100 py-3" style="background-color: #17a2b8; ">
+                        <h5 class="text-center text-white" id="chooseHelperText">
+                            <u>Выберите {{ $countsForNames[3] }} фотографий в общий альбом</u>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="row">
                     @php $i=0 @endphp
                     @foreach ($groupsPhoto as $link)
                         <div class="col-6 col-lg-2 nopad text-center">
@@ -211,9 +229,8 @@
         openErrorTab();
     });
 
-        //---------------- image gallery functions----------
+    //---------------- image gallery functions----------
     // init the state from the input
-
     $(".image-checkbox").each(function () {
         if ($(this).find('input[type="checkbox"]').first().attr("checked")) {
             $(this).addClass('image-checkbox-checked');
@@ -230,12 +247,17 @@
 
         var dataNameString= $(this).find('img').attr('data-name');
         //Если изображение выбрано -> отнимаем от максимума, иначе возвращаем
-        $checkbox.prop("checked") ? countImgInput('-', dataNameString): countImgInput('+', dataNameString);
+        $checkbox.prop("checked") ? countImgInput('-', dataNameString, this): countImgInput('+', dataNameString, this);
 
         e.preventDefault();
     });
 
-    //$names - PHP массив с именами для всех инпутов
+    //--------------------------END (image Gallery) ---------------------------------
+
+
+    //-------------- Счетчики количество выбранных фото ----------------
+
+    //$names - PHP массив с именами для всех инпутов см. вверх страницы
     //$countsForNames - ограничители для каждого выбора
     //создаем объект, чтобы JS передавал значения переменных по ссылкам
     var names = {
@@ -247,51 +269,94 @@
 
     //Ищет от какой именно секции пришел запрос
     //Изображения отличаются в атрибуте "data-name",
-    // по нему отличаем секции выбора
-    function countImgInput( mathAction, nameString) {
+    //по нему отличаем секции выбора
+    function countImgInput( mathAction, nameString, object) {
         switch (nameString)
         {
             case '{{$names[0]}}':
                 names.{{$names[0]}}Count += mathAction==="+" ? 1 : -1;
-                showChoiceComplete(names.{{$names[0]}}Count);
+                isUnselectedAction(mathAction) ? deleteDecorationClasses(object) : decorateSelectedPhoto(object);
                 break;
 
             case '{{$names[1]}}':
-                names.{{$names[1]}}Count += mathAction==="+" ? 1 : -1;
-                showChoiceComplete(names.{{$names[1]}}Count);
+                var count  = names.{{$names[1]}}Count += mathAction==="+" ? 1 : -1;
+                decorateMainPhotoChoice(object, count, mathAction);
                 break;
 
             case '{{$names[2]}}':
                 names.{{$names[2]}}Count += mathAction==="+" ? 1 : -1;
-                showChoiceComplete(names.{{$names[2]}}Count);
+                isUnselectedAction(mathAction) ? deleteDecorationClasses(object) : decorateSelectedPhoto(object);
                 break;
 
             case '{{$names[3]}}':
                 names.{{$names[3]}}Count += mathAction==="+" ? 1 : -1;
-                showChoiceComplete(names.{{$names[3]}}Count);
+                isUnselectedAction(mathAction) ? deleteDecorationClasses(object) : decorateSelectedPhoto(object);
                 break;
         }
+    }
+
+    //Логика идет на вычитание, если выбор сделан от max - 1 иначе к текущему +1
+    //если пользователь отменяет выбор знак + иначе -
+    function isUnselectedAction(mathAction){
+        return mathAction === "+";
     }
 
     //Внимание! При выборе картинки мы от максимума отнимаем один, при отмене выбора добавляем
     //Поэтому вывод достигается при countVar==0
     function showChoiceComplete(countVar){
         console.log(countVar);
-        if(countVar===0){
-            $('.nav-tabs').find('.active').css({'backgroud-color:': 'red'});
+        return countVar === 0;
+    }
+
+    //Визуально отделять главное и доп. портретное фото
+    var isMainPhotoSelected = false; //выбрана ли главная фотогарфия
+    function decorateMainPhotoChoice(object, count, mathAction){
+
+        //выбрана первая фотография - она выделяется в качестве главной
+        if (count === {{ $countsForNames[1]}} ) {
+            decorateMainPhoto(object);
+            isMainPhotoSelected = true;
+        } else if (!isMainPhotoSelected) { //если пользователь отменял свой выбор
+            decorateMainPhoto(object);
+            isMainPhotoSelected = true;
+        }
+        else { //выбрана не главная фотография
+            decorateSelectedPhoto(object);
+        }
+
+        console.log(count, {{ $countsForNames[1]-1 }}, isMainPhotoSelected);
+
+        //если отменили действие - снимаем все декорации
+
+        if(mathAction==="+") {
+            isMainPhoto(object) ? isMainPhotoSelected=false : isMainPhotoSelected=true;
+            deleteDecorationClasses(object);
         }
     }
 
-    function hideChoiceComplete(){
-        $("#choiceDone").hide();
-        $("#inputFormContent").show();
+    function decorateMainPhoto(object) {
+        $(object).addClass('gradient-main');
     }
+
+    function decorateSelectedPhoto(object) {
+        $(object).addClass('gradient-alt');
+    }
+
+    function deleteDecorationClasses(object){
+        $(object).removeClass('gradient-main gradient-alt');
+    }
+
+    function isMainPhoto(object) {
+        return !!($(object).hasClass('gradient-main'));
+    }
+
+    //------------------------END (счетчики выбора)-----------------
+
 
     //-----------Error log functions----------------------
     function openErrorTab() {
         if( $('#errorLog').length ) {
             $('.nav-tabs a[href="#final"]').tab('show');
-            console.log(1);
         }
     }
 </script>
