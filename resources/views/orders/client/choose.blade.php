@@ -3,6 +3,15 @@
     /** @var App\Models\Order $order */
     $names = ["_FOR_TESTS_", "mainPhotos", "commonPhotos", "designChoice"]; //массив названий фото, используется в input для определения фото
     $countsForNames = [1, $order->portraits_count, $order->photo_common, 1]; //применяется в JS для подсчета количества выбранных
+
+    function getImgName($textLink) {
+           //Получим имя файла из его полной ссылки
+        //$imgName = preg_replace('/(?:jpg|png|gif)$/i', '', array_pop(explode('/', $link) ) );
+        $imgName = explode('/', $textLink);
+        $imgName = array_pop($imgName);
+        $imgName =  preg_replace('/.(?:jpg|png|gif)$/i', '', $imgName);
+        return $imgName;
+    }
 @endphp
 
 <!doctype html>
@@ -121,10 +130,11 @@
                 <div class="row">
                     @php $i=0 @endphp
                     @foreach ($portraitsPhoto as $link)
+                        @php $imgName =  getImgName($link); @endphp
                         <div class="col-6 col-lg-2 nopad text-center">
                             <label class="image-checkbox">
                                 <img data-name="{{$names[1]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                <input type="checkbox" name="{{$names[1]}}[{{$i}}]" value="" />
+                                <input type="checkbox" name="{{$names[1]}}[{{$imgName}}]" value="" />
                                 <i class="fa fa-check d-none"></i>
                             </label>
                         </div>
@@ -148,10 +158,11 @@
                 <div class="row">
                     @php $i=0 @endphp
                     @foreach ($groupsPhoto as $link)
+                        @php $imgName = getImgName($link); @endphp
                         <div class="col-6 col-lg-3 nopad text-center">
                             <label class="image-checkbox ">
                                 <img data-name="{{$names[2]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                <input type="checkbox" name="{{$names[2]}}[{{$i}}]" value="" />
+                                <input type="checkbox" name="{{$names[2]}}[{{$imgName}}]" value="" />
                                 <i class="fa fa-check d-none"></i>
                             </label>
                         </div>
@@ -270,9 +281,14 @@
         }
         else {        //В других случаях мы можем только отменить свой выбор
             if( $checkbox.prop("checked") ){
-                $checkbox.prop("checked", !$checkbox.prop("checked"));
-
+                $checkbox.prop("checked", false);
                 $(this).toggleClass('image-checkbox-checked');
+
+                //для главного фото нужно обнулить флаг
+                if( isMainPhoto(this)) {
+                    isMainPhotoSelected = false;
+                }
+
                 deleteDecorationClasses(this);
                 names[fullName]+=1;
             }
@@ -280,9 +296,6 @@
                 msgEnoughSelected();
             }
         }
-
-
-
         e.preventDefault();
     });
 
@@ -290,7 +303,6 @@
     function msgEnoughSelected() {
         alert('Нельзя выбирать фотографий больше положенного. Сначала уберите какую-то другую фотографию.');
     }
-
     //--------------------------END (image Gallery) ---------------------------------
 
 

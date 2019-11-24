@@ -18,7 +18,7 @@ class CreateOrderUsersTable extends Migration
             $table->text('name');
 
             $table->unsignedBigInteger('id_order');
-            $table->integer('portrait_main');
+            $table->string('portrait_main');
             $table->json('portraits');
             $table->json('common_photos');
             $table->text('comment')->nullable();
