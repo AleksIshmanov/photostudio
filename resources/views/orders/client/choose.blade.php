@@ -75,7 +75,9 @@
 
 <div class="py-3">
 {{--    '$textLink' передается вместе с запросом из route   --}}
-    <form class="tab-content" id="inputFormContent" method="POST" action="{{ route('orders.client.store') }}" autocomplete="off">
+    <form class="tab-content" id="inputFormContent" method="POST" action="{{ route('orders.client.store') }}" autocomplete="off"
+        onsubmit="return confirm('Вы подтверждаете, что выбрали все фотографии в нужном количество и ввели все данные? Если вы что-то пропустили, то придется повторять всю процедуру выбора с самого начала.')"
+    >
         @csrf
         <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">
 
@@ -221,9 +223,7 @@
 
 
             <div class="text-center">
-                <button type="submit"
-                        onclick="confirm('Вы подтверждаете, что выбрали все фотографии в нужном количество и ввели все данные? Если вы что-то пропустили, то придется повторять всю процедуру выбора с самого начала.')"
-                        class="btn Yellow-btn coolis text-white w-50 overflow-hidden" style="width: 50%;"><span>Подтвердить свой выбор</span></button>
+                <button type="submit" class="btn Yellow-btn coolis text-white w-50 overflow-hidden" style="width: 50%;"><span>Подтвердить свой выбор</span></button>
             </div>
         </div>
 
