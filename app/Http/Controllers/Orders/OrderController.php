@@ -137,7 +137,7 @@ class OrderController extends BaseController
         $portraitsPhoto = json_decode($portraitsPhoto->getContent(), true)['data'];
         $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
 
-        return view('orders.client.choose', compact('portraitsPhoto', 'groupsPhoto', 'order'));
+        return view('orders.client.choose', compact('portraitsPhoto', 'groupsPhoto', 'order', 'textLink'));
     }
 
 
@@ -279,10 +279,4 @@ class OrderController extends BaseController
                 ->withInput()
                 ->withErrors($userMessage);
         }
-
-
-
-
-
-
 }

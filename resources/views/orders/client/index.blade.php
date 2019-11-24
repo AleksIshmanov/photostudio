@@ -187,9 +187,11 @@
             </div>
 
             @php $textLink = basename($_SERVER['REQUEST_URI']) @endphp
-            <a role="button" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="border-radius: 20px;" href="{{ route('orders.client.choose', $textLink) }}" target="_blank">
-                <span>Сделать свой выбор</span>
-            </a>
+            <form action="{{ route('orders.client.choose', $textLink) }}" method="GET">
+                <button type="submit" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="border-radius: 20px;" >
+                    <span>Сделать свой выбор</span>
+                </button>
+            </form>
         </div>
     </div>
 
@@ -223,7 +225,7 @@
                         @csrf
                         @method("DELETE")
                         <button type="submit" class="Yellow-btn-table btn-danger text-white"
-                                onclick="return confirm('Вы уверены, что хотите удалить пользователя ->{{strtoupper($user->name)}}<-');" >
+                                onclick="return confirm('Вы уверены, что хотите удалить ВНИМАНИЕ! *{{ ($user->name)}}*' );" >
                             <i class="fa fa-trash px-2" aria-hidden="true"></i>
                         </button>
                     </form>
@@ -315,7 +317,7 @@
                     </div>
                 </div>
             </div>
-А
+
             <div class="card py-3">
                 <div class="card-header" id="heading-2">
                     <h5 class="mb-0">

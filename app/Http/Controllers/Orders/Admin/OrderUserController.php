@@ -36,21 +36,20 @@ class OrderUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storeNewOrderUserRequest $request)
     {
         $orderUser = new OrderUser();
+        $orderTextLink = $request->input('textLink');
 
         $orderUser->name = $request->input('userName') .' '. $request->input('userSurname');
-        $orderUser->id_order = $this->getOrderId($request->input('textLink'));
+        $orderUser->id_order = $this->getOrderId($orderTextLink);
         $orderUser->portrait_main = array_key_first($request->input('mainPhotos'));
-
         $orderUser->portraits = $this->makeCustomJson($request->input('mainPhotos'));
         $orderUser->common_photos = $this->makeCustomJson($request->input('commonPhotos'));
-
         $orderUser->comment = $request->input('userQuestionsAnswer');
 
         if ($orderUser->save()){
-            return redirect()->back()->with(['success'=>true]);
+            return redirect()->route('orders.client.show', $orderTextLink )->with(['success'=>true]);
         }
         else {
             return back()->withErrors(['msg'=>'Ошибка сохранения'])->withInput();

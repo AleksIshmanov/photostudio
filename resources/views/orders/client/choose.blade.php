@@ -65,7 +65,7 @@
 </ul>
 
 <div class="py-3">
-    @php $textLink = basename($_SERVER['REQUEST_URI']) @endphp
+{{--    '$textLink' передается вместе с запросом из route   --}}
     <form class="tab-content" id="inputFormContent" method="POST" action="{{ route('orders.client.store') }}" autocomplete="off">
         @csrf
         <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">
