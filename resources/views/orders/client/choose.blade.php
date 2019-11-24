@@ -1,7 +1,7 @@
 @php
 
     /** @var App\Models\Order $order */
-    $names = ["mainPhoto", "altMainPhotos", "commonPhotos", "designChoice"]; //массив названий фото, используется в input для определения фото
+    $names = ["_FOR_TESTS_", "mainPhotos", "commonPhotos", "designChoice"]; //массив названий фото, используется в input для определения фото
     $countsForNames = [1, $order->portraits_count, $order->photo_common, 1]; //применяется в JS для подсчета количества выбранных
 @endphp
 
@@ -25,10 +25,10 @@
 </head>
 <body>
 
-<ul class="nav nav-tabs nav-justified navbar navbar-dark bg-dark" id="myTab" role="tablist">
+<ul class="nav nav-tabs nav-justified navbar bg-light" id="myTab" role="tablist">
     <li class="nav-item">
         <a class=" nav-link active font-weight-bold" id="pills-home-tab" data-toggle="tab" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
-                Введите имя и фамилию
+                Введите ФИО
         </a>
     </li>
 
@@ -124,7 +124,7 @@
                         <div class="col-6 col-lg-2 nopad text-center">
                             <label class="image-checkbox">
                                 <img data-name="{{$names[1]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-                                <input type="checkbox" name="{{$names[2]}}[{{$i}}]" value="" />
+                                <input type="checkbox" name="{{$names[1]}}[{{$i}}]" value="" />
                                 <i class="fa fa-check d-none"></i>
                             </label>
                         </div>
@@ -140,7 +140,7 @@
                 <div class="row justify-content-center ">
                     <div class="col-lg-8 col-12 h-100 py-3" style="background-color: #17a2b8; ">
                         <h5 class="text-center text-white" id="chooseHelperText">
-                            <u>Выберите {{ $countsForNames[3] }} фотографий в общий альбом</u>
+                            <u>Выберите {{ $countsForNames[2] }} фотографий в общий альбом</u>
                         </h5>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                 <div class="row">
                     @php $i=0 @endphp
                     @foreach ($groupsPhoto as $link)
-                        <div class="col-6 col-lg-2 nopad text-center">
+                        <div class="col-6 col-lg-3 nopad text-center">
                             <label class="image-checkbox ">
                                 <img data-name="{{$names[2]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
                                 <input type="checkbox" name="{{$names[2]}}[{{$i}}]" value="" />
@@ -210,7 +210,9 @@
 
 
             <div class="text-center">
-                <button type="submit" class="btn Yellow-btn coolis text-white w-50 overflow-hidden" style="width: 50%;"><span>Подтвердить свой выбор</span></button>
+                <button type="submit"
+                        onclick="confirm('Вы подтверждаете, что выбрали все фотографии в нужном количество и ввели все данные? Если вы что-то пропустили, то придется повторять всю процедуру выбора с самого начала.')"
+                        class="btn Yellow-btn coolis text-white w-50 overflow-hidden" style="width: 50%;"><span>Подтвердить свой выбор</span></button>
             </div>
         </div>
 
@@ -229,6 +231,18 @@
         openErrorTab();
     });
 
+    //$names - PHP массив с именами для всех инпутов см. вверх страницы
+    //$countsForNames - ограничители для каждого выбора
+    //создаем объект, чтобы JS передавал значения переменных по ссылкам
+    var names = {
+        {{$names[0]}}Count : {{$countsForNames[0]}},
+        {{$names[1]}}Count : {{$countsForNames[1]}},
+        {{$names[2]}}Count : {{$countsForNames[2]}},
+        {{$names[3]}}Count : {{$countsForNames[3]}}
+    };
+
+    var maxs= [{{$countsForNames[0]}},  {{$countsForNames[1]}}, {{$countsForNames[2]}}, {{$countsForNames[3]}} ];
+
     //---------------- image gallery functions----------
     // init the state from the input
     $(".image-checkbox").each(function () {
@@ -241,31 +255,46 @@
 
     // sync the state to the input
     $(".image-checkbox").on("click", function (e) {
-        $(this).toggleClass('image-checkbox-checked');
-        var $checkbox = $(this).find('input[type="checkbox"]');
-        $checkbox.prop("checked", !$checkbox.prop("checked"));
 
         var dataNameString= $(this).find('img').attr('data-name');
-        //Если изображение выбрано -> отнимаем от максимума, иначе возвращаем
-        $checkbox.prop("checked") ? countImgInput('-', dataNameString, this): countImgInput('+', dataNameString, this);
+        var $checkbox = $(this).find('input[type="checkbox"]');
+
+        //выбор доступен только, если мы не вышли за допустимый максимум выбора (получает от сервера)
+        fullName = dataNameString + 'Count';
+        if(names[fullName] > 0){
+            $(this).toggleClass('image-checkbox-checked');
+            $checkbox.prop("checked", !$checkbox.prop("checked"));
+
+            //Если изображение выбрано -> отнимаем от максимума, иначе прибаляет к максимуму
+            $checkbox.prop("checked") ? countImgInput('-', dataNameString, this): countImgInput('+', dataNameString, this);
+        }
+        else {        //В других случаях мы можем только отменить свой выбор
+            if( $checkbox.prop("checked") ){
+                $checkbox.prop("checked", !$checkbox.prop("checked"));
+
+                $(this).toggleClass('image-checkbox-checked');
+                deleteDecorationClasses(this);
+                names[fullName]+=1;
+            }
+            else {
+                msgEnoughSelected();
+            }
+        }
+
+
 
         e.preventDefault();
     });
+
+
+    function msgEnoughSelected() {
+        alert('Нельзя выбирать фотографий больше положенного. Сначала уберите какую-то другую фотографию.');
+    }
 
     //--------------------------END (image Gallery) ---------------------------------
 
 
     //-------------- Счетчики количество выбранных фото ----------------
-
-    //$names - PHP массив с именами для всех инпутов см. вверх страницы
-    //$countsForNames - ограничители для каждого выбора
-    //создаем объект, чтобы JS передавал значения переменных по ссылкам
-    var names = {
-        {{$names[0]}}Count : {{$countsForNames[0]}},
-        {{$names[1]}}Count : {{$countsForNames[1]}},
-        {{$names[2]}}Count : {{$countsForNames[2]}},
-        {{$names[3]}}Count : {{$countsForNames[3]}}
-    };
 
     //Ищет от какой именно секции пришел запрос
     //Изображения отличаются в атрибуте "data-name",
@@ -273,26 +302,33 @@
     function countImgInput( mathAction, nameString, object) {
         switch (nameString)
         {
-            case '{{$names[0]}}':
-                names.{{$names[0]}}Count += mathAction==="+" ? 1 : -1;
-                isUnselectedAction(mathAction) ? deleteDecorationClasses(object) : decorateSelectedPhoto(object);
-                break;
-
+            //!! $names[0] применялся для тестов, не удаляется из-за смещения адрессации по всему коду
+            //mainPhotos исходя из $names[1]
             case '{{$names[1]}}':
-                var count  = names.{{$names[1]}}Count += mathAction==="+" ? 1 : -1;
+                count  = names.{{$names[1]}}Count += mathAction==="+" ? 1 : -1;
                 decorateMainPhotoChoice(object, count, mathAction);
+                isLastChoice(count) ? showSuccessModal() : 0;
                 break;
 
+            //commonPhotos исходя из $names[2]
             case '{{$names[2]}}':
-                names.{{$names[2]}}Count += mathAction==="+" ? 1 : -1;
+                count = names.{{$names[2]}}Count += mathAction==="+" ? 1 : -1;
                 isUnselectedAction(mathAction) ? deleteDecorationClasses(object) : decorateSelectedPhoto(object);
+                isLastChoice(count) ? showSuccessModal() : 0;
                 break;
 
+            //designChoice исходя из $names[3]
             case '{{$names[3]}}':
-                names.{{$names[3]}}Count += mathAction==="+" ? 1 : -1;
+                count = names.{{$names[3]}}Count += mathAction === "+" ? 1 : -1;
                 isUnselectedAction(mathAction) ? deleteDecorationClasses(object) : decorateSelectedPhoto(object);
+                isLastChoice(count) ? showSuccessModal() : 0;
                 break;
         }
+    }
+
+    //отобразить модальное окно об окончании выбора
+    function showSuccessModal(){
+        alert('Выбрано достаточное количество фотографий, можете переходить к следующему разделу.');
     }
 
     //Логика идет на вычитание, если выбор сделан от max - 1 иначе к текущему +1
@@ -303,8 +339,7 @@
 
     //Внимание! При выборе картинки мы от максимума отнимаем один, при отмене выбора добавляем
     //Поэтому вывод достигается при countVar==0
-    function showChoiceComplete(countVar){
-        console.log(countVar);
+    function isLastChoice(countVar){
         return countVar === 0;
     }
 
@@ -351,8 +386,42 @@
     }
 
     //------------------------END (счетчики выбора)-----------------
+    //---------------------- (Валидация на заполнение) -------------
+    /*
+    function frontend_validation() {
+        (document.getElementsByName('userName').value) ? true : showError('Заполните поле ИМЯ');
+        (document.getElementsByName('userSurname').value) ? true : showError('Заполните поле ФАМИЛИЯ');
 
+        check_inputsForSection(document.getElementByName( {{ $names[1] }} ), " Портретные фото ");
+        check_inputsForSection(document.getElementByName( {{ $names[2] }} ), " Общие фото");
 
+        // check_designs();
+        // check_anket();
+    }
+
+    function check_name() {
+        let userName  = document.getElementsByName('userName');
+    }
+
+    function isChoicesEnought(arrNow, max){
+        return arrNow.length === max;
+    }
+
+    function check_inputsForSection(inputsArr, strNameOfSection){
+        let validation = isChoicesEnought(inputsArr);
+        if( !validation) {
+            showError('Количество выбранных фотографий для раздела "'+ strNameOfSection +'" фото не соответствует '+ {{ $countsForNames[1] }});
+        }
+    }
+
+    function isValue(){
+        return !object.value;
+    }
+
+    function showError(msg){
+        alert(msg);
+    }
+    */
     //-----------Error log functions----------------------
     function openErrorTab() {
         if( $('#errorLog').length ) {

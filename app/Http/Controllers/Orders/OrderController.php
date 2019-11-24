@@ -174,7 +174,7 @@ class OrderController extends BaseController
         }
         $order->photos_dir_name = $dirName;
 
-        return  $this->_saveAndTransfer( $dirName, $orderName, $order);
+        return  $this->_saveAndTransfer($dirName, $orderName, $order);
     }
 
         /**

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Orders\Admin;
 
-use App\Http\Requests\storeNewOrderRequest;
+use App\Http\Requests\storeNewOrderUserRequest;
 use App\Models\Order;
 use App\Models\OrderUser;
 use Illuminate\Http\Request;
@@ -36,16 +36,15 @@ class OrderUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(storeNewOrderRequest $request)
+    public function store(Request $request)
     {
-
         $orderUser = new OrderUser();
 
         $orderUser->name = $request->input('userName') .' '. $request->input('userSurname');
         $orderUser->id_order = $this->getOrderId($request->input('textLink'));
-        $orderUser->portrait_main = array_key_first($request->input('mainPhoto'));
+        $orderUser->portrait_main = array_key_first($request->input('mainPhotos'));
 
-        $orderUser->portraits = $this->makeCustomJson($request->input('altMainPhotos'));
+        $orderUser->portraits = $this->makeCustomJson($request->input('mainPhotos'));
         $orderUser->common_photos = $this->makeCustomJson($request->input('commonPhotos'));
 
         $orderUser->comment = $request->input('userQuestionsAnswer');

@@ -23,6 +23,7 @@ class storeNewOrderRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'taskName' => 'required|min:5',
             'individualPhotosCount' => 'required|numeric|min:0',
