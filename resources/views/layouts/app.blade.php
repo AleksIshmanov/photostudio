@@ -34,16 +34,22 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav m-auto">
-                        <li class="nav-item">
+                        <li class="nav-item mx-1">
                             <a href="{{ route("orders.admin.order.create") }}" role="button" class="w-100 btn btn-success py-2">
                                 <i class="fa fa-plus d-lg-inline d-sm-inline d-md-block d-none"></i> Добавить
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mx-1">
                             <a href="{{ route("orders.admin.order.index") }}"  role="button" class="mx-lg-2 mx-md-2 mx-0 w-100 btn btn-primary py-2">
                                 <i class="fa fa-book d-lg-inline d-sm-inline d-md-block d-none"></i> Просмотреть
                             </a>
                         </li>
+                        <li class="nav-item mx-1">
+                            <a href="{{ route("orders.admin.designs.index") }}"  role="button" class="mx-lg-2 mx-md-2 mx-0 w-100 btn btn-primary bg-danger py-2">
+                                <i class="fa fa-address-card-o d-lg-inline d-sm-inline d-md-block d-none"></i> Дизайны
+                            </a>
+                        </li>
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->

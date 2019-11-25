@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Orders;
 
 use App\Http\Requests\storeNewOrderRequest;
-use App\Jobs\TransferFullDirectoryToS3;
+use App\Jobs\TransferFullDirectoryOrdersToS3;
 use App\Models\OrderUserAnswer;
 use App\Models\Order;
 use App\Models\OrderUser;
@@ -187,7 +187,7 @@ class OrderController extends BaseController
          */
         private function _saveAndTransfer(string $dirName, string $orderName, Order $order){
             if ($order->save()){
-                return $this->_tryToDispatchTransferProcess( $dirName, $orderName);
+                return $this->tryToDispatchTransferProcess( $dirName, false);
             }
             else {
                 return redirect()->back()->withErrors()->withInput();
@@ -196,35 +196,40 @@ class OrderController extends BaseController
 
         /**
          * @param string $dirName
-         * @param string $orderName
+         * @param bool $isDesign Вызван ли данный метод для валидации папки с дизайнами
          * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Http\Response
          */
-        private function _tryToDispatchTransferProcess(string $dirName, string $orderName) {
+        public function tryToDispatchTransferProcess(string $dirName, bool $isDesign) {
             try {
                 $diskClient= new \Arhitector\Yandex\Disk( env('YANDEX_OAUTH') );
                 $diskClient->getResource($dirName)->toObject(); //ошибки выпадают только при физическом преобразовании объекта (метод ->toArray())
                 Storage::disk('yadisk')->put('testConnection.txt', '0');
-                $this->_isCorrectFormat($diskClient, $dirName);
+
+                //Для дизайна валидация папки не нужна
+                if (!$isDesign){
+                    $this->_isCorrectFormat($diskClient, $dirName);
+                }
 
                 //Если вся валидация пройдена - добавляем заказ в очередь на обработку
-                TransferFullDirectoryToS3::dispatch(  $dirName );
+                TransferFullDirectoryOrdersToS3::dispatch(  $dirName );
+
             }
             catch (\Arhitector\Yandex\Client\Exception\UnauthorizedException $e){
-                return $this->_validationError(
+                return $this->validationError(
                     "'Яндекс диск не доступен. Обратитесь к системному администратору, проверить токены приложения.",
                     "Яндекс диск: ".$e->getMessage(),
                     $e
                 );
             }
             catch ( \Arhitector\Yandex\Client\Exception\NotFoundException $e) {
-                return $this->_validationError(
+                return $this->validationError(
                     "Папка не найдена. Помните: пробелы, заглавные буквы и другие знаки влияют на название.",
                     "Яндекс диск: ".$e->getMessage(),
                     $e
                 );
             }
             catch (\InvalidArgumentException $e) {
-                return $this->_validationError(
+                return $this->validationError(
                     "Папка '$dirName' найдена, 
                     но все фотографии должны быть распределены по двум подпапкам \'ОБЩИЕ\' и \'ПОРТРЕТЫ\'.
                      Исправьте и повторите попытку",
@@ -233,7 +238,7 @@ class OrderController extends BaseController
                 );
             }
             catch (\Exception $e ) {
-                return $this->_validationError(
+                return $this->validationError(
                     "Ошибка при иницициализации диска. Проверьте корректность токенов приложения.",
                     'Storage exception '. __METHOD__. $e->getMessage(),
                     $e
@@ -261,22 +266,5 @@ class OrderController extends BaseController
             catch (\Arhitector\Yandex\Client\Exception\NotFoundException $e) {
                 throw new \InvalidArgumentException();
             }
-        }
-
-        /**
-         * @param string $userMessage
-         * @param string|null $logMessage
-         * @param  \Exception $error Любая ошибка расширяющая \Exception
-         * @return \Illuminate\Http\Response
-         */
-        private function _validationError(string $userMessage, string $logMessage, $error){
-
-            if($logMessage!=null)
-                Log::error($logMessage . $error->getMessage());
-
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors($userMessage);
         }
 }

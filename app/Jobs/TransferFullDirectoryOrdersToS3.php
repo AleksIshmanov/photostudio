@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 use Yandex\DataSync\Responses\DatabaseDeltasResponse;
 
-class TransferFullDirectoryToS3 implements ShouldQueue
+class TransferFullDirectoryOrdersToS3 implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $photosDirectoryPath; //название директории с фотографиями
 
     /**
-     * TransferFullDirectoryToS3 constructor.
+     * TransferFullDirectoryOrdersToS3 constructor.
      *
      * @param $dirName
      * @throws \Exception

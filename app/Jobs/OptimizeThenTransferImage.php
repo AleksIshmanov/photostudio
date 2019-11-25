@@ -30,6 +30,9 @@ class OptimizeThenTransferImage implements ShouldQueue
      */
     public function __construct($orderDirPath, $imgName )
     {
+        //Очищаем путь от лишних деталей
+        $orderDirPath = str_replace('disk:/', '', $orderDirPath);
+
         $this->imgDirPath = $orderDirPath;
         $this->imgName = $imgName;
     }
@@ -70,18 +73,26 @@ class OptimizeThenTransferImage implements ShouldQueue
             || !Storage::exists($this->relativePathBeforeOptimization.$cloudStorageDir)
             || !Storage::exists($this->relativePathAfterOptimization.$cloudStorageDir)
         ){
+
             Storage::makeDirectory($this->basicPath);
             Storage::makeDirectory($this->relativePathBeforeOptimization.$cloudStorageDir);
             Storage::makeDirectory($this->relativePathAfterOptimization.$cloudStorageDir);
         }
 
-
         $absImgPath = $this->getAbsolutePath($this->relativePathBeforeOptimization.$cloudStorageDir).$imgName;
-
         $diskClient->getResource($cloudStorageDir.'/'.$imgName)->download($absImgPath, true);
 
         return $absImgPath;
     }
+
+//    function createDirectoryTree($path){
+//        $path = str_replace("\\", '/', $path);
+//        foreach ( explode('/', $path) as $part){
+//            $absPath = $this->getAbsolutePath($part);
+//            dd($absPath);
+//            Storage::disk('local')->makeDirectory($absPath);
+//        }
+//    }
 
     /**
      * Make absolute path from relative
@@ -142,7 +153,7 @@ class OptimizeThenTransferImage implements ShouldQueue
      * @return void
      */
     function deleteTempFiles($absPathBefore, $absPathAfter){
-//        File::delete($absPathBefore);
-//        File::delete( $absPathAfter);
+        File::delete($absPathBefore);
+        File::delete( $absPathAfter);
     }
 }

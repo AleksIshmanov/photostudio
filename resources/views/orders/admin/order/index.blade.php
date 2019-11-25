@@ -7,7 +7,7 @@
     <div class="row justify-content-center py-3">
         <div class="col-12">
             <div class="card">
-                <div class="card-bode table-responsive">
+                <div class="card-body table-responsive">
                     <table class="table table-hover">
                         <thead>
                         <th class="text-center w-25" scope="col">Название</th>

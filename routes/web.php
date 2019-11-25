@@ -34,6 +34,11 @@ $admin_options = [
 Route::group($admin_options, function() {
     Route::resource('order', 'OrderController')->names('orders.admin.order')->middleware('auth');
     Route::resource('user', 'Admin\OrderUserController')->names('orders.admin.user');
+
+    //designs
+    Route::post('designs', 'Admin\DesignsController@changeDirectory')->name('orders.admin.designs.config')->middleware('auth');
+    Route::get('designs', 'Admin\DesignsController@index')->name('orders.admin.designs.index')->middleware('auth');
+    Route::post('designs/sync', 'Admin\DesignsController@sync')->name('orders.admin.designs.sync')->middleware('auth');
 });
 
 $photo_options = [
