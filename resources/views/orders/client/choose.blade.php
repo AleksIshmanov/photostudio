@@ -175,15 +175,43 @@
             </div>
         </div>
 
+        <!--
+        <label class="image-checkbox">
+            <img data-name="{{$names[2]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+            <input type="checkbox" name="{{$names[2]}}[{{$imgName}}]" value="" />
+            <i class="fa fa-check d-none"></i>
+        </label>
+         -->
+
         <div class="tab-pane fade" id="designs" role="tabpanel" aria-labelledby="profile-tab">
-            <div class="container-fluid">
-                <div class="row">
+            <div class="container">
+                @if(isset($designs))
+                    @foreach($designs as $designName=>$photoUrlArray)
+                    <div class="row py-2">
 
-                    <div>
-                        <h3>Дизайны</h3>
+
+                        <div class="card">
+
+                            <div class="image-checkbox">
+                                <input type="checkbox" name="{{$names[3]}}[{{$designName}}]" value="" />
+                                <i class="fa fa-check d-none"></i>
+                                {{--                            По img используется ориентация в JS логике, только поэтому создаем этот объект--}}
+                                <img style="display: none;" data-name="{{ $names[3] }}" src="" alt="">
+
+                                <h3 class="card-header text-center"> Дизайн #{{ $designName }}</h3>
+                                <div class="card-body row">
+                                    @php $blockSize = 12 / count($photoUrlArray); @endphp
+                                    @foreach($photoUrlArray as $photoUrl)
+                                        <div class="col-lg-{{ $blockSize }} col-12">
+                                            <img src="{{ $photoUrl }}" width="100%" height="100%" alt="{{ $designName }} photo" class="border border-dark rounded">
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                </div>
+                    @endforeach
+                @endif
             </div>
         </div>
 
@@ -272,6 +300,7 @@
 
         //выбор доступен только, если мы не вышли за допустимый максимум выбора (получает от сервера)
         fullName = dataNameString + 'Count';
+        console.log(names, names[fullName]);
         if(names[fullName] > 0){
             $(this).toggleClass('image-checkbox-checked');
             $checkbox.prop("checked", !$checkbox.prop("checked"));

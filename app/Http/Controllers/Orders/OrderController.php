@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Orders;
 
+use App\Http\Controllers\Orders\Admin\DesignsController;
 use App\Http\Requests\storeNewOrderRequest;
 use App\Jobs\TransferFullDirectoryOrdersToS3;
 use App\Models\OrderUserAnswer;
@@ -130,6 +131,8 @@ class OrderController extends BaseController
      */
     public function choose($textLink){
         $photo = new PhotoController();
+        $designs = new DesignsController();
+
         $portraitsPhoto = $photo->getPortraitsPhotos($textLink, 20);
         $groupsPhoto = $photo->getGroupsPhotos($textLink, 20);
         $order = Order::where('link_secret', '=', $textLink)->first();
@@ -137,7 +140,9 @@ class OrderController extends BaseController
         $portraitsPhoto = json_decode($portraitsPhoto->getContent(), true)['data'];
         $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
 
-        return view('orders.client.choose', compact('portraitsPhoto', 'groupsPhoto', 'order', 'textLink'));
+        $designs = $designs->getDesignsFromS3();
+
+        return view('orders.client.choose', compact('portraitsPhoto', 'groupsPhoto', 'order', 'textLink', 'designs'));
     }
 
 

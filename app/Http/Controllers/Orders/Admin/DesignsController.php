@@ -19,14 +19,7 @@ class DesignsController extends BaseController
      */
     public function index()
     {
-        try{
-            $diskClient=  Storage::disk('yadisk');
-        }
-        catch (\Exception $e){
-            return view('orders.admin.designs.index')->withErrors([$e->getMessage()]);
-        }
-
-        $designs = $this->getDesignsFromS3($diskClient);
+        $designs = $this->getDesignsFromS3();
 
         return view('orders.admin.designs.index', compact('designs'));
     }
@@ -98,11 +91,11 @@ class DesignsController extends BaseController
 
     /**
      * get all designs from s3 storage
-     * @param Illuminate\Support\Facades\Storage  $s3Client
      * @return array
      */
-    public function getDesignsFromS3($s3Client)
+    public function getDesignsFromS3()
     {
+        $s3Client =  Storage::disk('yadisk');
         $designsPath = env('YANDEX_DESIGN_DIR');
         $dirs = $s3Client->allDirectories( $designsPath );
 
