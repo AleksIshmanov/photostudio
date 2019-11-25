@@ -185,13 +185,20 @@
 
         <div class="tab-pane fade" id="designs" role="tabpanel" aria-labelledby="profile-tab">
             <div class="container">
+
+                <div class="row justify-content-center ">
+                    <div class="col-lg-8 col-12 h-100 py-3" style="background-color: #17a2b8; ">
+                        <h5 class="text-center text-white" id="chooseHelperText">
+                            <u>Выберите {{ $countsForNames[3] }} варианта дизайнов для альбома</u>
+                        </h5>
+                    </div>
+                </div>
+
                 @if(isset($designs))
                     @foreach($designs as $designName=>$photoUrlArray)
                     <div class="row py-2">
 
-
                         <div class="card">
-
                             <div class="image-checkbox">
                                 <input type="checkbox" name="{{$names[3]}}[{{$designName}}]" value="" />
                                 <i class="fa fa-check d-none"></i>

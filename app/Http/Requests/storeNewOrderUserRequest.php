@@ -28,7 +28,7 @@ class storeNewOrderUserRequest extends FormRequest
             'textLink' => 'required',
             'mainPhotos' => 'required|array',
             'commonPhotos' => 'required|array',
-//            'designs' => 'required'
+            'designChoice' => 'required|array',
 //            'userQuestionsAnswer' => 'min:10|max:100',
         ];
     }
