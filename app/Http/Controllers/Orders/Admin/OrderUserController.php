@@ -47,6 +47,7 @@ class OrderUserController extends Controller
         $orderUser->portraits = $this->makeCustomJson($request->input('mainPhotos'));
         $orderUser->common_photos = $this->makeCustomJson($request->input('commonPhotos'));
         $orderUser->comment = $request->input('userQuestionsAnswer');
+        $orderUser->designs = $this->makeCustomJson( $request->input('designChoice') );
 
         if ($orderUser->save()){
             return redirect()->route('orders.client.show', $orderTextLink )->with(['success'=>true]);

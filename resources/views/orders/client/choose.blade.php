@@ -2,7 +2,7 @@
 
     /** @var App\Models\Order $order */
     $names = ["_FOR_TESTS_", "mainPhotos", "commonPhotos", "designChoice"]; //массив названий фото, используется в input для определения фото
-    $countsForNames = [1, $order->portraits_count, $order->photo_common, 1]; //применяется в JS для подсчета количества выбранных
+    $countsForNames = [1, $order->portraits_count, $order->photo_individual, $order->designs_count]; //применяется в JS для подсчета количества выбранных
 
     function getImgName($textLink) {
            //Получим имя файла из его полной ссылки
@@ -59,11 +59,13 @@
         </a>
     </li>
 
+    @if(count($profile)>0 )
     <li class="nav-item">
         <a class=" nav-link font-weight-bold" id="anket-tab" data-toggle="tab" href="#anket" role="tab" aria-controls="home" aria-selected="true">
             Анкета
         </a>
     </li>
+    @endif
 
     <li class="nav-item">
         <a class=" nav-link font-weight-bold" id="final-tab" data-toggle="tab" href="#final" role="tab" aria-controls="final" aria-selected="true">
@@ -124,7 +126,7 @@
                         <h5 class="text-center text-white" id="chooseHelperText">
                             Первая выбранная фотография будет использована в качестве главной для портрета. Последующие в качестве дополнений.
                             <br><br>
-                            <u>Выберите {{ $countsForNames[2] }} портретных фотографий</u>
+                            <u>Выберите {{ $countsForNames[1] }} портретных фотографий</u>
                         </h5>
                     </div>
                 </div>
@@ -194,7 +196,7 @@
                     </div>
                 </div>
 
-                @if(isset($designs))
+                @if( isset($designs) )
                     @foreach($designs as $designName=>$photoUrlArray)
                     <div class="row py-2">
 
@@ -222,11 +224,12 @@
             </div>
         </div>
 
+        @if(count($profile)>0 )
         <div class="tab-pane fade flex-center" id="anket" role="tabpanel" aria-labelledby="profile-tab">
             <div class="row justify-content-center">
                 <div class="col-md-7 col-12">
                     <div class="text-area">
-                        <p class="modal-text px-3 py-2">{{ 'php comment output' }}</p>
+                        <p class="modal-text px-3 py-2">{{ $profile }}</p>
                     </div>
 
                     <div class="form-group">
@@ -237,6 +240,8 @@
 
             </div>
         </div>
+        @endif
+
 
         <div class="tab-pane fade flex-center" id="final" role="tabpanel" aria-labelledby="profile-tab">
 

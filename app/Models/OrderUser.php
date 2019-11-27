@@ -8,6 +8,6 @@ class OrderUser extends Model
 {
     protected $fillable = [
         'id_order', 'portrait_main', 'portraits',
-        'common_photos', 'comment'
+        'common_photos', 'comment', 'designs'
     ];
 }

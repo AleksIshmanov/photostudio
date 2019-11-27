@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Orders;
 use App\Http\Controllers\Orders\Admin\DesignsController;
 use App\Http\Requests\storeNewOrderRequest;
 use App\Jobs\TransferFullDirectoryOrdersToS3;
+use App\Models\Form;
 use App\Models\OrderUserAnswer;
 use App\Models\Order;
 use App\Models\OrderUser;
@@ -37,6 +38,11 @@ class OrderController extends BaseController
             ]);
     }
 
+    public function countDesignVotes(){
+
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -56,25 +62,26 @@ class OrderController extends BaseController
     public function edit($order_id)
     {
         $users = OrderUser::where('id_order', '=', $order_id)->paginate(20);
-        $choice = $this->countVotes($order_id);
-//        $data = [$users, $choice];
+        $choice = $this->countVotes($order_id, 'common_photos');
+        $designs = $this->countVotes($order_id, 'designs');
 
-        return view('orders.admin.order.edit', compact('users', 'choice' ));
+        return view('orders.admin.order.edit', compact('users', 'choice', 'designs' ));
     }
 
         /**
          * Get all choices and count them
          *
-         * @param int $order_id
+         * @param int $orderId
+         * @param string $dbCol column name linke common_photos/portraits and other
          * @return array descended sort
          */
-        private function countVotes($orderId ){
+        private function countVotes(int $orderId, string $dbCol){
             $choice = [];
 
             //декодирование информации
-            $common_photos =  OrderUser::where('id_order', '=', $orderId)->get(['common_photos']);
+            $common_photos =  OrderUser::where('id_order', '=', $orderId)->get([$dbCol]);
             foreach ($common_photos as $person_choice){
-                $person_choice =json_decode($person_choice['common_photos'], true);
+                $person_choice =json_decode($person_choice[$dbCol], true);
                 if (isset($person_choice['nums'])){
                     foreach ($person_choice['nums'] as $num){
                         $choice[$num] = isset($choice[$num]) ? $choice[$num]+1 : 1;
@@ -85,6 +92,24 @@ class OrderController extends BaseController
             arsort($choice);
             return $choice;
         }
+
+    /**
+     * Display the order for client
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($text_link)
+    {
+        $order = Order::where('link_secret', '=', $text_link)->get()[0];
+        $users = OrderUser::where('id_order', '=', $order->id)->get();
+
+        $designs = $this->countVotes($order->id, 'designs');
+
+        $designs = array_slice($designs, 0, 3, true); //Вернет только топ 3 варианта
+
+        return view('orders.client.index', compact('order', 'users', 'designs'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -110,20 +135,6 @@ class OrderController extends BaseController
         return redirect()->back();
     }
 
-    /**
-     * Display the order for client
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($text_link)
-    {
-        $order = Order::where('link_secret', '=', $text_link)->get()[0];
-        $users = OrderUser::where('id_order', '=', $order->id)->get();
-
-        return view('orders.client.index', compact('order', 'users'));
-    }
-
 
     /**
      * @param $textLink
@@ -132,19 +143,25 @@ class OrderController extends BaseController
     public function choose($textLink){
         $photo = new PhotoController();
         $designs = new DesignsController();
+        $forms = new Form();
 
         $portraitsPhoto = $photo->getPortraitsPhotos($textLink, 20);
         $groupsPhoto = $photo->getGroupsPhotos($textLink, 20);
         $order = Order::where('link_secret', '=', $textLink)->first();
+        $profile = $forms->where('id_order', '=', $order->id)->pluck('question')->first();
 
         $portraitsPhoto = json_decode($portraitsPhoto->getContent(), true)['data'];
         $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
 
         $designs = $designs->getDesignsFromS3();
 
-        return view('orders.client.choose', compact('portraitsPhoto', 'groupsPhoto', 'order', 'textLink', 'designs'));
+        return view('orders.client.choose',
+                    compact('portraitsPhoto', 'groupsPhoto',
+                        'order', 'textLink',
+                        'designs', 'profile'
+                    )
+        );
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -170,16 +187,9 @@ class OrderController extends BaseController
         $order->comment = $request->input('comment');
         $order->confirm_key = substr(md5(time()), 0, 3).mt_rand(1000, 9999) ;
         $order->link_secret =  substr(md5(time()), 0, 5).mt_rand(100, 999);
-
-        $questionnaire = $request->input('questionnaire');
-        if ( null != $questionnaire){
-            $form = new OrderUserAnswer;
-            $form->questions = $questionnaire;
-            $form->save();
-        }
         $order->photos_dir_name = $dirName;
 
-        return  $this->_saveAndTransfer($dirName, $orderName, $order);
+        return  $this->_saveAndTransfer($dirName, $orderName, $order, $request);
     }
 
         /**
@@ -190,14 +200,32 @@ class OrderController extends BaseController
          * @param Order $order
          * @return \Illuminate\Http\Response
          */
-        private function _saveAndTransfer(string $dirName, string $orderName, Order $order){
+        private function _saveAndTransfer(string $dirName, string $orderName, Order $order, Request $request){
             if ($order->save()){
+                $this->makeQuestionnaire($request, $order);
                 return $this->tryToDispatchTransferProcess( $dirName, false);
             }
             else {
                 return redirect()->back()->withErrors()->withInput();
             }
         }
+
+            /**
+             * @param Request $request
+             * @param Order $order
+             * @return bool
+             */
+            public function makeQuestionnaire(Request $request, Order $order ){
+                $questionnaire = $request->input('questionnaire');
+
+                if ( null != $questionnaire){
+                    $form = new Form();
+                    $form->question = $questionnaire;
+                    $form->id_order = $order->getAttribute('id');
+                    return $form->save();
+                }
+                return false;
+            }
 
         /**
          * @param string $dirName
@@ -244,7 +272,7 @@ class OrderController extends BaseController
             }
             catch (\Exception $e ) {
                 return $this->validationError(
-                    "Ошибка при иницициализации диска. Проверьте корректность токенов приложения.",
+                    "Ошибка при иницициализации диска. Проверьте корректность токенов приложения. Ошибка:".$e->getMessage(),
                     'Storage exception '. __METHOD__. $e->getMessage(),
                     $e
                 );

@@ -215,10 +215,13 @@
                 <th scope="row">{{$count}}</th>
                 <td class="Table-text text-center">{{$user->name}}</td>
                 <td>
-                    <button type="button" class="Blue-btn-table text-white text-">
-                        <i class="fa fa-eye  px-2" aria-hidden="true"></i>
-                        <span class="d-none d-lg-inline">Просмотреть</span>
-                    </button>
+                    <form method="GET" action="{{ route('orders.admin.user.demo', $user->id) }}">
+                        @csrf
+                        <button type="button" class="Blue-btn-table text-white text-">
+                            <i class="fa fa-eye  px-2" aria-hidden="true"></i>
+                            <span class="d-none d-lg-inline">Просмотреть</span>
+                        </button>
+                    </form>
                 </td>
                 <td>
                     <form method="POST" action="{{ route('orders.admin.user.destroy', $user->id) }}">
@@ -241,7 +244,7 @@
 <div class="container pb-5">
     <div class="row">
         <div class="col-12 text-center">
-            <h3>Результаты голосования</h3>
+            <h3>Топ 3 дизайна по количеству голосов</h3>
             <hr>
         </div>
     </div>
@@ -250,12 +253,25 @@
         <div class="col-12 col-md-12 col-lg-3 my-2 Votes-rctg">
             <div class="row  justify-content-center mt-5">
                 <div class="Orange-rctg text-white flex-center">
-                    <p class="Percents">100%</p>
+                    <p class="Percents">
+                        @if( isset(array_values($designs)[0]) )
+                            {{ array_values($designs)[0] }}
+                        @else
+                            #
+                        @endif
+                    </p>
                 </div>
             </div>
 
             <div class="row  justify-content-center py-3">
-                <p class="Votes-text">Дизайн 1</p>
+                <p class="Votes-text">
+                    @if( isset(array_keys($designs)[0]) )
+                        Дизайн {{ array_keys($designs)[0] }}
+                    @else
+                        Еще не проголосовали
+                    @endif
+
+                </p>
             </div>
         </div>
 
@@ -264,12 +280,24 @@
         <div class="col-12 col-md-12 col-lg-3 my-2 Votes-rctg">
             <div class="row  justify-content-center mt-5">
                 <div class="Orange-rctg Purple text-white flex-center">
-                    <p class="Percents">60%</p>
+                    <p class="Percents">
+                        @if( isset(array_values($designs)[1]) )
+                            {{ array_values($designs)[1] }}
+                        @else
+                            #
+                        @endif
+                    </p>
                 </div>
             </div>
 
             <div class="row justify-content-center py-3">
-                <p class="Votes-text">Дизайн 2</p>
+                <p class="Votes-text">
+                    @if( isset(array_keys($designs)[1]) )
+                        Дизайн {{ array_keys($designs)[1] }}
+                    @else
+                        Еще не проголосовали
+                    @endif
+                </p>
             </div>
         </div>
 
@@ -278,12 +306,24 @@
         <div class="col-12 col-md-12 col-lg-3 my-2 Votes-rctg">
             <div class="row  justify-content-center mt-5">
                 <div class="Orange-rctg Blue text-white flex-center">
-                    <p class="Percents">40%</p>
+                    <p class="Percents">
+                        @if( isset(array_values($designs)[2]) )
+                            {{ array_values($designs)[2] }}
+                        @else
+                            #
+                        @endif
+                    </p>
                 </div>
             </div>
 
             <div class="row  justify-content-center py-3">
-                <p class="Votes-text">Дизайн 3</p>
+                <p class="Votes-text">
+                    @if( isset(array_keys($designs)[2]) )
+                        Дизайн {{ array_keys($designs)[2] }}
+                    @else
+                        Еще не проголосовали
+                    @endif
+                </p>
             </div>
         </div>
 

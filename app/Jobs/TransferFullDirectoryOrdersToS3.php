@@ -23,14 +23,10 @@ class TransferFullDirectoryOrdersToS3 implements ShouldQueue
      * TransferFullDirectoryOrdersToS3 constructor.
      *
      * @param $dirName
-     * @throws \Exception
-     * @throws \Arhitector\Yandex\Client\Exception\UnauthorizedException
-     * @throws \Arhitector\Yandex\Client\Exception\NotFoundException
      * @return void
      */
     public function __construct($dirName)
     {
-
         //Выполнится только если проверки все проверки корректны
         $this->photosDirectoryPath = $dirName;
     }
@@ -47,6 +43,7 @@ class TransferFullDirectoryOrdersToS3 implements ShouldQueue
      */
     public function handle()
     {
+
         $diskClient= new \Arhitector\Yandex\Disk( env('YANDEX_OAUTH') );
 
         $portraitPhotosContent= $diskClient->getResource( $this->photosDirectoryPath.'/ПОРТРЕТЫ', 10000 );

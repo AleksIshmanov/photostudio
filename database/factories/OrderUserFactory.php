@@ -15,5 +15,6 @@ $factory->define(\App\Models\OrderUser::class, function (Faker $faker) {
         'portraits' => json_encode($rand_json),
         'common_photos' => json_encode($rand_json),
         'comment' => $faker->text(100),
+        'designs' => json_encode($rand_json),
     ];
 });
