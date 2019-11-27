@@ -93,7 +93,7 @@ class DesignsController extends BaseController
      * get all designs from s3 storage
      * @return array
      */
-    public function getDesignsFromS3()
+    public static function getDesignsFromS3()
     {
         $s3Client =  Storage::disk('yadisk');
         $designsPath = env('YANDEX_DESIGN_DIR');

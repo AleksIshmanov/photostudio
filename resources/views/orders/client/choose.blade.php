@@ -9,7 +9,9 @@
         //$imgName = preg_replace('/(?:jpg|png|gif)$/i', '', array_pop(explode('/', $link) ) );
         $imgName = explode('/', $textLink);
         $imgName = array_pop($imgName);
-        $imgName =  preg_replace('/.(?:jpg|png|gif)$/i', '', $imgName);
+
+        //удаляем расширение файла
+        //$imgName =  preg_replace('/.(?:jpg|png|gif)$/i', '', $imgName);
         return $imgName;
     }
 @endphp
@@ -172,7 +174,6 @@
                         </div>
                         @php $i++ @endphp
                     @endforeach
-
                 </div>
             </div>
         </div>

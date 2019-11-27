@@ -120,7 +120,7 @@ h3 {
 }
 
 .Mask-round-only {
-    border-radius: 25px;
+    border-radius: 0 0 25px 25px;
     border-color: #ffa900;
     border-width: 2px;
 }

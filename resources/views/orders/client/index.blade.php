@@ -10,6 +10,8 @@
     $names = ["mainPhoto", "altMainPhotos", "commonPhotos", "designChoice"];
     $countsForNames = [1, $order->portraits_count, $order->photo_common, 1];
 @endphp
+@php $textLink = basename($_SERVER['REQUEST_URI']) @endphp
+
 
 <head>
     <meta charset="utf-8">
@@ -186,7 +188,6 @@
 
             </div>
 
-            @php $textLink = basename($_SERVER['REQUEST_URI']) @endphp
             <form action="{{ route('orders.client.choose', $textLink) }}" method="GET">
                 <button type="submit" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="border-radius: 20px;" >
                     <span>Сделать свой выбор</span>
@@ -215,16 +216,15 @@
                 <th scope="row">{{$count}}</th>
                 <td class="Table-text text-center">{{$user->name}}</td>
                 <td>
-                    <form method="GET" action="{{ route('orders.admin.user.demo', $user->id) }}">
-                        @csrf
-                        <button type="button" class="Blue-btn-table text-white text-">
+                    <form method="GET" action="{{ route('orders.client.user.demo', [$textLink, $user->id]) }}">
+                        <button type="submit" class="Blue-btn-table text-white text-">
                             <i class="fa fa-eye  px-2" aria-hidden="true"></i>
                             <span class="d-none d-lg-inline">Просмотреть</span>
                         </button>
                     </form>
                 </td>
                 <td>
-                    <form method="POST" action="{{ route('orders.admin.user.destroy', $user->id) }}">
+                    <form method="GET" action="{{ route('orders.admin.user.destroy', $user->id) }}">
                         @csrf
                         @method("DELETE")
                         <button type="submit" class="Yellow-btn-table btn-danger text-white"

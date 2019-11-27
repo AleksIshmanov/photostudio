@@ -19,6 +19,9 @@ Route::get('/', function () {
 Route::group(['namespace' => 'Orders'], function() {
     Route::get('order/{link_id}', 'OrderController@show')->name('orders.client.show');
     Route::get('order/{link_id}/choose', 'OrderController@choose')->name('orders.client.choose');
+
+    //User controllers client
+    Route::get('order/{link_id}/{user_id}', 'Admin\OrderUserController@index')->name('orders.client.user.demo');
     Route::post('order', 'Admin\OrderUserController@store')->name('orders.client.store');
 
     //photos
