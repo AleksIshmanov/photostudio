@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input name="designsCount" type="number" value="{{ old('designsCount') }}" class="form-control" placeholder="Количество дизайнов">
+                    <input name="designsCount" type="number" value="1" class="form-control" placeholder="Количество дизайнов">
                 </div>
 
                 <div class="form-group py-2">

@@ -63,9 +63,8 @@ class OrderController extends BaseController
     {
         $users = OrderUser::where('id_order', '=', $order_id)->paginate(20);
         $choice = $this->countVotes($order_id, 'common_photos');
-        $designs = $this->countVotes($order_id, 'designs');
 
-        return view('orders.admin.order.edit', compact('users', 'choice', 'designs' ));
+        return view('orders.admin.order.edit', compact('users', 'choice' ));
     }
 
         /**
@@ -103,24 +102,20 @@ class OrderController extends BaseController
     {
         $order = Order::where('link_secret', '=', $text_link)->get()[0];
         $users = OrderUser::where('id_order', '=', $order->id)->get();
+        $designs = $this->_getTopDesigns($order->id);
 
-        $designs = $this->countVotes($order->id, 'designs');
-
-        $designs = array_slice($designs, 0, 3, true); //Вернет только топ 3 варианта
-
+//        $designs = array_slice($designs, 0, 3, true); //Вернет только топ 3 варианта
+//        dd($designs);
         return view('orders.client.index', compact('order', 'users', 'designs'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //+
+    private function _getTopDesigns ($orderId){
+        $designs =  DB::select(
+            'SELECT design, count(*) c FROM order_users WHERE id_order=:id GROUP BY design ORDER BY c DESC LIMIT 3;',
+            ['id' => $orderId]
+        );
+
+        return $designs;
     }
 
     /**

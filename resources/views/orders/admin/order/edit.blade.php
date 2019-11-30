@@ -14,7 +14,7 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th class="text-center" >Вариант</th>
+                            <th class="text-center" >Фотография в общ. альбом</th>
                             <th class="text-center" >Кол-во голосов</th>
                         </tr>
                         </thead>
@@ -51,6 +51,7 @@
                             <th style="text-align:center">Главный портрет</th>
                             <th style="text-align:center">Выбор портетов</th>
                             <th style="text-align:center">Выбор в альбом</th>
+                            <th style="text-align:center">Дизайн</th>
                             <th>Изменить</th>
                             <th>Удалить</th>
                         </tr>
@@ -87,6 +88,9 @@
                                     @else
                                         No choice
                                     @endif
+                                </td>
+                                <td align="center">
+                                    {{ $user->design }}
                                 </td>
                                 <td align="center">
                                     <a href="{{route('orders.admin.user.edit', $user->id)}}" class="btn btn-primary w-100 h-100"><i class="fa fa-edit" aria-hidden="true"></i></a>

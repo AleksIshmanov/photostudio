@@ -224,11 +224,11 @@
                     </form>
                 </td>
                 <td>
-                    <form method="GET" action="{{ route('orders.admin.user.destroy', $user->id) }}">
+                    <form method="POST" action="{{ route('orders.admin.user.destroy', $user->id) }}">
                         @csrf
                         @method("DELETE")
                         <button type="submit" class="Yellow-btn-table btn-danger text-white"
-                                onclick="return confirm('Вы уверены, что хотите удалить ВНИМАНИЕ! *{{ ($user->name)}}*' );" >
+                                onsubmit="return confirm('Вы уверены, что хотите удалить ВНИМАНИЕ! *{{ ($user->name)}}*' );" >
                             <i class="fa fa-trash px-2" aria-hidden="true"></i>
                         </button>
                     </form>
@@ -254,8 +254,8 @@
             <div class="row  justify-content-center mt-5">
                 <div class="Orange-rctg text-white flex-center">
                     <p class="Percents">
-                        @if( isset(array_values($designs)[0]) )
-                            {{ array_values($designs)[0] }}
+                        @if( isset($designs[0]->c) )
+                            {{ $designs[0]->c }}
                         @else
                             #
                         @endif
@@ -265,8 +265,8 @@
 
             <div class="row  justify-content-center py-3">
                 <p class="Votes-text">
-                    @if( isset(array_keys($designs)[0]) )
-                        Дизайн {{ array_keys($designs)[0] }}
+                    @if( isset( $designs[0]->design ) )
+                        Дизайн {{ $designs[0]->design }}
                     @else
                         Еще не проголосовали
                     @endif
@@ -281,8 +281,8 @@
             <div class="row  justify-content-center mt-5">
                 <div class="Orange-rctg Purple text-white flex-center">
                     <p class="Percents">
-                        @if( isset(array_values($designs)[1]) )
-                            {{ array_values($designs)[1] }}
+                        @if( isset($designs[1]->c ) )
+                            {{ $designs[1]->c }}
                         @else
                             #
                         @endif
@@ -292,8 +292,8 @@
 
             <div class="row justify-content-center py-3">
                 <p class="Votes-text">
-                    @if( isset(array_keys($designs)[1]) )
-                        Дизайн {{ array_keys($designs)[1] }}
+                    @if( isset( $designs[1]->design ) )
+                        Дизайн {{ $designs[1]->design }}
                     @else
                         Еще не проголосовали
                     @endif
@@ -307,8 +307,8 @@
             <div class="row  justify-content-center mt-5">
                 <div class="Orange-rctg Blue text-white flex-center">
                     <p class="Percents">
-                        @if( isset(array_values($designs)[2]) )
-                            {{ array_values($designs)[2] }}
+                        @if( isset($designs[2]->c ) )
+                            {{ $designs[2]->c }}
                         @else
                             #
                         @endif
@@ -318,8 +318,8 @@
 
             <div class="row  justify-content-center py-3">
                 <p class="Votes-text">
-                    @if( isset(array_keys($designs)[2]) )
-                        Дизайн {{ array_keys($designs)[2] }}
+                    @if( isset( $designs[2]->design ) )
+                        Дизайн {{ $designs[2]->design }}
                     @else
                         Еще не проголосовали
                     @endif

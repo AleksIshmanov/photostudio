@@ -1,40 +1,25 @@
-@php
+@extends('layouts.standart')
 
-    /** @var App\Models\Order $order */
-    $names = ["_FOR_TESTS_", "mainPhotos", "commonPhotos", "designChoice"]; //массив названий фото, используется в input для определения фото
-    $countsForNames = [1, $order->portraits_count, $order->photo_individual, $order->designs_count]; //применяется в JS для подсчета количества выбранных
+@section('content')
 
-    function getImgName($textLink) {
-           //Получим имя файла из его полной ссылки
-        //$imgName = preg_replace('/(?:jpg|png|gif)$/i', '', array_pop(explode('/', $link) ) );
-        $imgName = explode('/', $textLink);
-        $imgName = array_pop($imgName);
+    @php
 
-        //удаляем расширение файла
-        //$imgName =  preg_replace('/.(?:jpg|png|gif)$/i', '', $imgName);
-        return $imgName;
-    }
-@endphp
+        /** @var App\Models\Order $order */
+        $names = ["_FOR_TESTS_", "mainPhotos", "commonPhotos", "designChoice"]; //массив названий фото, используется в input для определения фото
+        $countsForNames = [1, $order->portraits_count, $order->photo_individual, $order->designs_count]; //применяется в JS для подсчета количества выбранных
 
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Choose</title>
+        function getImgName($textLink) {
+               //Получим имя файла из его полной ссылки
+            //$imgName = preg_replace('/(?:jpg|png|gif)$/i', '', array_pop(explode('/', $link) ) );
+            $imgName = explode('/', $textLink);
+            $imgName = array_pop($imgName);
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            //удаляем расширение файла
+            //$imgName =  preg_replace('/.(?:jpg|png|gif)$/i', '', $imgName);
+            return $imgName;
+        }
+    @endphp
 
-    <!-- Styles -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('fonts/fonts.css') }}" rel="stylesheet">
-</head>
-<body>
 
 <ul class="nav nav-tabs nav-justified navbar bg-light" id="myTab" role="tablist">
     <li class="nav-item">
@@ -483,11 +468,4 @@
         }
     }
 </script>
-
-</body>
-</html>
-
-{{--    @foreach ($portraitsPhoto as $link)--}}
-{{--        string with links from Yandex Disk --}}
-
-{{--    @endforeach--}}
+@endsection

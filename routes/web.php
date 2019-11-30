@@ -21,8 +21,9 @@ Route::group(['namespace' => 'Orders'], function() {
     Route::get('order/{link_id}/choose', 'OrderController@choose')->name('orders.client.choose');
 
     //User controllers client
-    Route::get('order/{link_id}/{user_id}', 'Admin\OrderUserController@index')->name('orders.client.user.demo');
     Route::post('order', 'Admin\OrderUserController@store')->name('orders.client.store');
+    Route::get('order/{link_id}/confirm', 'OrderConfirmController@index')->name('orders.client.confirm');
+    Route::get('order/{link_id}/{user_id}', 'Admin\OrderUserController@index')->name('orders.client.user.demo');
 
     //photos
     Route::get('photo/portraits/{order_text_link}/{count}', 'PhotoController@getGroupsPhotos')->name('orders.photos.portrait');

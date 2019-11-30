@@ -27,10 +27,8 @@ class OrderUserController extends Controller
 
         $portraitsPhoto = $this->getFullImgUrl($user->portraits, $orderDirName,'ПОРТРЕТЫ');
         $groupsPhoto = $this->getFullImgUrl($user->common_photos, $orderDirName,'ОБЩИЕ');
+        $designs = $this->getUserDesign( $user->design, DesignsController::getDesignsFromS3() );
 
-        $designs = $this->getUserDesigns( json_decode($user->designs, true)['nums'], DesignsController::getDesignsFromS3() );
-
-//        dd($designs, $groupsPhoto, $portraitsPhoto);
         return view('orders.client.demo', compact('user', 'groupsPhoto', 'portraitsPhoto', 'designs'));
     }
 
@@ -59,19 +57,14 @@ class OrderUserController extends Controller
     /**Make userChoices to full array with design images for view
      *
      * was: ['07', 5]
-     * return: ['07'=>[url1, url2, url3, ...], 5=>[url1, url2, url3, ...]]
+     * return: ['07'=>[url1, url2, url3, ...]
      *
-     * @param array &$userChoices
+     * @param int|string &$userChoice
      * @param array $allDesigns
      * @return array
      */
-    private function getUserDesigns(array $userChoices, array $allDesigns){
-        foreach ($userChoices as $index=>$designName){
-            $userChoices[$designName] = $allDesigns[$designName];
-            unset($userChoices[$index]);
-        }
-
-        return $userChoices;
+    private function getUserDesign($userChoice, array $allDesigns){
+        return isset($allDesigns[$userChoice]) ? [$userChoice => $allDesigns[$userChoice]] : [];
     }
 
     /**
@@ -100,7 +93,8 @@ class OrderUserController extends Controller
         $orderUser->portraits = $this->makeCustomJson($request->input('mainPhotos'));
         $orderUser->common_photos = $this->makeCustomJson($request->input('commonPhotos'));
         $orderUser->comment = $request->input('userQuestionsAnswer');
-        $orderUser->designs = $this->makeCustomJson( $request->input('designChoice') );
+        $orderUser->design = array_key_first( $request->input('designChoice'));
+
 
         if ($orderUser->save()){
             return redirect()->route('orders.client.show', $orderTextLink )->with(['success'=>true]);
