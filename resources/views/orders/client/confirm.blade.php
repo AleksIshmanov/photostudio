@@ -68,7 +68,7 @@
     <div class="row pt-5">
         <div class="col-12 text-center">
             <h3>Пользователи выбрали следующие дизайны</h3>
-            <p>Данные фотографии будут утверждены в альбом <br>В последующем изменения невозможны.</p>
+            <p>По условию заказа, студия выполняет все работы по двум наиболее популярным дизайнам. <br>Родители с наименее популярным дизайном должны либо изменить свой выбор, либо оплатить дополнительную услугу.</p>
             <hr>
         </div>
     </div>
@@ -92,10 +92,10 @@
             <tr>
                 <td class="text-center" scope="col">{{ $i }}</td>
                 <td class="text-center" scope="col">{{ $user }}</td>
-                <td class="text-center" scope="col">{{ implode( ' ', $design) }}</td>
+                <td class="text-center" scope="col">{{ $design }}</td>
                 <td class="text-center" scope="col">
-                    @if(  )
-                        <i class="fa fa-exclamation-triangle" style="color: #3490dc; font-size: 1.5em;"></i>
+                    @if( !in_array($design, $mostPopularDesigns) )
+                        <i class="fa fa-exclamation-triangle" style="color: #c0392b; font-size: 1.5em;"></i>
                         @else
                         <i class="fa fa-check-square" style="color: #38c172; font-size: 1.5em;"></i>
                     @endif
