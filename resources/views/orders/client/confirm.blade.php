@@ -142,6 +142,7 @@
         </div>
     </div>
 
+{{--    <form action="{{ route('orders.client.confirm.post', $textLink) }}" method="POST">--}}
     <form>
         <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">
         @csrf
@@ -167,7 +168,9 @@
         $('#submit').click(function(){
             var confirm_key = $('input[name="confirm_key"]').val();
             var token = $('input[name="_token"]').val();
-            console.log(token, confirm_key);
+            var textLink = "{{ $textLink }}";
+
+            console.log(confirm_key, token, textLink);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -177,13 +180,21 @@
             $.ajax({
                 type: "post",
                 url: "{{ route('orders.client.confirm.post', $textLink) }}",
-                data: { confirm_key: confirm_key, token: token},
+                data: {
+                    confirm_key: confirm_key,
+                    token: token,
+                    textLink: textLink,
+                },
                 dataType: 'json',
                 success: function(data){
-                    alert('Заказ утвержден');
+                    alert('Заказ утвержденю. В течение пару секунд вы будете перенаправлены на основную страницу заказа.');
+                    setTimeout(function () {
+                        window.location.href = "{{ route('orders.client.show', $textLink) }}"; //will redirect to your blog page (an ex: blog.html)
+                    }, 2000); //will call the function after 2 secs.
+
                 },
                 error: function (err) {
-                    console.warn(err.responseJSON.message);
+                    console.warn(err.responseJSON);
                     alert("Неверный ключ утверждения заказа. ");
                 }
             });

@@ -34,14 +34,14 @@ class OrderConfirmController extends BaseController
         $order = Order::find($orderId);
 
         $verifiedKey = $order->confirm_key;
-        if ($request->confirm_key === $verifiedKey){
+        if ($request->confirm_key == $verifiedKey){
             $order->is_closed = true;
             $order->save();
 
             return response()->json(['status'=>true]);
         }
         else{
-            return response('',400);
+            return response('Неверный ключ подтверждения.',400);
         }
     }
 
