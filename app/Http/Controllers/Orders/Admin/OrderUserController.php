@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Orders\Admin;
 
+use App\Http\Controllers\Orders\BaseController;
 use App\Http\Requests\storeNewOrderUserRequest;
 use App\Models\Order;
 use App\Models\OrderUser;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 
-class OrderUserController extends Controller
+class OrderUserController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -25,33 +24,11 @@ class OrderUserController extends Controller
             ->where('id', '=', $user_id)
             ->first();
 
-        $portraitsPhoto = $this->getFullImgUrl($user->portraits, $orderDirName,'ПОРТРЕТЫ');
-        $groupsPhoto = $this->getFullImgUrl($user->common_photos, $orderDirName,'ОБЩИЕ');
+        $portraitsPhoto = $this->getFullImgUrlFromJson($user->portraits, $orderDirName,'ПОРТРЕТЫ');
+        $groupsPhoto = $this->getFullImgUrlFromJson($user->common_photos, $orderDirName,'ОБЩИЕ');
         $designs = $this->getUserDesign( $user->design, DesignsController::getDesignsFromS3() );
 
         return view('orders.client.demo', compact('user', 'groupsPhoto', 'portraitsPhoto', 'designs'));
-    }
-
-    /**
-
-     * @param string $jsonEncodedString
-     * @param string $relativeS3Path _ WARRNING! full path like 'ROOT_PHOTO_DIR/PHOTO_DIR'
-     * @param string $finalPart
-     * @return array $imgArray with full url
-     */
-    private function getFullImgUrl(string $jsonEncodedString, string $relativeS3Path, string $finalPart){
-        $imgArray = json_decode($jsonEncodedString, true)['nums'];
-
-        //Составное имя, для поддержки и дизайнов и фотографий по env() параметрам
-        $path = "$relativeS3Path";
-        $path = strlen($finalPart)>0 ? $path.'/'.$finalPart : $path;
-
-        foreach ($imgArray as $key=>$imgName){
-            $url = Storage::disk('yadisk')->url($path)."/$imgName";
-            $imgArray[$key] = $url;
-        }
-
-        return $imgArray;
     }
 
     /**Make userChoices to full array with design images for view
@@ -161,18 +138,4 @@ class OrderUserController extends Controller
         return Order::where('link_secret', '=', $textLink)->get(['id'])[0]->id;
     }
 
-    /**
-     * create custom json for array
-     *
-     * @param array $choices
-     * @return false|string
-     */
-    protected function makeCustomJson($choices){
-        $nums = array();
-        if(is_array($choices) ){
-            $nums['nums'] = array_keys($choices);
-        }
-
-        return json_encode($nums);
-    }
 }

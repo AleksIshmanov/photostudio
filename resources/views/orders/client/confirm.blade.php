@@ -2,6 +2,8 @@
 
 @section('content')
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 <section class="container">
     <div class="row">
         <div class="col-12 Mask justify-content-center text-center d-flex flex-center">
@@ -27,7 +29,7 @@
         </div>
     </div>
 
-    <table class="table">
+    <table class="table table-responsive-sm table-responsive-md">
         <thead>
         <tr>
             <th  scope="col" class="text-center">#</th>
@@ -54,7 +56,7 @@
                 </form>
             </td>
             <td class="text-center" scope="col">
-                <input type="checkbox" class="form-check-input text-center">
+                <input type="checkbox" class="text-center">
             </td>
         </tr>
         @php $i++ @endphp
@@ -73,7 +75,7 @@
         </div>
     </div>
 
-    <table class="table">
+    <table class="table table-responsive-sm table-responsive-md">
         <thead>
         <tr>
             <th  scope="col" class="text-center">#</th>
@@ -101,7 +103,7 @@
                     @endif
                 </td>
                 <td class="text-center" scope="col">
-                    <input type="checkbox" class="form-check-input">
+                    <input type="checkbox" class="text-center">
                  </td>
             </tr>
             @php $i++ @endphp
@@ -110,5 +112,84 @@
         </tbody>
     </table>
 </section>
+
+<section class="container">
+    <div class="row pt-5">
+        <div class="col-12 text-center">
+            <h3>В общий альбом избраны следующие фотографии</h3>
+            <p>Согласно всеобщему голосованию в общий альбом отобраны следующие фотографии</p>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        @foreach ($groupsPhoto as $link)
+            <div class="col-6 col-lg-3 nopad text-center">
+                <img src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+            </div>
+        @endforeach
+    </div>
+
+</section>
+
+<section class="container">
+    <div class="row pt-5">
+        <div class="col-12 text-center">
+            <h3>Утвеждение</h3>
+            <p>Чтобы передать заказ на обработку, нужно внести подтверждение.
+                <br> Ключ от заказа выдан одному из родителей, после подтверждения заказа изменить данные невозможно.</p>
+            <hr>
+        </div>
+    </div>
+
+    <form>
+        <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">
+        @csrf
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-12">
+                <input name="confirm_key" type="text" value="" class="form-control" placeholder="Ключ утверждения заказа">
+            </div>
+        </div>
+
+        <div class="row justify-content-center py-3">
+            <div class="text-center col-lg-4 col-12">
+                <button type="button" id="submit" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="width: 50%;"><span>Утвердить заказ</span></button>
+            </div>
+        </div>
+
+    </form>
+</section>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+        $('#submit').click(function(){
+            var confirm_key = $('input[name="confirm_key"]').val();
+            var token = $('input[name="_token"]').val();
+            console.log(token, confirm_key);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "post",
+                url: "{{ route('orders.client.confirm.post', $textLink) }}",
+                data: { confirm_key: confirm_key, token: token},
+                dataType: 'json',
+                success: function(data){
+                    alert('Заказ утвержден');
+                },
+                error: function (err) {
+                    console.warn(err.responseJSON.message);
+                    alert("Неверный ключ утверждения заказа. ");
+                }
+            });
+        });
+    });
+
+</script>
 
 @endsection

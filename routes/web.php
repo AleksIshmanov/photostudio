@@ -23,6 +23,7 @@ Route::group(['namespace' => 'Orders'], function() {
     //User controllers client
     Route::post('order', 'Admin\OrderUserController@store')->name('orders.client.store');
     Route::get('order/{link_id}/confirm', 'OrderConfirmController@index')->name('orders.client.confirm');
+    Route::post('order/{link_id}/confirm', 'OrderConfirmController@finalConfirm')->name('orders.client.confirm.post');
     Route::get('order/{link_id}/{user_id}', 'Admin\OrderUserController@index')->name('orders.client.user.demo');
 
     //photos
