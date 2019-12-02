@@ -15,13 +15,13 @@ class CreateOrderUsersTable extends Migration
     {
         Schema::create('order_users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('name');
+            $table->string('name');
 
             $table->unsignedBigInteger('id_order');
             $table->string('portrait_main');
             $table->json('portraits');
             $table->json('common_photos');
-            $table->text('comment')->nullable();
+            $table->string('comment')->nullable();
             $table->string('design');
 
             $table->timestamps();

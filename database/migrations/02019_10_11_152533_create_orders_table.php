@@ -22,13 +22,13 @@ class CreateOrdersTable extends Migration
             $table->integer('photo_individual'); //Общих фото кокретному владельцу
             $table->integer('designs_count');
 
-            $table->text('photos_dir_name');
-            $table->text('photos_link');
+            $table->string('photos_dir_name');
+            $table->string('photos_link');
 
 //            $table->text('client_link')->unique();
-            $table->text('link_secret')->unique();
-            $table->text('confirm_key')->unique();
-            $table->text('comment')->nullable();
+            $table->string('link_secret')->unique();
+            $table->string('confirm_key')->unique();
+            $table->string('comment')->nullable();
             $table->boolean('is_closed')->default(false);
             $table->timestamps();
         });
