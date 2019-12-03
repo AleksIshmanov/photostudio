@@ -35,7 +35,6 @@
             <th  scope="col" class="text-center">#</th>
             <th  scope="col" class="text-center">Имя</th>
             <th  scope="col" class="text-center">Страница пользователя</th>
-            <th  scope="col" class="text-center">Подтверждение</th>
         </tr>
         </thead>
 
@@ -54,9 +53,6 @@
                         <span class="d-none d-lg-inline">Просмотреть</span>
                     </button>
                 </form>
-            </td>
-            <td class="text-center" scope="col">
-                <input type="checkbox" class="text-center">
             </td>
         </tr>
         @php $i++ @endphp
@@ -103,7 +99,22 @@
                     @endif
                 </td>
                 <td class="text-center" scope="col">
-                    <input type="checkbox" class="text-center">
+                    @if( !in_array($design, $mostPopularDesigns) )
+                        <div class="btn-group btn-group-sm fixDesignClass">
+                            <input type="button" class="btn border-dark bg-info text-white" name="changeDesign" data-name="{{$user}}" value="{{$mostPopularDesigns[0]}}">
+                            <input type="button" class="btn border-dark bg-info text-white" name="changeDesign" data-name="{{$user}}" value="{{$mostPopularDesigns[1]}}">
+                            <input type="button" class="btn border-dark bg-success text-white" name="changeDesign" data-name="{{$user}}" value="Свой">
+                        </div>
+
+                        <div class="DesignFixed" style="display: none;">
+                            <div class="btn btn-sm w-50 bg-success text-white textInfo">{{ $mostPopularDesigns[0] }}</div>
+                            <button class="btn btn-sm bg-info undoDesignFix" data-name="{{ $user }}">
+                                <i class="fa fa-reply" style="color: #fff; font-size: 1.5em;"></i>
+                            </button>
+                        </div>
+                        @else
+                        <i class="fa fa-check-square" style="color: #38c172; font-size: 1.5em;"></i>
+                    @endif
                  </td>
             </tr>
             @php $i++ @endphp
@@ -142,7 +153,7 @@
         </div>
     </div>
 
-{{--    <form action="{{ route('orders.client.confirm.post', $textLink) }}" method="POST">--}}
+    {{--<form action="{{ route('orders.client.confirm.post', $textLink) }}" method="POST">--}}
     <form>
         <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">
         @csrf
@@ -164,19 +175,38 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 
+    let userFixDesign = {};
+
+    //массив, для хранения данных для пользователей, исправлющих дизайн.
     $(document).ready(function() {
+        //Функции для фиксирования и удаления подтверждения
+        $('input[name="changeDesign"]').click( function () {
+            let userName = $(this).attr('data-name');
+            let userValue = $(this).val();
+            userFixDesign[userName] = userValue;
+            fixUserDesignChange(this);
+            console.log(userFixDesign);
+        });
+
+        $('.undoDesignFix').click( function () {
+            let userName = $(this).attr('data-name');
+            delete userFixDesign[userName];
+            resetUserDesignChange(this);
+        });
+
+
         $('#submit').click(function(){
-            var confirm_key = $('input[name="confirm_key"]').val();
             var token = $('input[name="_token"]').val();
             var textLink = "{{ $textLink }}";
+            var confirm_key = $('input[name="confirm_key"]').val();
+            var userDesignsAsString = JSON.stringify(userFixDesign);
+            console.log(confirm_key, userDesignsAsString, userFixDesign);
 
-            console.log(confirm_key, token, textLink);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             $.ajax({
                 type: "post",
                 url: "{{ route('orders.client.confirm.post', $textLink) }}",
@@ -184,6 +214,7 @@
                     confirm_key: confirm_key,
                     token: token,
                     textLink: textLink,
+                    usersDesignsChange: userDesignsAsString,
                 },
                 dataType: 'json',
                 success: function(data){
@@ -195,12 +226,27 @@
                 },
                 error: function (err) {
                     console.warn(err.responseJSON);
-                    alert("Неверный ключ утверждения заказа. ");
+                    alert("Неверный ключ утверждения заказа. "+userDesignsAsString + " " +userFixDesign);
                 }
             });
         });
+
     });
 
+        function fixUserDesignChange(object){
+            console.log(object);
+            $(object).parent().fadeOut(1);
+            let chosenDesign = $(object).val();
+
+            var element =  $(object).parent().parent().find('.DesignFixed');
+            element.find('.textInfo').text(chosenDesign );
+            element.fadeIn();
+        }
+
+        function resetUserDesignChange(object){
+            $(object).parent().fadeOut(1);
+            $(object).parent().parent().find('.fixDesignClass').fadeIn();
+        }
 </script>
 
 @endsection

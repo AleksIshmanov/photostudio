@@ -32,10 +32,19 @@ class OrderConfirmController extends BaseController
     {
         $orderId = $this->_getOrderId($request->textLink);
         $order = Order::find($orderId);
+        $decodedUserChange = json_decode($request->usersDesignsChange, true);
 
         $verifiedKey = $order->confirm_key;
         if ($request->confirm_key == $verifiedKey){
             $order->is_closed = true;
+
+            //update user design change
+            foreach ($decodedUserChange as $userName=>$choice){
+                $user = OrderUser::where('name', '=', $userName)->where('id_order', '=', $orderId)->first();
+                $user->design = $choice;
+                $user->save();
+            }
+
             $order->save();
 
             return response()->json(['status'=>true]);

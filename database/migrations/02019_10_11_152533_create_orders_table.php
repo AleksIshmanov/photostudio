@@ -26,9 +26,9 @@ class CreateOrdersTable extends Migration
             $table->text('photos_link');
 
 //            $table->text('client_link')->unique();
-            $table->text('link_secret')->unique();
-            $table->text('confirm_key')->unique();
-            $table->text('comment')->nullable();
+            $table->string('link_secret')->unique();
+            $table->string('confirm_key')->unique();
+            $table->longText('comment')->nullable();
             $table->boolean('is_closed')->default(false);
             $table->timestamps();
         });
