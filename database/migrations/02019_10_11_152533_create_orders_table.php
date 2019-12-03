@@ -17,8 +17,8 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->text('name');
 
+            $table->integer('photo_total')->unsigned(); //Всего фотографий
             $table->integer('portraits_count')->unsigned(); //Портретов инд. в альбом
-            $table->integer('photo_common')->unsigned(); //Всего фотографий
             $table->integer('photo_individual'); //Общих фото кокретному владельцу
             $table->integer('designs_count');
 

@@ -73,11 +73,17 @@
                         <tbody>
                         @foreach($paginator as $item)
                             @php $orderUrl = env("APP_URL").'/order/'.$item->link_secret @endphp
-                            <tr>
+
+                            @if($item->is_closed)
+                                <tr class="bg-warning">
+                                @else
+                                <tr>
+                            @endif
+
                                 @php /** @var App\Models\Order $item */@endphp
                                 <td align="center">{{$item->id}}</td>
                                 <td align="center">{{$item->name}}></td>
-                                <td align="center">{{$item->photo_common}}</td>
+                                <td align="center">{{$item->photo_total}}</td>
                                 <td align="center">{{$item->portraits_count}}</td>
                                 <td align="center">{{$item->photo_individual}}</td>
                                 <td align="center">{{ $orderUrl }}</td>
@@ -94,7 +100,10 @@
                                 </td>
 
                                 <td align="center">
-                                    <form method="POST" action="{{route('orders.admin.order.destroy', $item->id)}}">
+                                    <form method="POST"
+                                          action="{{route('orders.admin.order.destroy', $item->id)}}"
+                                          onsubmit="return confirm('Вы подтверждаете, что хотите УДАЛИТЬ заказ? Восстановить выбор пользователей будет невозможно.')"
+                                    >
                                         @csrf
                                         @method("DELETE")
                                         <button type="submit" class="btn btn-outline-danger w-100 h-100" >
@@ -115,6 +124,8 @@
     <div class="row justify-content-center">
             {{$paginator->links('vendor.pagination.bootstrap-4')}}
     </div>
+
+
 </div>
 
 @endsection

@@ -224,11 +224,11 @@
                     </form>
                 </td>
                 <td>
-                    <form method="POST" action="{{ route('orders.admin.user.destroy', $user->id) }}">
+                    <form method="POST" action="{{ route('orders.admin.user.destroy', $user->id) }}"
+                          onsubmit="return confirm('Вы уверены, что хотите удалить ВНИМАНИЕ! *{{ ($user->name)}}*' );" >
                         @csrf
                         @method("DELETE")
-                        <button type="submit" class="Yellow-btn-table btn-danger text-white"
-                                onsubmit="return confirm('Вы уверены, что хотите удалить ВНИМАНИЕ! *{{ ($user->name)}}*' );" >
+                        <button type="submit" class="Yellow-btn-table btn-danger text-white">
                             <i class="fa fa-trash px-2" aria-hidden="true"></i>
                         </button>
                     </form>

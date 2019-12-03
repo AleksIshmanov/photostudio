@@ -61,10 +61,12 @@ class OrderController extends BaseController
      */
     public function edit($order_id)
     {
-        $users = OrderUser::where('id_order', '=', $order_id)->paginate(20);
+        $users = OrderUser::where('id_order', '=', $order_id);
         $choice = $this->countVotes($order_id, 'common_photos');
+        $common_count = Order::where('id', '=', $order_id)->first()->photo_individual;
+        $order_question = Form::where('id_order', '=', $order_id)->first()->question;
 
-        return view('orders.admin.order.edit', compact('users', 'choice' ));
+        return view('orders.admin.order.edit', compact('users', 'choice', 'common_count', 'order_question' ));
     }
 
         /**
@@ -175,7 +177,7 @@ class OrderController extends BaseController
         //get inputs params from view
         $order->name = $orderName;
         $order->portraits_count = $request->input('individualPhotosCount');
-        $order->photo_common = $request->input('photosAll');
+        $order->photo_total = $request->input('photosAll');
         $order->photo_individual = $request->input('commonPhotosToCustomer');
         $order->photos_link = $request->input('photoAlbumLink');
         $order->designs_count = $request->input('designsCount');

@@ -278,8 +278,6 @@
         {{$names[3]}}Count : {{$countsForNames[3]}}
     };
 
-    var maxs= [{{$countsForNames[0]}},  {{$countsForNames[1]}}, {{$countsForNames[2]}}, {{$countsForNames[3]}} ];
-
     //---------------- image gallery functions----------
     // init the state from the input
     $(".image-checkbox").each(function () {
