@@ -17,13 +17,13 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->text('name');
 
+            $table->integer('photo_total')->unsigned(); //Всего фотографий
             $table->integer('portraits_count')->unsigned(); //Портретов инд. в альбом
-            $table->integer('photo_common')->unsigned(); //Всего фотографий
             $table->integer('photo_individual'); //Общих фото кокретному владельцу
             $table->integer('designs_count');
 
-            $table->text('photos_dir_name');
-            $table->text('photos_link');
+            $table->string('photos_dir_name');
+            $table->string('photos_link');
 
 //            $table->text('client_link')->unique();
             $table->string('link_secret')->unique();

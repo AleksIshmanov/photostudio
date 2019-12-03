@@ -23,7 +23,13 @@
 
                         @php $count = 0 @endphp
                         @while($count < count($choice) )
-                        <tr>
+
+                            @if($count < $common_count)
+                                <tr class="bg-warning">
+                                @else
+                                <tr>
+
+                            @endif
                                 <td class="text-center">{{ array_keys($choice)[$count] }}</td>
                                 <td class="text-center">{{ array_values($choice)[$count] }}</td>
                         </tr>
@@ -52,7 +58,6 @@
                             <th style="text-align:center">Выбор портетов</th>
                             <th style="text-align:center">Выбор в альбом</th>
                             <th style="text-align:center">Дизайн</th>
-                            <th>Изменить</th>
                             <th>Удалить</th>
                         </tr>
                         </thead>
@@ -77,14 +82,14 @@
                                 <td align="center">{{$user->portrait_main }}</td>
                                 <td align="center">
                                     @if(isset($portraits['nums']))
-                                        {{ implode( ' ', $portraits['nums']) }}
+                                        @php echo implode( "<br>", $portraits['nums']) @endphp
                                     @else
                                         No choice
                                     @endif
                                 </td>
                                 <td align="center">
                                     @if(isset($commonPhotos['nums']))
-                                        {{ implode( ' ', $commonPhotos['nums']) }}
+                                        @php echo implode( "<br>", $commonPhotos['nums']) @endphp
                                     @else
                                         No choice
                                     @endif
@@ -92,15 +97,17 @@
                                 <td align="center">
                                     {{ $user->design }}
                                 </td>
-                                <td align="center">
-                                    <a href="{{route('orders.admin.user.edit', $user->id)}}" class="btn btn-primary w-100 h-100"><i class="fa fa-edit" aria-hidden="true"></i></a>
-                                </td>
 
                                 <td align="center">
-                                    <form action="{{route('orders.admin.user.destroy', $user->id)}}" method="POST">
+                                    <form action="{{route('orders.admin.user.destroy', $user->id)}}"
+                                          method="POST"
+                                          onsubmit="return confirm('Вы уверены, что хотите удалить ВНИМАНИЕ! *{{ ($user->name)}}*' );"
+                                    >
                                         @csrf
                                         @method("DELETE")
-                                        <button type="submit" class="btn btn-outline-danger w-100 h-100">
+                                        <button type="submit"
+                                                class="btn btn-outline-danger w-100 h-100"
+                                        >
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
 
@@ -116,13 +123,48 @@
         </div>
     </div>
 
-    <div class="row justify-content-center">
 
-        <ul class="pagination mt-2 justify-content-end">
-                {{$users->links('vendor.pagination.bootstrap-4')}}
-        </ul>
+    <section class="container-fluid">
+        <div class="row pt-5">
+            <div class="col-12 text-center">
+                <h3>Комментарии пользователей</h3>
+                <p>Вопросы от менеджера:<br>
+                    <u>{{ $order_question }}</u>
+                </p>
+                <hr>
+            </div>
+        </div>
 
-    </div>
+        <div class="row">
+            <div class="card col-12">
+                <div class="card-body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th  scope="col" class="text-center">#</th>
+                            <th  scope="col" class="text-center">Пользователь</th>
+                            <th  scope="col" class="text-center">Комментарий</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        @php $i = 0 @endphp
+                        @foreach( $users as $user)
+                            @php $i++; @endphp
+                            <tr>
+                                <td class="text-center" scope="col">{{ $i }}</td>
+                                <td class="text-center" scope="col">{{ $user->name }}</td>
+                                <td class="text-center" scope="col">{{ $user->comment }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
 </div>
 
 @endsection
