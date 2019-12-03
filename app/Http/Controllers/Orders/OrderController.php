@@ -30,7 +30,7 @@ class OrderController extends BaseController
     {
         $jobsTable = DB::table('jobs');
         $totalJobsOnTransfer = $jobsTable->count();
-        $totalAttempts = $jobsTable->where('attempts', '>', '3')->count();
+        $totalAttempts = $jobsTable->where('attempts', '>', '1')->count();
 
         return view('orders.admin.order.index', compact('totalJobsOnTransfer', 'totalAttempts'))
             ->with(['paginator' => Order::orderBy('updated_at', 'desc')
@@ -61,12 +61,17 @@ class OrderController extends BaseController
      */
     public function edit($order_id)
     {
-        $users = OrderUser::where('id_order', '=', $order_id);
-        $choice = $this->countVotes($order_id, 'common_photos');
-        $common_count = Order::where('id', '=', $order_id)->first()->photo_individual;
-        $order_question = Form::where('id_order', '=', $order_id)->first()->question;
+        $order =  Order::where('id', '=', $order_id)->first();
 
-        return view('orders.admin.order.edit', compact('users', 'choice', 'common_count', 'order_question' ));
+        $users = OrderUser::where('id_order', '=', $order_id)->get();
+        $choice = $this->countVotes($order_id, 'common_photos');
+        $common_count = $order->photo_individual;
+        $order_question = Form::where('id_order', '=', $order_id)->first()->question;
+        $confirm_key = $order->confirm_key;
+        $orderTextLink = $order->link_secret;
+
+        return view('orders.admin.order.edit', compact('users', 'choice', 'common_count',
+            'order_question', 'order' ));
     }
 
         /**
@@ -151,6 +156,7 @@ class OrderController extends BaseController
         $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
 
         $designs = $designs->getDesignsFromS3();
+
 
         return view('orders.client.choose',
                     compact('portraitsPhoto', 'groupsPhoto',

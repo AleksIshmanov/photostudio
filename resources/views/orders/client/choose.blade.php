@@ -46,7 +46,7 @@
         </a>
     </li>
 
-    @if(count($profile)>0 )
+    @if(isset($profile))
     <li class="nav-item">
         <a class=" nav-link font-weight-bold" id="anket-tab" data-toggle="tab" href="#anket" role="tab" aria-controls="home" aria-selected="true">
             Анкета
@@ -210,7 +210,7 @@
             </div>
         </div>
 
-        @if(count($profile)>0 )
+        @if(isset($profile) )
         <div class="tab-pane fade flex-center" id="anket" role="tabpanel" aria-labelledby="profile-tab">
             <div class="row justify-content-center">
                 <div class="col-md-7 col-12">
