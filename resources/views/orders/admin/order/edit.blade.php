@@ -2,11 +2,35 @@
 
 @section('content')
 <div class="container-fluid">
+
+
+    @if($order->is_closed)
+        @php /** App/Models/Order **/  @endphp
+
+        <div class="row justify-content-center py-3">
+            <div class="card col-md-6 col-lg-6 col-12 bg-success">
+                <h3 class="card-header text-white text-center">Заказ закрыт!</h3>
+            </div>
+
+        </div>
+    @endif
+
+    <div class="row justify-content-center py-3">
+
+        <div class="col-sm-12 col-lg-6 col-12 col-md-6 card">
+            <h3 class="card-header text-center"> Код подтверждения: {{ $order->confirm_key }}</h3>
+            <div class="card-body">
+                <h3 class="text-center"><u>Ссылка для контрольного родителя:</u> <br><br> {{ route('orders.client.confirm', $order->link_secret) }}</h3>
+            </div>
+        </div>
+    </div>
+
     <div class="row justify-content-center py-3">
         <div class="col-sm-12 col-lg-6 col-12 col-md-6">
 
             <h2 class="text-center">
-                Выбор пользователей
+                Выбор пользователей в общий альбом
+                <hr>
             </h2>
 
             <div class="card">
@@ -22,17 +46,12 @@
                         <tbody>
 
                         @php $count = 0 @endphp
-                        @while($count < count($choice) )
+                        @while($count < $common_count )
 
-                            @if($count < $common_count)
-                                <tr class="bg-warning">
-                                @else
-                                <tr>
-
-                            @endif
+                            <tr class="bg-warning">
                                 <td class="text-center">{{ array_keys($choice)[$count] }}</td>
                                 <td class="text-center">{{ array_values($choice)[$count] }}</td>
-                        </tr>
+                            </tr>
 
                         @php $count+=1 @endphp
                         @endwhile
