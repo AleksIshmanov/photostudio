@@ -72,7 +72,7 @@
         <div class="row justify-content-center py-3">
             <div class="card col-md-12 col-lg-6 col-12 bg-success">
                 <h3 class="card-header text-white text-center ">Заказ закрыт!</h3>
-                <div class="card-body text-center text-white">Все изменения зафиксированы и не подлежат изменению.<br> Выбор можно изменить только через обращение к менеджеру.</div>
+                <div class="card-body text-center text-white">Все изменения зафиксированы и не подлежат корректировке.<br> Выбор можно изменить только через обращение к менеджеру.</div>
             </div>
 
         </div>
