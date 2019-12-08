@@ -148,13 +148,12 @@ class OrderController extends BaseController
         $designs = new DesignsController();
         $forms = new Form();
 
-        $portraitsPhoto = $photo->getPortraitsPhotos($textLink, 20);
-        $groupsPhoto = $photo->getGroupsPhotos($textLink, 20);
+        $countPhotos = 50; //определяет кол-во подгружаемых фото за один AJAX запрос
+        $portraitsPhoto =  json_decode( $photo->getPortraitsPhotos($textLink, 0, $countPhotos), true );
+        $groupsPhoto = json_decode( $photo->getGroupsPhotos($textLink, 0, $countPhotos), true );
+
         $order = Order::where('link_secret', '=', $textLink)->first();
         $profile = $forms->where('id_order', '=', $order->id)->pluck('question')->first();
-
-        $portraitsPhoto = json_decode($portraitsPhoto->getContent(), true)['data'];
-        $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
 
         $designs = $designs->getDesignsFromS3();
 
@@ -162,7 +161,7 @@ class OrderController extends BaseController
         return view('orders.client.choose',
                     compact('portraitsPhoto', 'groupsPhoto',
                         'order', 'textLink',
-                        'designs', 'profile'
+                        'designs', 'profile', 'countPhotos'
                     )
         );
     }

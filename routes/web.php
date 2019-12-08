@@ -27,8 +27,18 @@ Route::group(['namespace' => 'Orders'], function() {
     Route::get('order/{link_id}/{user_id}', 'Admin\OrderUserController@index')->name('orders.client.user.demo');
 
     //photos
-    Route::get('photo/portraits/{order_text_link}/{count}', 'PhotoController@getGroupsPhotos')->name('orders.photos.portrait');
-    Route::get('photo/groups/{order_text_link}/{count}', 'PhotoController@getPortraitsPhotos')->name('orders.photos.group');
+    Route::get('photo/portraits/{order_text_link}/{start?}.{count?}', 'PhotoController@getPortraitsPhotos')
+        ->where('start', '[0-9]+')
+        ->where('count', '[0-9]+')
+        ->defaults( 'start', 0)
+        ->defaults('count', 0)
+        ->name('orders.photos.portrait');
+    Route::get('photo/groups/{order_text_link}/{start?}.{count?}', 'PhotoController@getGroupsPhotos')
+        ->where('start', '[0-9]+')
+        ->where('count', '[0-9]+')
+        ->defaults( 'start', 0)
+        ->defaults('count', 0)
+        ->name('orders.photos.group');
 });
 
 

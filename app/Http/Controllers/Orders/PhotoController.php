@@ -11,22 +11,23 @@ use Yandex\Disk\DiskClient;
 
 class PhotoController extends BaseController
 {
-    public function getPortraitsPhotos($orderTextLink, $count){
+    public function getPortraitsPhotos($orderTextLink, $start, $count=50){
         $storageClient = Storage::disk('yadisk');
         $orderDirName = (string) $this->getOrderDirName($orderTextLink).'/ПОРТРЕТЫ';
 
-        $linksArray = $this->getFileLinks($storageClient, $orderDirName, $count);
+        $linksArray = $this->getFileLinks($storageClient, $orderDirName, $start, $count);
 
-        return  $this->sendResponse($linksArray);
+
+        return  json_encode( $linksArray, true );
     }
 
-    public function getGroupsPhotos($orderTextLink, $count){
+    public function getGroupsPhotos($orderTextLink, $start, $count){
         $storageClient = Storage::disk('yadisk');
         $orderDirName = (string) $this->getOrderDirName($orderTextLink).'/ОБЩИЕ';
 
-        $linksArray = $this->getFileLinks($storageClient, $orderDirName, $count);
+        $linksArray = $this->getFileLinks($storageClient, $orderDirName, $start, $count);
 
-        return  $this->sendResponse($linksArray);
+        return  json_encode( $linksArray, true );
     }
 
     /**
@@ -38,9 +39,11 @@ class PhotoController extends BaseController
     }
 
 
-    public function getFileLinks($storageClient, $orderDirName, $count){
+    public function getFileLinks($storageClient, $orderDirName, $start, $count){
         $links = array();
         $files = $storageClient->allFiles($orderDirName);
+
+        $files = array_slice($files, $start, $count);
 
         foreach ($files as $photo){
             array_push($links, $storageClient->url($photo));

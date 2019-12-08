@@ -122,13 +122,13 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="portraitsPhoto">
                     @php $i=0 @endphp
                     @foreach ($portraitsPhoto as $link)
                         @php $imgName =  getImgName($link); @endphp
                         <div class="col-6 col-lg-2 nopad text-center">
                             <label class="image-checkbox">
-                                <img data-name="{{$names[1]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+                                <img data-name="{{$names[1]}}" src="{{ $link }}" width="100%" class="pl-2 pb-2 img-responsive" alt="">
                                 <input type="checkbox" name="{{$names[1]}}[{{$imgName}}]" value="" />
                                 <i class="fa fa-check d-none"></i>
                             </label>
@@ -150,13 +150,13 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="groupsPhoto">
                     @php $i=0 @endphp
                     @foreach ($groupsPhoto as $link)
                         @php $imgName = getImgName($link); @endphp
                         <div class="col-6 col-lg-3 nopad text-center">
                             <label class="image-checkbox ">
-                                <img data-name="{{$names[2]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+                                <img data-name="{{$names[2]}}" src="{{ $link }}" width="100%" class="pl-2 pb-2 img-responsive" alt="">
                                 <input type="checkbox" name="{{$names[2]}}[{{$imgName}}]" value="" />
                                 <i class="fa fa-check d-none"></i>
                             </label>
@@ -266,8 +266,115 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.8/js/mdb.min.js"></script>
 
 
+<script>
+
+    /*---Данные для AJAX запроса, изменяются во вспомогательных функциях-----*/
+    /* Переменная-флаг для отслеживания того, происходит ли в данный момент ajax-запрос. */
+    var inProgress = false;
+    /* С какой фотографии надо делать выборку из базы при ajax-запросе. Для каждой вкладки свой счетчик*/
+    var startFrom_portraits = {{ $countPhotos }};
+    var startFrom_groups = {{ $countPhotos }};
+
+
+    var selector = "#portraitsPhoto"; //селектор куда добавляем фото, меняется при изменении вкладки
+    var isPortraitTab = 0;
+    var url = "";
+
+    /*Логика подгрузки фотографий ассинхронно через AJAX*/
+    $(document).ready(function(){
+        $(window).scroll(function() {
+
+            console.log($(window).scrollTop() + $(window).height(), $(document).height() - 1000, !inProgress);
+            /* Если высота окна + высота прокрутки больше или равны высоте всего документа и ajax-запрос в настоящий момент не выполняется, то запускаем ajax-запрос */
+            if($(window).scrollTop() + $(window).height() >= $(document).height() - 1000 && !inProgress) {
+
+                setValuesForAjaxByActiveTab();
+
+                $.ajax({
+                    /* адрес файла-обработчика запроса */
+                    url: url,
+                    /* метод отправки данных */
+                    method: 'GET',
+                    /* данные, которые мы передаем в файл-обработчик */
+                    // data: {"startFrom" : startFrom},
+                    /* что php aphpphp нужно сделать до отправки запрса */
+                    beforeSend: function() {
+                        /* меняем значение флага на true, т.е. запрос сейчас в процессе выполнения */
+                        inProgress = true;}
+                    /* что нужно сделать по факту выполнения запроса */
+                }).done(function(data){
+
+                    /* Преобразуем результат, пришедший от обработчика - преобразуем json-строку обратно в массив */
+                    data = jQuery.parseJSON(data);
+
+                    /* Если массив не пуст (т.е. ссылки там есть) */
+                    if (data.length > 0) {
+
+                    /* Делаем проход по каждому результату, оказвашемуся в массиве,
+                    где в index попадает индекс текущего элемента массива, а в data - ссылка на фотографию */
+                        $.each(data, function(index, link){
+                            /* Отбираем по идентификатору блок со статьями и дозаполняем его новыми данными */
+                            var wrapper = isPortraitTab ? getImageWrapper_portraits(link) : getImageWrapper_groups(link);
+                            $( selector ).append( wrapper );
+                        });
+                    }
+
+                    inProgress = false; /* По факту окончания запроса снова меняем значение флага на false */
+
+                    //меняем счетчики
+                    startFrom_portraits += isPortraitTab ? ({{ $countPhotos }}*1) : 0*1;
+                    startFrom_groups += isPortraitTab ? 0*1 : ({{ $countPhotos }}*1);
+                });
+            }
+        });
+    });
+
+    function setValuesForAjaxByActiveTab() {
+        //определяем переменные для AJAX запросов в разных вкладках
+        var activeTab = $(".nav-link.active").attr("id");
+        if(activeTab==="pills-portraits-tab"){
+            selector = "#portraitsPhoto";
+            isPortraitTab = true;
+            url = '{{  URL::to('photo/portraits').'/'.$textLink }}/'+startFrom_portraits+'.'+ ({{$countPhotos}}*1);
+        }else {
+            selector = "#groupsPhoto";
+            isPortraitTab = false;
+            url = '{{  URL::to('photo/groups').'/'.$textLink }}/'+startFrom_groups+'.'+ ({{$countPhotos}}*1);
+        }
+        console.log(url);
+    }
+
+    function getImageWrapper_portraits(link){
+        var imgName = getImgName(link);
+        var html = '<div class="col-6 col-lg-2 nopad text-center">';
+        html+= '<label class="image-checkbox">';
+        html += '<img data-name="{{$names[1]}}" src="'+ link +'" width="100%" class="pl-2 pb-2 img-responsive">';
+        html += '<input type="checkbox" name="{{$names[1]}}['+ imgName +']" value="" /><i class="fa fa-check d-none"></i>';
+        html += '</label></div>';
+
+        return html;
+    }
+
+    function getImageWrapper_groups(link){
+        var imgName = getImgName(link);
+        var html = '<div class="col-6 col-lg-3 nopad text-center">';
+        html += '<label class="image-checkbox">';
+        html += '<img data-name="{{$names[2]}}" src="'+ link + '" width="100%" class="pl-2 pb-2 img-responsive">';
+        html += '<input type="checkbox" name="{{$names[2]}}['+ imgName +']" value="" />';
+        html += '<i class="fa fa-check d-none"></i>';
+        html += '</label></div>';
+
+        return html;
+    }
+
+    function getImgName(link){
+        return link.split('/').pop();
+    }
+
+</script>
 
 <script>
+
     $(document).ready(function() {
         openErrorTab();
     });
@@ -292,8 +399,8 @@
         }
     });
 
-    // sync the state to the input
-    $(".image-checkbox").on("click", function (e) {
+    // sync the state to the input. Используется для динамического DOM, поэтому селектор идет от "body"
+    $("body").on("click", '.image-checkbox', function (e) {
 
         var dataNameString= $(this).find('img').attr('data-name');
         var $checkbox = $(this).find('input[type="checkbox"]');
