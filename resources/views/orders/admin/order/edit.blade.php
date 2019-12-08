@@ -3,10 +3,8 @@
 @section('content')
 <div class="container-fluid">
 
-
     @if($order->is_closed)
         @php /** App/Models/Order **/  @endphp
-
         <div class="row justify-content-center py-3">
             <div class="card col-md-6 col-lg-6 col-12 bg-success">
                 <h3 class="card-header text-white text-center">Заказ закрыт!</h3>
@@ -46,7 +44,7 @@
                         <tbody>
 
                         @php $count = 0 @endphp
-                        @while($count < $common_count )
+                        @while($count < count($choice) )
 
                             <tr class="bg-warning">
                                 <td class="text-center">{{ array_keys($choice)[$count] }}</td>

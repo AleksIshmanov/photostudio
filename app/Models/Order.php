@@ -14,7 +14,7 @@ class Order extends Model
     protected $fillable = [
         'name',
         'portraits_count', 'photo_common', 'photo_individual',
-        'photos_link', 'confirm_key', 'comment',
+        'photos_link', 'confirm_key', 'comment', 'is_closed',
 
         'photos_dir_name',
     ];

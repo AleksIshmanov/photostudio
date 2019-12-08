@@ -65,10 +65,8 @@ class OrderController extends BaseController
 
         $users = OrderUser::where('id_order', '=', $order_id)->get();
         $choice = $this->countVotes($order_id, 'common_photos');
-        $common_count = $order->photo_individual;
+        $common_count = $order->photo_total;
         $order_question = Form::where('id_order', '=', $order_id)->first()->question;
-        $confirm_key = $order->confirm_key;
-        $orderTextLink = $order->link_secret;
 
         return view('orders.admin.order.edit', compact('users', 'choice', 'common_count',
             'order_question', 'order' ));
@@ -110,10 +108,11 @@ class OrderController extends BaseController
         $order = Order::where('link_secret', '=', $text_link)->get()[0];
         $users = OrderUser::where('id_order', '=', $order->id)->get();
         $designs = $this->_getTopDesigns($order->id);
+        $isOrderClosed = $order->is_closed;
 
 //        $designs = array_slice($designs, 0, 3, true); //Вернет только топ 3 варианта
 //        dd($designs);
-        return view('orders.client.index', compact('order', 'users', 'designs'));
+        return view('orders.client.index', compact('order', 'users', 'designs', 'isOrderClosed'));
     }
 
     private function _getTopDesigns ($orderId){
@@ -155,7 +154,7 @@ class OrderController extends BaseController
         $portraitsPhoto = json_decode($portraitsPhoto->getContent(), true)['data'];
         $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
 
-        $designs = $designs->getDesignsFromS3();
+        $designs = $designs->getDesignsFronmS3();
 
 
         return view('orders.client.choose',

@@ -66,6 +66,18 @@
         </div>
     </div>
 
+    @if($order->is_closed)
+        @php /** App/Models/Order **/  @endphp
+
+        <div class="row justify-content-center py-3">
+            <div class="card col-md-12 col-lg-6 col-12 bg-success">
+                <h3 class="card-header text-white text-center ">Заказ закрыт!</h3>
+                <div class="card-body text-center text-white">Все изменения зафиксированы и не подлежат изменению.<br> Выбор можно изменить только через обращение к менеджеру.</div>
+            </div>
+
+        </div>
+    @endif
+
     <div class="row py-5">
         <div class="col-12 text-center">
             <h3 class="">Комментарий от менеджера</h3>
@@ -188,11 +200,16 @@
 
             </div>
 
-            <form action="{{ route('orders.client.choose', $textLink) }}" method="GET">
-                <button type="submit" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="border-radius: 20px;" >
-                    <span>Сделать свой выбор</span>
-                </button>
-            </form>
+            @if($isOrderClosed)
+                <div class="btn text-white w-100 bg-success rounded-right rounded-left">Заказ закрыт</div>
+                @else
+                <form action="{{ route('orders.client.choose', $textLink) }}" method="GET">
+                    <button type="submit" onsubmit="{{ $isOrderClosed }}" class="btn Yellow-btn coolis text-white w-100 overflow-hidden" style="border-radius: 20px;" >
+                        <span>Сделать свой выбор</span>
+                    </button>
+                </form>
+            @endif
+
         </div>
     </div>
 
