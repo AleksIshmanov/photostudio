@@ -136,7 +136,7 @@
     <div class="row justify-content-center">
         @foreach ($groupsPhoto as $link)
             <div class="col-6 col-lg-3 nopad text-center">
-                <img src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
+                <img src="{{ $link }}" width="100%" class="pl-2 pb-2 img-responsive" alt="">
             </div>
         @endforeach
     </div>

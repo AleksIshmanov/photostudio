@@ -36,6 +36,7 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
+                            <th class="text-center" >#</th>
                             <th class="text-center" >Фотография в общ. альбом</th>
                             <th class="text-center" >Кол-во голосов</th>
                         </tr>
@@ -44,12 +45,25 @@
                         <tbody>
 
                         @php $count = 0 @endphp
-                        @while($count < count($choice) )
+                        @php $keys = array_keys($choice); @endphp
+                        @php $values = array_values($choice); @endphp
+                        @php $total = (count($choice) > $order->photo_total) ? count($choice) : $order->photo_total; @endphp
+                        @while($count < $total )
 
-                            <tr class="bg-warning">
-                                <td class="text-center">{{ array_keys($choice)[$count] }}</td>
-                                <td class="text-center">{{ array_values($choice)[$count] }}</td>
-                            </tr>
+                            @if(isset($keys[$count]) && isset($values[$count]))
+
+                                @if( $count < $order->photo_total)
+                                    <tr class="bg-warning">
+                                @else
+                                    <tr>
+                                @endif
+
+                                <td class="text-center">{{ $count+1 }}</td>
+                                <td class="text-center">{{ $keys[$count] }}</td>
+                                <td class="text-center">{{ $values[$count] }}</td>
+
+                                </tr>
+                            @endif
 
                         @php $count+=1 @endphp
                         @endwhile

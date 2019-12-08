@@ -124,9 +124,8 @@ class OrderConfirmController extends BaseController
         arsort($groupPhotosFinalArray);
 
         //Ограничим массив фотографий по условиям из заказа
-        $count = Order::find($orderId)->photo_common;
-        array_slice($groupPhotosFinalArray, $count);
-
+        $count = Order::find($orderId)->photo_total;
+        $groupPhotosFinalArray = array_slice($groupPhotosFinalArray, 0, $count);
 
         return $groupPhotosFinalArray;
     }
