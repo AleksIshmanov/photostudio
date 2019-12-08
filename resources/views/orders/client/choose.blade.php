@@ -5,7 +5,7 @@
     @php
 
         /** @var App\Models\Order $order */
-        $names = ["_FOR_TESTS_", "mainPhotos", "commonPhotos", "designChoice"]; //массив названий фото, используется в input для определения фото
+        $names = ["theBigPortraitPhoto", "mainPhotos", "commonPhotos", "designChoice"]; //массив названий фото, используется в input для определения фото
         $countsForNames = [1, $order->portraits_count, $order->photo_individual, $order->designs_count]; //применяется в JS для подсчета количества выбранных
 
         function getImgName($textLink) {
@@ -68,7 +68,11 @@
         onsubmit="return confirm('Вы подтверждаете, что выбрали все фотографии в нужном количество и ввели все данные? Если вы что-то пропустили, то придется повторять всю процедуру выбора с самого начала.')"
     >
         @csrf
-        <input type="hidden" name="textLink" class="d-none" value="{{  $textLink }}">
+        <input type="hidden"  name="textLink" class="d-none" value="{{  $textLink }}">
+
+        {{-- Обязательный input - отвечает за главную фотографию --}}
+        <input type="checkbox" checked="checked" class="d-none" id="{{ $names[0] }}"  name="{{$names[0]}}" value="">
+
 
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
             <div class="row justify-content-center">
@@ -296,15 +300,19 @@
 
         //выбор доступен только, если мы не вышли за допустимый максимум выбора (получает от сервера)
         fullName = dataNameString + 'Count';
-        console.log(names, names[fullName]);
         if(names[fullName] > 0){
             $(this).toggleClass('image-checkbox-checked');
             $checkbox.prop("checked", !$checkbox.prop("checked"));
 
+            //если пользователь выбираем главную фотографии
+            if( !isMainPhotoSelected && dataNameString==='{{ $names[1]  }}') {
+                userChangeMainPhotoChoice($checkbox, );
+            }
+
             //Если изображение выбрано -> отнимаем от максимума, иначе прибаляет к максимуму
             $checkbox.prop("checked") ? countImgInput('-', dataNameString, this): countImgInput('+', dataNameString, this);
         }
-        else {        //В других случаях мы можем только отменить свой выбор
+        else {    //В других случаях мы можем только отменить свой выбор
             if( $checkbox.prop("checked") ){
                 $checkbox.prop("checked", false);
                 $(this).toggleClass('image-checkbox-checked');
@@ -323,6 +331,18 @@
         }
         e.preventDefault();
     });
+
+    function userChangeMainPhotoChoice($checkbox){
+        $name = $checkbox.attr('name');
+
+        //очищаем имя от лишних элементов, оставим только имя фотографии
+        $name = $name.replace('{{ $names[1] }}', '');
+        $name = $name.replace('[', '');
+        $name = $name.replace(']', '');
+
+        $biggestPortraitUserChoice = $('input[id="{{ $names[0] }}"]').val($name);
+        console.log($biggestPortraitUserChoice.val());
+    }
 
 
     function msgEnoughSelected() {

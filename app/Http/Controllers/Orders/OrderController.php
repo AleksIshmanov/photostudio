@@ -62,11 +62,13 @@ class OrderController extends BaseController
     public function edit($order_id)
     {
         $order =  Order::where('id', '=', $order_id)->first();
+        $form = Form::where('id_order', '=', $order_id)->first();
 
         $users = OrderUser::where('id_order', '=', $order_id)->get();
         $choice = $this->countVotes($order_id, 'common_photos');
         $common_count = $order->photo_total;
-        $order_question = Form::where('id_order', '=', $order_id)->first()->question;
+
+        $order_question = isset($form) ? $form->question : "";
 
         return view('orders.admin.order.edit', compact('users', 'choice', 'common_count',
             'order_question', 'order' ));
@@ -154,7 +156,7 @@ class OrderController extends BaseController
         $portraitsPhoto = json_decode($portraitsPhoto->getContent(), true)['data'];
         $groupsPhoto = json_decode($groupsPhoto->getContent(), true)['data'];
 
-        $designs = $designs->getDesignsFronmS3();
+        $designs = $designs->getDesignsFromS3();
 
 
         return view('orders.client.choose',

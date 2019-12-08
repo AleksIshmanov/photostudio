@@ -66,7 +66,7 @@ class OrderUserController extends BaseController
 
         $orderUser->name = $request->input('userName') .' '. $request->input('userSurname');
         $orderUser->id_order = $this->getOrderId($orderTextLink);
-        $orderUser->portrait_main = array_key_first($request->input('mainPhotos'));
+        $orderUser->portrait_main = $request->input('theBigPortraitPhoto');
         $orderUser->portraits = $this->makeCustomJson($request->input('mainPhotos'));
         $orderUser->common_photos = $this->makeCustomJson($request->input('commonPhotos'));
         $orderUser->comment = $request->input('userQuestionsAnswer');
