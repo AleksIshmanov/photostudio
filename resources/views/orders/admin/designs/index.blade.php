@@ -43,22 +43,23 @@
                         </div>
                     </div>
 
-                <div class="card-body ">
-                        <div class="form-group w-100">
-                            <form onsubmit="return confirm('Вы точно уверены, что хотите изменить папку с дизайнами?')" action="{{ route('orders.admin.designs.config') }}" method="POST" class="justify-content-center">
-                                @csrf
-                                <input type="text" name="designDir" class="col-12 text-center" placeholder="Введите новую папку">
-                                <button type="submit" class="btn py-1 bg-danger col text-white">Изменить папку</button>
-                            </form>
+                    <div class="card-body ">
+                            <div class="form-group w-100">
+                                <form onsubmit="return confirm('Вы точно уверены, что хотите изменить папку с дизайнами?')" action="{{ route('orders.admin.designs.config') }}" method="POST" class="justify-content-center">
+                                    @csrf
+                                    <input type="text" name="designDir" class="col-12 text-center" placeholder="Введите новую папку">
+                                    <button type="submit" class="btn py-1 bg-danger col text-white">Изменить папку</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row justify-content-center py-3">
-                        <div class="form-group col-6 m-0 p-0">
-                            <form onsubmit="return confirm('Вы точно уверены, что хотите обновить дизайны')" action="{{ route('orders.admin.designs.sync') }}" method="POST" class="justify-content-center">
-                                @csrf
-                                <button type="submit" class="btn btn-lg bg-info w-100 text-white">Обновить дизайны</button>
-                            </form>
+                        <div class="row justify-content-center py-3">
+                            <div class="form-group col-6 m-0 p-0">
+                                <form onsubmit="return confirm('Вы точно уверены, что хотите обновить дизайны')" action="{{ route('orders.admin.designs.sync') }}" method="POST" class="justify-content-center">
+                                    @csrf
+                                    <button type="submit" class="btn btn-lg bg-info w-100 text-white">Обновить дизайны</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Orders\Admin\DesignsController;
 use App\Http\Requests\storeNewOrderRequest;
 use App\Jobs\TransferFullDirectoryOrdersToS3;
 use App\Models\Form;
+use App\Models\OrderAnswers;
 use App\Models\OrderUserAnswer;
 use App\Models\Order;
 use App\Models\OrderUser;
@@ -112,9 +113,9 @@ class OrderController extends BaseController
         $designs = $this->_getTopDesigns($order->id);
         $isOrderClosed = $order->is_closed;
 
-//        $designs = array_slice($designs, 0, 3, true); //Вернет только топ 3 варианта
-//        dd($designs);
-        return view('orders.client.index', compact('order', 'users', 'designs', 'isOrderClosed'));
+        $answers = OrderAnswers::all();
+
+        return view('orders.client.index', compact('order', 'users', 'designs', 'isOrderClosed', 'answers'));
     }
 
     private function _getTopDesigns ($orderId){
@@ -160,7 +161,6 @@ class OrderController extends BaseController
 
         $designs = $designs->getDesignsFromS3();
 
-
         return view('orders.client.choose',
                     compact('portraitsPhoto', 'groupsPhoto',
                         'order', 'textLink',
@@ -191,6 +191,7 @@ class OrderController extends BaseController
         $order->photos_link = $request->input('photoAlbumLink');
         $order->designs_count = $request->input('designsCount');
         $order->comment = $request->input('comment');
+
         $order->confirm_key = substr(md5(time()), 0, 3).mt_rand(1000, 9999) ;
         $order->link_secret =  substr(md5(time()), 0, 5).mt_rand(100, 999);
         $order->photos_dir_name = $dirName;
@@ -209,7 +210,7 @@ class OrderController extends BaseController
         private function _saveAndTransfer(string $dirName, string $orderName, Order $order, Request $request){
 					
            
-						if ($order->save() &&  $this->tryToDispatchTransferProcess( $dirName, false)){
+            if ($order->save() &&  $this->tryToDispatchTransferProcess( $dirName, false)){
                 $this->makeQuestionnaire($request, $order);
                 return $this->tryToDispatchTransferProcess( $dirName, false);
             }
@@ -225,6 +226,7 @@ class OrderController extends BaseController
              */
             public function makeQuestionnaire(Request $request, Order $order ){
                 $questionnaire = $request->input('questionnaire');
+                $questionnaire = str_replace( array("\r\n", "\n"), '<br>', $questionnaire);
 
                 if ( null != $questionnaire){
                     $form = new Form();

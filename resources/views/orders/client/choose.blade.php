@@ -167,14 +167,6 @@
             </div>
         </div>
 
-        <!--
-        <label class="image-checkbox">
-            <img data-name="{{$names[2]}}" src="{{ $link }}" width="100%" height="100%" class="pl-2 pb-2 img-responsive" alt="">
-            <input type="checkbox" name="{{$names[2]}}[{{$imgName}}]" value="" />
-            <i class="fa fa-check d-none"></i>
-        </label>
-         -->
-
         <div class="tab-pane fade" id="designs" role="tabpanel" aria-labelledby="profile-tab">
             <div class="container">
 
@@ -219,7 +211,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-7 col-12">
                     <div class="text-area">
-                        <p class="modal-text px-3 py-2">{{ $profile }}</p>
+                        <p class="modal-text px-3 py-2">{!! $profile !!}</p>
                     </div>
 
                     <div class="form-group">

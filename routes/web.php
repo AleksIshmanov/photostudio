@@ -39,6 +39,8 @@ Route::group(['namespace' => 'Orders'], function() {
         ->defaults( 'start', 0)
         ->defaults('count', 0)
         ->name('orders.photos.group');
+
+
 });
 
 
@@ -47,6 +49,7 @@ $admin_options = [
     'prefix' => 'photo_admin',
 ];
 Route::group($admin_options, function() {
+    Route::get('', 'OrderController@index');
     Route::resource('order', 'OrderController')->names('orders.admin.order')->middleware('auth');
     Route::resource('user', 'Admin\OrderUserController')->names('orders.admin.user');
 
@@ -54,6 +57,9 @@ Route::group($admin_options, function() {
     Route::post('designs', 'Admin\DesignsController@changeDirectory')->name('orders.admin.designs.config')->middleware('auth');
     Route::get('designs', 'Admin\DesignsController@index')->name('orders.admin.designs.index')->middleware('auth');
     Route::post('designs/sync', 'Admin\DesignsController@sync')->name('orders.admin.designs.sync')->middleware('auth');
+
+    //Helper questions
+    Route::resource('answers', 'ClientHelperController')->names('orders.answers')->middleware('auth');;
 });
 
 $photo_options = [

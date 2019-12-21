@@ -49,6 +49,11 @@
                                 <i class="fa fa-address-card-o d-lg-inline d-sm-inline d-md-block d-none"></i> Дизайны
                             </a>
                         </li>
+                        <li class="nav-item mx-1">
+                            <a href="{{ route("orders.answers.index") }}"  role="button" class="mx-lg-2 mx-md-2 mx-0 w-100 btn btn-primary bg-dark py-2">
+                                <i class="fa fa-address-card-o d-lg-inline d-sm-inline d-md-block d-none"></i> Вопросы
+                            </a>
+                        </li>
 
                     </ul>
 
