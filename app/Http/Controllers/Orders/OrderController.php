@@ -134,7 +134,10 @@ class OrderController extends BaseController
      */
     public function destroy($id)
     {
+        $dirName = (string) Order::find(6)->pluck('photos_dir_name')->first();
         Order::destroy($id);
+        Storage::disk('yadisk')->delete( $dirName);
+
         return redirect()->back();
     }
 
@@ -204,7 +207,9 @@ class OrderController extends BaseController
          * @return \Illuminate\Http\Response
          */
         private function _saveAndTransfer(string $dirName, string $orderName, Order $order, Request $request){
-            if ($order->save()){
+					
+           
+						if ($order->save() &&  $this->tryToDispatchTransferProcess( $dirName, false)){
                 $this->makeQuestionnaire($request, $order);
                 return $this->tryToDispatchTransferProcess( $dirName, false);
             }
